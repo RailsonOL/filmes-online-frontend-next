@@ -61,7 +61,7 @@ const Home = ({ data }) => {
 export default Home
 
 export async function getServerSideProps (context) {
-  const response = await fetch(${process.env.API_URL} + '/recentes')
+  const response = await fetch(process.env.API_URL + '/recentes')
   const data = await response.json()
 
   if (!data) {
