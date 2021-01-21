@@ -61,7 +61,7 @@ const Watch = ({ dataWatch }) => {
 export default Watch
 
 Watch.getInitialProps = async ctx => {
-  const res = await fetch('https://api-amazoflix.herokuapp.com' + ctx.asPath)
+  const res = await fetch(process.env.API_URL + ctx.asPath
 
   const json = await res.json()
   return { dataWatch: json }

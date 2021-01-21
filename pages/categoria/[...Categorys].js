@@ -73,7 +73,7 @@ export default Categorys
 Categorys.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.Categorys
-  const response = await fetch(`https://api-amazoflix.herokuapp.com/categoria/${type}/${page}`)
+  const response = await fetch(`${process.env.API_URL}/categoria/${type}/${page}`)
   const data = await response.json() 
   return { dataInitial: data }
 }
