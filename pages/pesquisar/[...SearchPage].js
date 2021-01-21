@@ -73,7 +73,7 @@ export default SearchPage
 SearchPage.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.SearchPage
-  const response = await fetch(`${process.env.API_URL}/pesquisar/${type}/${page}`)
+  const response = await fetch(`https://api-amazoflix.herokuapp.com/pesquisar/${type}/${page}`)
   const data = await response.json() 
   return { dataInitial: data }
 }

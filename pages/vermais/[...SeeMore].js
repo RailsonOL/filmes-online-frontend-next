@@ -75,7 +75,7 @@ export default SeeMore
 SeeMore.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.SeeMore
-  const response = await fetch(`${process.env.API_URL}/${type}/${page}`)
+  const response = await fetch(`https://api-amazoflix.herokuapp.com/${type}/${page}`)
   const data = await response.json() 
   return { dataInitial: data }
 }
