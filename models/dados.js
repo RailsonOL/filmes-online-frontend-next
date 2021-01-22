@@ -80,4 +80,4 @@ const Temporada = mongoose.model('Temporada', new Schema({
   pagina: String
 },{ timestamps: true }))
 
-export { Filme, Serie, FilmesDestaque, SeriesRecentes, FilmesRecentes, Epsodios, Temporada }
+export default { Filme, Serie, FilmesDestaque, SeriesRecentes, FilmesRecentes, Epsodios, Temporada }

@@ -1,5 +1,5 @@
 import { responseErrorJson, responseJson } from '../../../utils/utils'
-import { Filme } from '../../../models/dados'
+import collection from '../../../models/dados'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
@@ -28,11 +28,11 @@ const get = async (req, res) => {
             paginaAtual = paginaAtual - 1
             let totalPaginas
 
-            await Filme.countDocuments({ 'titulo': { $regex: '^' + char, $options: 'i' } }, function (err, count) {
+            await collection.Filme.countDocuments({ 'titulo': { $regex: '^' + char, $options: 'i' } }, function (err, count) {
                 totalPaginas = Math.ceil(count / limiteItens)
             })
 
-            await Filme.find({ 'titulo': { $regex: '^' + char, $options: 'i' } }, 'img titulo qualidade nota pagina ano')
+            await collection.Filme.find({ 'titulo': { $regex: '^' + char, $options: 'i' } }, 'img titulo qualidade nota pagina ano')
                 .sort({ 'updatedAt': -1 })
                 .limit(limiteItens)
                 .skip(limiteItens * paginaAtual)
@@ -45,11 +45,11 @@ const get = async (req, res) => {
             paginaAtual = paginaAtual - 1
             let totalPaginas
 
-            await Filme.countDocuments({}, function (err, count) {
+            await collection.Filme.countDocuments({}, function (err, count) {
                 totalPaginas = Math.ceil(count / limiteItens)
             })
 
-            await Filme.find({}, 'img titulo qualidade nota pagina ano')
+            await collection.Filme.find({}, 'img titulo qualidade nota pagina ano')
                 .sort({ 'updatedAt': -1 })
                 .limit(limiteItens)
                 .skip(limiteItens * paginaAtual)
