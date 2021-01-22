@@ -1,10 +1,13 @@
-const { responseErrorJson, responseJson, exibirTudo, validarImg, atualizarPorDataSimples } = require('../utils');
-const collection = require('../models/dados')
-const cheerio =  require('cheerio')
-const axios = require('axios')
+import cheerio from 'cheerio'
+import axios from 'axios'
+import { responseErrorJson, responseJson, validarImg, exibirTudo, atualizarPorDataSimples } from '../../utils/utils'
+import collection from '../../models/dados'
+import dbConnect from '../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
+        await dbConnect()
+
         let primeiro = await exibirTudo(collection.FilmesRecentes, 1)
 
         if(atualizarPorDataSimples(primeiro)){
@@ -110,6 +113,4 @@ const get = async (req, res) => {
     }
 }
 
-module.exports = {
-    get
-}
+export default get

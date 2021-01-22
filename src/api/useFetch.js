@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 const useFetch = route => {
-  const baseUrl = process.env.API_URL
+  const baseUrl = 'https://api-amazoflix.herokuapp.com'
 
   let url = baseUrl + route
 

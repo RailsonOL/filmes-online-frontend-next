@@ -1,4 +1,4 @@
-const apiBase = process.env.API_URL
+const apiBase = 'https://api-amazoflix.herokuapp.com'
 
 const api = async url => {
   let data = await fetch(apiBase + url)

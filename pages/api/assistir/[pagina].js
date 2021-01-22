@@ -1,24 +1,25 @@
-const cheerio =  require('cheerio')
-const axios = require('axios')
-const { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData} = require('../utils');
-const collection = require('../models/dados');
-const { Filme, Serie } = require('../models/dados');
+import cheerio from 'cheerio'
+import axios from 'axios'
+import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData } from '../../../utils/utils'
+import collection from '../../../models/dados'
+import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
-
-        let pagina = req.params.pagina
+        await dbConnect()
+        
+        let pagina = req.query.pagina
 
         let opt1 = await seExiste(collection.Filme, pagina)
         let opt2 = await seExiste(collection.Serie, pagina)
 
         let tipo = opt1 ? collection.Filme : collection.Serie
 
-        if (opt1 == true || opt2 == true) { //Serie ou filme já cadastrado
+        if (opt1 == true || opt2 == true) { //collection.Serie ou filme já cadastrado
 
-            let primeiroDaLista =  await tipo.findOne({ 'pagina': pagina })
-            
-            if(atualizarPorData(primeiroDaLista, 5)){ // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+            let primeiroDaLista = await tipo.findOne({ 'pagina': pagina })
+
+            if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
 
                 const response = await axios.get(`https://www.superflix.net/${pagina}`)
                 let $ = cheerio.load(response.data)
@@ -27,43 +28,43 @@ const get = async (req, res) => {
                 let links = []
 
                 if (serie) { //se for uma serie
-                
+
                     let temporadas = []
                     $('div.aa-drp.choose-season').each((i, e) => {
                         let el = $(e)
                         let temp = el.text()
-                        let link = el.find('a').attr('href').replace('https://www.superflix.net/','')
+                        let link = el.find('a').attr('href').replace('https://www.superflix.net/', '')
                         temporadas.push(`${temp}|${link}`)
                     })
 
-                    Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas }, {upsert: true}, function(err, doc) {
-                        if (err) return res.send(500, {error: err})
+                    collection.Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas }, { upsert: true }, function (err, doc) {
+                        if (err) return res.send(500, { error: err })
                         return console.log('Succesfully saved.')
                     })
 
                     let exibir = await collection.Serie.findOne({ 'pagina': pagina })
-    
+
                     return responseJson(res, exibir)
-        
+
                 } else {  //se for filme
-                    
-                    $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each( (i, e) => {
+
+                    $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
                         let el = $(e)
                         let opcao = el.attr('id')
                         let link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
-        
+
                         opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
-        
+
                         links.push(`${opcao}|${link}`)
                     })
 
-                    Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, {upsert: true}, function(err, doc) {
-                        if (err) return res.send(500, {error: err})
-                        return console.log('Filme atualizado.')
+                    collection.Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
+                        if (err) return res.send(500, { error: err })
+                        return console.log('collection.Filme atualizado.')
                     })
 
                     let exibir = await collection.Filme.findOne({ 'pagina': pagina })
-    
+
                     return responseJson(res, exibir)
                 }
 
@@ -74,10 +75,10 @@ const get = async (req, res) => {
             return responseJson(res, exibir)
 
         } else { //Não encontrado, então capturar e cadastrar
-            
+
             const response = await axios.get(`https://www.superflix.net/${pagina}`)
             let $ = cheerio.load(response.data)
-            
+
             let serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
 
             let img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
@@ -85,28 +86,28 @@ const get = async (req, res) => {
             let duracao = $('div.dfxb.alg-cr').find('span.duration.fa-clock.far').text()
             let nota = $('div.vote-cn').find('span.vote').text()
             let categorias = []
-    
+
             $('div.dfxb.alg-cr').find('span.genres > a').each((i, e) => {
                 categorias.push($(e).text())
             })
-            
+
             let ano = $('div.dfxb.alg-cr').find('span.year.fa-calendar.far').text()
             let descricao = $('div.dfxb.alg-cr').find('div.description').text()
             let links = []
-    
+
             if (serie) { //se for uma serie
-                
+
                 let temporadas = []
                 $('div.aa-drp.choose-season').each(async (i, e) => {
                     let el = $(e)
                     let temp = el.text()
-                    let link = el.find('a').attr('href').replace('https://www.superflix.net/','')
+                    let link = el.find('a').attr('href').replace('https://www.superflix.net/', '')
                     temporadas.push(`${temp}|${link}`)
                 })
-    
+
                 const addSerie = new collection.Serie({
-                    titulo, 
-                    img,  
+                    titulo,
+                    img,
                     nota,
                     descricao,
                     temporadas,
@@ -115,35 +116,35 @@ const get = async (req, res) => {
                     categorias,
                     pagina
                 })
-    
-                await addSerie.save() 
-                .then(() => { 
-                    console.log('Nova serie adicionada a DB')
-                })
-                .catch((err) => {
-                    console.log(err.code == 11000 ? 'Serie duplicada' : err)
-                })
+
+                await addSerie.save()
+                    .then(() => {
+                        console.log('Nova serie adicionada a DB')
+                    })
+                    .catch((err) => {
+                        console.log(err.code == 11000 ? 'collection.Serie duplicada' : err)
+                    })
 
                 let exibir = await collection.Serie.findOne({ 'pagina': pagina })
 
                 return responseJson(res, exibir)
-    
+
             } else {  //se for filme
-                
-                $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each( (i, e) => {
+
+                $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
                     let el = $(e)
                     let opcao = el.attr('id')
                     let link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
-    
+
                     opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
-    
+
                     links.push(`${opcao}|${link}`)
                 })
 
                 const addFilme = new collection.Filme({
-                    titulo, 
-                    img,  
-                    nota, 
+                    titulo,
+                    img,
+                    nota,
                     links,
                     descricao,
                     duracao,
@@ -151,14 +152,14 @@ const get = async (req, res) => {
                     ano,
                     pagina
                 })
-    
-                await addFilme.save() 
-                .then(() => { 
-                    console.log('Novo filme adicionado a DB')
-                })
-                .catch((err) => {
-                    console.log(err.code == 11000 ? 'Filme duplicado' : err)
-                })
+
+                await addFilme.save()
+                    .then(() => {
+                        console.log('Novo filme adicionado a DB')
+                    })
+                    .catch((err) => {
+                        console.log(err.code == 11000 ? 'Filme duplicado' : err)
+                    })
 
                 let exibir = await collection.Filme.findOne({ 'pagina': pagina })
 
@@ -172,6 +173,4 @@ const get = async (req, res) => {
     }
 }
 
-module.exports = {
-    get
-}
+export default get
