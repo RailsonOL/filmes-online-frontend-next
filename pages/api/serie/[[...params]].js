@@ -18,7 +18,7 @@ const get = async (req, res) => {
             } else {
                 pag = req.query.params[0]
             }
-        }
+        } 
 
         const limiteItens = 12
         if (char != '') {
