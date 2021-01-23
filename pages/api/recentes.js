@@ -17,7 +17,7 @@ const get = async (req, res) => {
             const response = await axios.get('https://www.superflix.net/')
             let $ = cheerio.load(response.data)
 
-            $('section#widget_list_movies_series-3').find('li').each(async (i, elem) => {
+            $('div#widget_list_movies_series-3-all').find('ul > li').each(async (i, elem) => {
 
                 let el = $(elem)
                 let img = validarImg(el.find('figure > img').attr('src'))
@@ -66,9 +66,14 @@ const get = async (req, res) => {
                 }) 
             })
 
-            $('section#widget_list_movies_series-4').find('li').each(async (i, elem) => {
+            $('div#widget_list_movies_series-4-aa-movies').find('ul > li').each(async (i, elem) => {
 
                 let el = $(elem)
+                
+                if(el.find('a.lnk-blk').attr('href') == undefined){
+                    console.log(el.text());
+                }
+
                 let img = validarImg(el.find('figure > img').attr('src'))
                 let titulo = el.find('h2.entry-title').text()
                 let nota = el.find('span.vote').text()
