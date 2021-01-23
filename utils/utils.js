@@ -59,11 +59,9 @@ const seExiste = async (collec, pagina) => {
     return resultado
 }
 
-const responseJson = (res, data, statusCode = httpStatus.OK, revalidate = true) => {
-    if (revalidate) {
-        res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate')
-    }
-    res.status(statusCode);
+const responseJson = (res, data, statusCode = httpStatus.OK) => {
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+    res.status(200);
     return res.json(data);
 }
 

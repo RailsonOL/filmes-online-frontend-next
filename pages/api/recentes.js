@@ -8,11 +8,10 @@ import dbConnect from '../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
+        let dynamicDate = new Date()
         await dbConnect()
 
         let primeiro = await exibirTudo(FilmesRecentes, 1)
-
-        console.log(await exibirTudo(FilmesRecentes, 1));
 
         if(atualizarPorDataSimples(primeiro)){
             //console.log('As datas são diferentes, salvar')
@@ -111,10 +110,9 @@ const get = async (req, res) => {
             let filmes_recentes = await exibirTudo(FilmesRecentes)
             let filmes_destaques = await exibirTudo(FilmesDestaque)
             let series_recentes = await exibirTudo(SeriesRecentes)
-            
-            let resultado = {filmes_recentes, filmes_destaques, series_recentes}
-    
-            return responseJson(res, resultado)
+            let resultado = {data: dynamicDate.toUTCString(), filmes_recentes, filmes_destaques, series_recentes}
+            res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+            res.json(resultado)
         }
         
     } catch (error) {
