@@ -111,8 +111,8 @@ const get = async (req, res) => {
             let filmes_destaques = await exibirTudo(FilmesDestaque)
             let series_recentes = await exibirTudo(SeriesRecentes)
             let resultado = {data: dynamicDate.toUTCString(), filmes_recentes, filmes_destaques, series_recentes}
-            res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
-            res.json(resultado)
+
+            return responseJson(res, resultado)
         }
         
     } catch (error) {
