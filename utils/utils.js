@@ -76,16 +76,16 @@ const responseErrorJson = (res, methodName, error, statusCode = httpStatus.INTER
 const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
     let dataDB
 
-    let dataCriacao = new Date(comparador.createdAt)
-    let anoLancamento = comparador.ano 
+    let dataCriacao = new Date(comparador[0].createdAt)
+    let anoLancamento = comparador[0].ano 
 
     let dataAtual = new Date()
     let anoAtual = dataAtual.getFullYear()
 
     if (comparador.toString() == '') {
-        dataDB = dataAtual.getDate()-intervalo + dataDB.getMonth()
+        dataDB = dataAtual.getDate()-intervalo
     }else{
-        dataDB = new Date(comparador.updatedAt)
+        dataDB = new Date(comparador[0].updatedAt)
         dataDB = dataDB.getDate() + dataDB.getMonth()
     }
 
@@ -96,17 +96,16 @@ const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
 const atualizarPorDataSimples = (comparador, intervalo = 1) => {
     let dataDB
 
-    let dataCriacao = new Date(comparador.createdAt)
     let dataAtual = new Date()
 
     if (comparador.toString() == '') {
-        dataDB = dataAtual.getDate()-intervalo + dataDB.getMonth()
+        dataDB = dataAtual.getDate()-intervalo
     }else{
-        dataDB = new Date(comparador.updatedAt)
-        dataDB = dataDB.getDate() + dataDB.getMonth()
+        dataDB = new Date(comparador[0].updatedAt)
+        dataDB = dataDB.getDate()
     }
 
-    return dataDB != dataAtual.getDate() + dataAtual.getMonth()
+    return dataDB != dataAtual.getDate()
 }
 
 module.exports = {
