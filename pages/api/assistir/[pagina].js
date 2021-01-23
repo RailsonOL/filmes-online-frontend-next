@@ -15,7 +15,6 @@ const get = async (req, res) => {
         let opt2 = await seExiste(Serie, pagina)
 
         let tipo = opt1 ? Filme : Serie
-        console.log(await Serie.findOne({ 'pagina': pagina }));
         if (opt1 == true || opt2 == true) { //Serie ou filme já cadastrado
 
             let primeiroDaLista = await tipo.findOne({ 'pagina': pagina })
