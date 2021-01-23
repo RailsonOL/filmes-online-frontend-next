@@ -1,13 +1,27 @@
-import axios from 'axios'
+import useSWR from 'swr'
+import { server } from '../../config';
 
-const useFetch = async route => {
-  const baseUrl = '/api'
+const useFetch = route => {
+  const baseUrl = server + '/api'
 
   let url = baseUrl + route
 
-  const { data } = await axios.get(url)
+  const { data, error } = useSWR(
+    url,
+    async url => {
+      const response = await fetch(url)
+      const data = await response.json()
+      return data
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshWhenHidden: false,
+      revalidateOnMount: true
+    }
+  )
 
-  return data
+  return { data, error }
 }
 
 export default useFetch

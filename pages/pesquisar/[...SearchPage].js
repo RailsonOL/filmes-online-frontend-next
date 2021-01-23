@@ -8,6 +8,7 @@ import useFetch from '../../src/api/useFetch'
 import loading from '../../src/api/loading'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { server } from '../../config';
 
 const SearchPage = ({ dataInitial }) => {
 
@@ -73,7 +74,7 @@ export default SearchPage
 SearchPage.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.SearchPage
-  const response = await fetch(`/api/pesquisar/${type}/${page}`)
+  const response = await fetch(`${server}/api/pesquisar/${type}/${page}`)
   const data = await response.json() 
   return { dataInitial: data }
 }

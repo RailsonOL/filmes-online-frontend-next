@@ -8,6 +8,7 @@ import useFetch from '../../src/api/useFetch'
 import loading from '../../src/api/loading'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { server } from '../../config';
 
 const Categorys = ({ dataInitial }) => {
 
@@ -73,7 +74,7 @@ export default Categorys
 Categorys.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.Categorys
-  const response = await fetch(`/api/categoria/${type}/${page}`)
+  const response = await fetch(`${server}/api/categoria/${type}/${page}`)
   const data = await response.json() 
   return { dataInitial: data }
 }

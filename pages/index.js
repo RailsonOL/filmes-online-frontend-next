@@ -1,12 +1,13 @@
 /* lib */
 import Link from 'next/link'
 import Head from 'next/head'
-import axios from 'axios'
+import useFetch from '../src/api/useFetch'
 import loading from '../src/api/loading'
 /* compoentes*/
 import SeachBar from '../src/searchbar/SeachBar'
 import Spotlight from '../src/grid/Spotlight'
 import GridItems from '../src/grid/GridItems'
+import { server } from '../config';
 
 const Home = ({ data }) => {
   let content = loading.recentFeed
@@ -60,7 +61,8 @@ const Home = ({ data }) => {
 export default Home
 
 export async function getServerSideProps (context) {
-  const { data } = await axios.get('/api/recentes')
+  const response = await fetch(server + '/api/recentes')
+  const data = await response.json()
 
   if (!data) {
     return {

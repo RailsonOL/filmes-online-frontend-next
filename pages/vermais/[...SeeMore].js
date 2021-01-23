@@ -8,6 +8,7 @@ import useFetch from '../../src/api/useFetch'
 import loading from '../../src/api/loading'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { server } from '../../config';
 
 const SeeMore = ({ dataInitial }) => {
 
@@ -75,7 +76,7 @@ export default SeeMore
 SeeMore.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.SeeMore
-  const response = await fetch(`/api/${type}/${page}`)
+  const response = await fetch(`${server}/api/${type}/${page}`)
   const data = await response.json() 
   return { dataInitial: data }
 }

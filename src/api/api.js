@@ -1,7 +1,11 @@
-import axios from 'axios'
+import { server } from '../../config'
+
+const apiBase = server + '/api'
 
 const api = async url => {
-  const { data } = await axios.get('/api' + url)
+  let data = await fetch(apiBase + url)
+    .then(res => res.json())
+    .catch(err => err)
 
   return data
 }
