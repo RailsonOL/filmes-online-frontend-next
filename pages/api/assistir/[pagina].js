@@ -15,12 +15,10 @@ const get = async (req, res) => {
         let opt2 = await seExiste(Serie, pagina)
 
         let tipo = opt1 ? Filme : Serie
-
+        console.log(await Serie.findOne({ 'pagina': pagina }));
         if (opt1 == true || opt2 == true) { //Serie ou filme já cadastrado
 
             let primeiroDaLista = await tipo.findOne({ 'pagina': pagina })
-
-            //console.log(atualizarPorData(primeiroDaLista, 5))
 
             if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
 
@@ -125,6 +123,7 @@ const get = async (req, res) => {
                         console.log('Nova serie adicionada a DB')
                     })
                     .catch((err) => {
+                        console.log(err);
                         console.log(err.code == 11000 ? 'Serie duplicada' : err)
                     })
 

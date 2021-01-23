@@ -13,4 +13,4 @@ const FilmesRecentesSchema = new Schema({
     updatedAt: Number
 }, { timestamps: true })
 
-export default mongoose.models.Serie || mongoose.model('Serie', FilmesRecentesSchema)
+export default mongoose.models.FilmesRecentes || mongoose.model('FilmesRecentes', FilmesRecentesSchema)

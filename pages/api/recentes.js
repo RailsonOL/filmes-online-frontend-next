@@ -12,12 +12,14 @@ const get = async (req, res) => {
 
         let primeiro = await exibirTudo(FilmesRecentes, 1)
 
+        console.log(await exibirTudo(FilmesRecentes, 1));
+
         if(atualizarPorDataSimples(primeiro)){
             //console.log('As datas são diferentes, salvar')
             const response = await axios.get('https://www.superflix.net/')
             let $ = cheerio.load(response.data)
 
-            $('div#widget_list_movies_series-3-all').find('ul > li').each(async (i, elem) => {
+            $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => {
 
                 let el = $(elem)
                 let img = validarImg(el.find('figure > img').attr('src'))
