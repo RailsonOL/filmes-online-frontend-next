@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filmes</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    var url_string = window.location.href
+    var url = new URL(url_string)
+    var pag = url.searchParams.get("pag")
+    let site = 'https://amazoflix.vercel.app/api/'
+
+    async function getContent() {
+      try {
+        const response = await fetch(site + pag)
+        const data = await response.json()
+        show(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getContent()
+    function mudar(link) {
+      document.getElementById('assistindo').src = link;
+    }
+
+    function show(users) {
+      let output = `
+            
+            `
+
+      for (let user of users.episodios) {
+
+        output += `<a href="/episodio.html?pag=${user.link}" class="botao"> <img src="${user.img}"> <h3>${user.num_ep}: ${user.nome_ep}</h3></a><br>`
+
+      }
+
+      document.querySelector('div.assistir').innerHTML = output
+
+    }
+
+  </script>
+</head>
+
+<body>
+
+  <div class="assistir">
+
+
+  </div>
+
+</body>
+
+</html>

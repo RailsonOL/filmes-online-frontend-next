@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filmes</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+
+    var url_string = window.location.href
+    var url = new URL(url_string)
+    var pag = url.searchParams.get("pag")
+    let site = 'https://amazoflix.vercel.app/api/categoria/'
+
+    async function getContent() {
+      document.querySelector('div.resultado').innerHTML = '<h2>Carregando...</h2>'
+      try {
+
+        const response = await fetch(site + pag + '/1')
+        const data = await response.json()
+        show(data.resultado)
+
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    function show(resultado) {
+      if (JSON.stringify(resultado) == '[]') {
+        document.querySelector('div.resultado').innerHTML = '<h2>Nada encontrado</h2>'
+      } else {
+        let output = ''
+
+        for (let filme of resultado) {
+          output += `
+              <a href="/assistir.html?pag=${filme.pagina}"><div class="cards-list">
+                  <div class="card">
+                  <img src="${filme.img}" />
+                      <p>${filme.titulo}</p>
+                  </div>
+              </div></a>`
+        }
+
+        document.querySelector('div.resultado').innerHTML = output
+      }
+    }
+  </script>
+</head>
+
+<body onload="getContent()">
+  <div class="resultado">
+
+  </div>
+  </section>
+
+</body>
+
+</html>

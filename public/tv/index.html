@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filmes</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    let site = 'https://amazoflix.vercel.app/api/pesquisar/'
+
+    async function getContent() {
+      document.querySelector('div.resultado').innerHTML = '<h2>Carregando...</h2>'
+      try {
+        let pesquisa = document.getElementById('pesquisa').value
+        const response = await fetch(site + pesquisa + '/1')
+        const data = await response.json()
+        show(data.resultado)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    function show(resultado) {
+      if (JSON.stringify(resultado) === '[]') {
+        document.querySelector('div.resultado').innerHTML = '<h2>Nada encontrado</h2>'
+      } else {
+        let output = ''
+
+        for (let filme of resultado) {
+          output += `
+              <a href="/assistir.html?pag=${filme.pagina}"><div class="cards-list">
+                  <div class="card">
+                  <img src="${filme.img}" />
+                      <p>${filme.titulo}</p>
+                  </div>
+              </div></a>`
+        }
+
+        document.querySelector('div.resultado').innerHTML = output
+      }
+    }
+
+    async function recentes() {
+      document.querySelector('div.resultado').innerHTML = '<h2>Carregando...</h2>'
+      try {
+        const response = await fetch('https://amazoflix.vercel.app/api/recentes')
+        const data = await response.json()
+        mostrar(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    function mostrar(recentes) {
+      if (JSON.stringify(recentes) == '[]') {
+        document.querySelector('div.resultado').innerHTML = '<h2>Nada encontrado</h2>'
+      } else {
+        let output = ''
+
+        for (let filme of recentes.filmes_recentes) {
+          output += `
+              <a href="/assistir.html?pag=${filme.link.replace('assistir/', '')}"><div class="cards-list">
+                  <div class="card">
+                  <img src="${filme.img}" />
+                      <p>${filme.titulo}</p>
+                  </div>
+              </div></a>`
+        }
+
+        document.querySelector('div.resultado').innerHTML = output
+      }
+    }
+  </script>
+</head>
+
+<body onload="recentes()">
+  <div class="menu-drop">
+    <button type="button" name="drop" class="pure-button">Filmes</button>
+    <div class="drop-content">
+      <a href="/assistir.html?pag=Ação">Ação</a>
+      <a href="/assistir.html?pag=Animação">Animação</a>
+      <a href="/assistir.html?pag=Animes">Animes</a>
+      <a href="/assistir.html?pag=Aventura">Aventura</a>
+      <a href="/assistir.html?pag=Comédia">Comédia</a>
+      <a href="/assistir.html?pag=Crime">Crime</a>
+      <a href="/assistir.html?pag=Documentário">Documentário</a>
+      <a href="/assistir.html?pag=Drama">Drama</a>
+      <a href="/assistir.html?pag=Eróticos">Eróticos</a>
+      <a href="/assistir.html?pag=Família">Família</a>
+      <a href="/assistir.html?pag=Fantasia">Fantasia</a>
+      <a href="/assistir.html?pag=Faroeste">Faroeste</a>
+      <a href="/assistir.html?pag=Ficção científica">Ficção científica</a>
+      <a href="/assistir.html?pag=Filmes em HD">Filmes em HD</a>
+      <a href="/assistir.html?pag=Filmes em FullHD">Filmes em FullHD</a>
+      <a href="/assistir.html?pag=Filmes Clássicos">Filmes Clássicos</a>
+      <a href="/assistir.html?pag=Filmes Antigos">Filmes Antigos</a>
+      <a href="/assistir.html?pag=Filmes Cult">Filmes Cult</a>
+      <a href="/assistir.html?pag=Filmes Dublados">Filmes Dublados</a>
+      <a href="/assistir.html?pag=Filmes Legendados">Filmes Legendados</a>
+      <a href="/assistir.html?pag=Filmes Nacionais">Filmes Nacionais</a>
+      <a href="/assistir.html?pag=Filmes da Disney">Filmes da Disney</a>
+      <a href="/assistir.html?pag=Filmes da Marvel">Filmes da Marvel</a>
+      <a href="/assistir.html?pag=Filmes da PassionFlix">Filmes da PassionFlix</a>
+      <a href="/assistir.html?pag=Filmes Netflix">Filmes Netflix</a>
+      <a href="/assistir.html?pag=Filmes Religiosos e Evangélicos">Filmes Religiosos e Evangélicos</a>
+      <a href="/assistir.html?pag=Filmes 2018">Filmes 2018</a>
+      <a href="/assistir.html?pag=Filmes 2019">Filmes 2019</a>
+      <a href="/assistir.html?pag=Filmes 2020">Filmes 2020</a>
+      <a href="/assistir.html?pag=Guerra">Guerra</a>
+      <a href="/assistir.html?pag=LGBT">LGBT</a>
+      <a href="/assistir.html?pag=Kids">Kids</a>
+      <a href="/assistir.html?pag=História">História</a>
+      <a href="/assistir.html?pag=Mistério">Mistério</a>
+      <a href="/assistir.html?pag=Música">Música</a>
+      <a href="/assistir.html?pag=Policial">Policial</a>
+      <a href="/assistir.html?pag=Romance">Romance</a>
+      <a href="/assistir.html?pag=Sci-Fi">Sci-Fi</a>
+      <a href="/assistir.html?pag=Suspense">Suspense</a>
+      <a href="/assistir.html?pag=Terror">Terror</a>
+      <a href="/assistir.html?pag=Thriller">Thriller</a>
+      <a href="/assistir.html?pag=Zumbi">Zumbi</a>
+    </div>
+  </div>
+  <div class="menu-drop">
+    <button type="button" name="drop" class="pure-button">Series</button>
+    <div class="drop-content">
+      <a href="/assistir.html?pag=Séries Baseada em Fatos Reais">Séries Baseada em Fatos Reais</a>
+      <a href="/assistir.html?pag=Séries Baseadas em Livros">Séries Baseadas em Livros</a>
+      <a href="/assistir.html?pag=Séries Antigas">Séries Antigas</a>
+      <a href="/assistir.html?pag=Séries Coreanas">Séries Coreanas</a>
+      <a href="/assistir.html?pag=Séries da Amazon">Séries da Amazon</a>
+      <a href="/assistir.html?pag=Séries Dubladas">Séries Dubladas</a>
+      <a href="/assistir.html?pag=Séries Legendadas">Séries Legendadas</a>
+      <a href="/assistir.html?pag=Séries Lançamentos">Séries Lançamentos</a>
+      <a href="/assistir.html?pag=Séries Netflix">Séries Netflix</a>
+      <a href="/assistir.html?pag=Séries da AMC">Séries da AMC</a>
+      <a href="/assistir.html?pag=Séries da ABC">Séries da ABC</a>
+      <a href="/assistir.html?pag=Séries da Apple TV">Séries da Apple TV</a>
+      <a href="/assistir.html?pag=Séries da Amazon">Séries da Amazon</a>
+      <a href="/assistir.html?pag=Séries da BBC">Séries da BBC</a>
+      <a href="/assistir.html?pag=Séries da DC">Séries da DC</a>
+      <a href="/assistir.html?pag=Séries da Disney">Séries da Disney</a>
+      <a href="/assistir.html?pag=Séries da FOX">Séries da FOX</a>
+      <a href="/assistir.html?pag=Séries da FX">Séries da FX</a>
+      <a href="/assistir.html?pag=Séries GloboPlay">Séries GloboPlay</a>
+      <a href="/assistir.html?pag=Séries em HD">Séries em HD</a>
+      <a href="/assistir.html?pag=Séries da Hulu">Séries da Hulu</a>
+      <a href="/assistir.html?pag=Séries da HBO">Séries da HBO</a>
+      <a href="/assistir.html?pag=Séries Médicas">Séries Médicas</a>
+      <a href="/assistir.html?pag=Séries Nacionais">Séries Nacionais</a>
+      <a href="/assistir.html?pag=Séries da NBC">Séries da NBC</a>
+      <a href="/assistir.html?pag=Séries da PassionFlix">Séries da PassionFlix</a>
+      <a href="/assistir.html?pag=Série da ShowTime">Série da ShowTime</a>
+      <a href="/assistir.html?pag=Séries da Starz">Séries da Starz</a>
+      <a href="/assistir.html?pag=Série da SyFy">Série da SyFy</a>
+      <a href="/assistir.html?pag=Séries da TNT">Séries da TNT</a>
+      <a href="/assistir.html?pag=Séries da The CW">Séries da The CW</a>
+    </div>
+  </div>
+  <form class="pure-form" action="javascript:void(0)">
+    <input type="text" class="pure-input-rounded" id="pesquisa" />
+    <button type="submit" class="pure-button" onclick="getContent()">Pesquisar</button>
+  </form>
+
+  <section>
+    <h1>Resultados</h1>
+    <div class="resultado">
+
+    </div>
+  </section>
+
+</body>
+
+</html>

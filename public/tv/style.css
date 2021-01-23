@@ -1,0 +1,241 @@
+:root {
+    --background-body: #202b38;
+    --background: #161f27;
+    --background-alt: #1a242f;
+    --selection: #1c76c5;
+    --text-main: #dbdbdb;
+    --text-bright: #fff;
+    --text-muted: #a9b1ba;
+    --links: #41adff;
+    --focus: #0096bfab;
+    --border: #526980;
+    --code: #ffbe85;
+    --animation-duration: 0.1s;
+    --button-hover: #324759;
+    --scrollbar-thumb: var(--button-hover);
+    --scrollbar-thumb-hover: rgb(65, 92, 115);
+    --form-placeholder: #a9a9a9;
+    --form-text: #fff;
+    --variable: #d941e2;
+    --highlight: #efdb43;
+    --select-arrow: url("data:image/svg+xml;charset=utf-8,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' height='62.5' width='116.9' fill='%23efefef'%3E %3Cpath d='M115.3,1.6 C113.7,0 111.1,0 109.5,1.6 L58.5,52.7 L7.4,1.6 C5.8,0 3.2,0 1.6,1.6 C0,3.2 0,5.8 1.6,7.4 L55.5,61.3 C56.3,62.1 57.3,62.5 58.4,62.5 C59.4,62.5 60.5,62.1 61.3,61.3 L115.2,7.4 C116.9,5.8 116.9,3.2 115.3,1.6Z'/%3E %3C/svg%3E");
+  }
+  
+  html {
+    scrollbar-color: #324759 #202b38;
+    scrollbar-color: var(--scrollbar-thumb) var(--background-body);
+    scrollbar-width: thin;
+  }
+  
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+    line-height: 1.4;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 10px;
+    word-wrap: break-word;
+    color: #dbdbdb;
+    color: var(--text-main);
+    background: #202b38;
+    background: var(--background-body);
+    text-rendering: optimizeLegibility;
+  }
+  
+  button {
+    transition:
+      background-color 0.1s linear,
+      border-color 0.1s linear,
+      color 0.1s linear,
+      box-shadow 0.1s linear,
+      transform 0.1s ease;
+    transition:
+      background-color var(--animation-duration) linear,
+      border-color var(--animation-duration) linear,
+      color var(--animation-duration) linear,
+      box-shadow var(--animation-duration) linear,
+      transform var(--animation-duration) ease;
+  }
+  input {
+    transition:
+      background-color 0.1s linear,
+      border-color 0.1s linear,
+      color 0.1s linear,
+      box-shadow 0.1s linear,
+      transform 0.1s ease;
+    transition:
+      background-color var(--animation-duration) linear,
+      border-color var(--animation-duration) linear,
+      color var(--animation-duration) linear,
+      box-shadow var(--animation-duration) linear,
+      transform var(--animation-duration) ease;
+  }
+  
+  textarea {
+    transition:
+      background-color 0.1s linear,
+      border-color 0.1s linear,
+      color 0.1s linear,
+      box-shadow 0.1s linear,
+      transform 0.1s ease;
+    transition:
+      background-color var(--animation-duration) linear,
+      border-color var(--animation-duration) linear,
+      color var(--animation-duration) linear,
+      box-shadow var(--animation-duration) linear,
+      transform var(--animation-duration) ease;
+  }
+  
+  h1 {
+    font-size: 2.2em;
+    margin-top: 0;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+  
+  input {
+    color: #fff;
+    color: var(--form-text);
+    background-color: #161f27;
+    background-color: var(--background);
+    font-family: inherit;
+    font-size: inherit;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  button {
+    color: #fff;
+    color: var(--form-text);
+    background-color: #161f27;
+    background-color: var(--background);
+    font-family: inherit;
+    font-size: inherit;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  textarea {
+    color: #fff;
+    color: var(--form-text);
+    background-color: #161f27;
+    background-color: var(--background);
+    font-family: inherit;
+    font-size: inherit;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  .cards-list {
+    font-size: 12pt;
+    display: inline-block;
+    border-radius: 15px;
+    width: 40%;
+    margin: 4px;
+    border: solid #0F243E 2px;
+    text-align: center;
+    padding: 3px;
+  }
+  .card{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    background-color: #161F27;
+    border-radius: 15px;
+    color: #ffffff;
+    width: 100%;
+    padding-left: 1px;
+    margin: auto;
+  }
+  .cards-list:hover{
+    box-shadow: 1px 1px 2px black, 0 0 25px rgb(42, 42, 85), 0 0 5px darkblue;
+  }
+  
+  .card img{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px;
+    width: 70%;
+  }
+  a.botao{
+    background-color: #161F27;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  .assistir{
+    display: inline-block;
+    border-radius: 15px;
+    width: 100%;
+    margin: 4px;
+    border: solid #0F243E 2px;
+    text-align: center;
+    padding: 3px;
+  }
+  .container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%;
+  }
+  iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .menu-drop{
+        display: inline-block;
+        position: relative;
+      }
+  .drop-content{
+    display: none;
+    background-color: #E4A87A;
+    position: absolute;
+    z-index: 1;
+  }
+  .drop-content a{
+    color: white;
+    padding: 8px 10px;
+    text-decoration: none;
+    display: block;
+  }
+  .drop-content a:hover{
+    background-color: #C9936F;
+  }
+  .menu-drop:hover .drop-content{
+    display: block;
+  }
+  .menu-drop:hover button[name="drop"]{
+    background-color: #E2703D
+  }
