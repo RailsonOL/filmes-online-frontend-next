@@ -60,7 +60,7 @@ const seExiste = async (collec, pagina) => {
 }
 
 const responseJson = (res, data, statusCode = httpStatus.OK) => {
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+    res.setHeader('Cache-Control', 's-maxage=80000, stale-while-revalidate')
     res.status(200);
     return res.json(data);
 }
