@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import WatchDesc from '../../src/watch/WatcDesc'
 import Player from '../../src/watch/Player'
 import GridEpisodes from '../../src/watch/GridEpisodes'
-import axios from 'axios'
+import { server } from '../../config'
 
 const Watch = ({ dataWatch }) => {
   const [contentLinks, setContentLinks] = useState()
@@ -62,7 +62,8 @@ const Watch = ({ dataWatch }) => {
 export default Watch
 
 Watch.getInitialProps = async ctx => {
-  const { data } = await axios('/api' + ctx.asPath)
+  const res = await fetch(server + ctx.asPath)
 
-  return { dataWatch: data }
+  const json = await res.json()
+  return { dataWatch: json }
 }
