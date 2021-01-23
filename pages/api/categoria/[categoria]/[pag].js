@@ -1,5 +1,6 @@
 import { responseErrorJson, responseJson } from '../../../../utils/utils'
-import collection from '../../../../models/dados'
+import Filme from '../../../../models/Filme'
+import Serie from '../../../../models/Serie'
 import dbConnect from '../../../../utils/dbConnect'
 
 const get = async (req, res) => {
@@ -21,11 +22,11 @@ const get = async (req, res) => {
 
     paginaAtual = paginaAtual - 1
 
-    await collection.Filme.countDocuments({ categorias: categoria }, function (err, count) {
+    await Filme.countDocuments({ categorias: categoria }, function (err, count) {
       resultado.total_pag += count
     })
 
-    await collection.Filme.find({ categorias: categoria }, 'img titulo nota pagina ano')
+    await Filme.find({ categorias: categoria }, 'img titulo nota pagina ano')
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {
@@ -33,11 +34,11 @@ const get = async (req, res) => {
         return
       })
 
-    await collection.Serie.countDocuments({ categorias: categoria }, function (err, count) {
+    await Serie.countDocuments({ categorias: categoria }, function (err, count) {
       resultado.total_pag = resultado.total_pag > count ? Math.ceil(resultado.total_pag / limiteItens) : Math.ceil(count / limiteItens)
     })
 
-    await collection.Serie.find({ categorias: categoria }, 'img titulo nota pagina ano')
+    await Serie.find({ categorias: categoria }, 'img titulo nota pagina ano')
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {

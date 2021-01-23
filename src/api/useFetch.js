@@ -1,26 +1,13 @@
-import useSWR from 'swr'
+import axios from 'axios'
 
-const useFetch = route => {
-  const baseUrl = 'https://api-amazoflix.herokuapp.com'
+const useFetch = async route => {
+  const baseUrl = '/api'
 
   let url = baseUrl + route
 
-  const { data, error } = useSWR(
-    url,
-    async url => {
-      const response = await fetch(url)
-      const data = await response.json()
-      return data
-    },
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshWhenHidden: false,
-      revalidateOnMount: true
-    }
-  )
+  const { data } = await axios.get(url)
 
-  return { data, error }
+  return data
 }
 
 export default useFetch

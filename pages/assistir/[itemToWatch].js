@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import WatchDesc from '../../src/watch/WatcDesc'
 import Player from '../../src/watch/Player'
 import GridEpisodes from '../../src/watch/GridEpisodes'
+import axios from 'axios'
 
 const Watch = ({ dataWatch }) => {
   const [contentLinks, setContentLinks] = useState()
@@ -61,8 +62,7 @@ const Watch = ({ dataWatch }) => {
 export default Watch
 
 Watch.getInitialProps = async ctx => {
-  const res = await fetch('https://api-amazoflix.herokuapp.com' + ctx.asPath)
+  const { data } = await axios('/api' + ctx.asPath)
 
-  const json = await res.json()
-  return { dataWatch: json }
+  return { dataWatch: data }
 }

@@ -1,7 +1,8 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
 import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData } from '../../../utils/utils'
-import collection from '../../../models/dados'
+import Filme from '../../../models/Filme'
+import Serie from '../../../models/Serie'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
@@ -10,12 +11,12 @@ const get = async (req, res) => {
         
         let pagina = req.query.pagina
 
-        let opt1 = await seExiste(collection.Filme, pagina)
-        let opt2 = await seExiste(collection.Serie, pagina)
+        let opt1 = await seExiste(Filme, pagina)
+        let opt2 = await seExiste(Serie, pagina)
 
-        let tipo = opt1 ? collection.Filme : collection.Serie
+        let tipo = opt1 ? Filme : Serie
 
-        if (opt1 == true || opt2 == true) { //collection.Serie ou filme já cadastrado
+        if (opt1 == true || opt2 == true) { //Serie ou filme já cadastrado
 
             let primeiroDaLista = await tipo.findOne({ 'pagina': pagina })
 
@@ -37,12 +38,12 @@ const get = async (req, res) => {
                         temporadas.push(`${temp}|${link}`)
                     })
 
-                    collection.Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas }, { upsert: true }, function (err, doc) {
+                    Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas }, { upsert: true }, function (err, doc) {
                         if (err) return res.send(500, { error: err })
                         return console.log('Succesfully saved.')
                     })
 
-                    let exibir = await collection.Serie.findOne({ 'pagina': pagina })
+                    let exibir = await Serie.findOne({ 'pagina': pagina })
 
                     return responseJson(res, exibir)
 
@@ -58,12 +59,12 @@ const get = async (req, res) => {
                         links.push(`${opcao}|${link}`)
                     })
 
-                    collection.Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
+                    Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
                         if (err) return res.send(500, { error: err })
-                        return console.log('collection.Filme atualizado.')
+                        return console.log('Filme atualizado.')
                     })
 
-                    let exibir = await collection.Filme.findOne({ 'pagina': pagina })
+                    let exibir = await Filme.findOne({ 'pagina': pagina })
 
                     return responseJson(res, exibir)
                 }
@@ -105,7 +106,7 @@ const get = async (req, res) => {
                     temporadas.push(`${temp}|${link}`)
                 })
 
-                const addSerie = new collection.Serie({
+                const addSerie = new Serie({
                     titulo,
                     img,
                     nota,
@@ -122,10 +123,10 @@ const get = async (req, res) => {
                         console.log('Nova serie adicionada a DB')
                     })
                     .catch((err) => {
-                        console.log(err.code == 11000 ? 'collection.Serie duplicada' : err)
+                        console.log(err.code == 11000 ? 'Serie duplicada' : err)
                     })
 
-                let exibir = await collection.Serie.findOne({ 'pagina': pagina })
+                let exibir = await Serie.findOne({ 'pagina': pagina })
 
                 return responseJson(res, exibir)
 
@@ -141,7 +142,7 @@ const get = async (req, res) => {
                     links.push(`${opcao}|${link}`)
                 })
 
-                const addFilme = new collection.Filme({
+                const addFilme = new Filme({
                     titulo,
                     img,
                     nota,
@@ -161,7 +162,7 @@ const get = async (req, res) => {
                         console.log(err.code == 11000 ? 'Filme duplicado' : err)
                     })
 
-                let exibir = await collection.Filme.findOne({ 'pagina': pagina })
+                let exibir = await Filme.findOne({ 'pagina': pagina })
 
                 return responseJson(res, exibir)
             }

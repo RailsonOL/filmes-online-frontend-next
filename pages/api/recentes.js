@@ -1,14 +1,16 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
 import { responseErrorJson, responseJson, validarImg, exibirTudo, atualizarPorDataSimples } from '../../utils/utils'
-import collection from '../../models/dados'
+import FilmesRecentes from '../../models/FilmesRecentes'
+import FilmesDestaque from '../../models/FilmesDestaque'
+import SeriesRecentes from '../../models/SeriesRecentes'
 import dbConnect from '../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
         await dbConnect()
 
-        let primeiro = await exibirTudo(collection.FilmesRecentes, 1)
+        let primeiro = await exibirTudo(FilmesRecentes, 1)
 
         if(atualizarPorDataSimples(primeiro)){
             //console.log('As datas são diferentes, salvar')
@@ -25,7 +27,7 @@ const get = async (req, res) => {
                 let qualidade = el.find('.Qlty').text()
                 let ano = el.find('.year').text()
 
-                const addFilme = new collection.FilmesRecentes({
+                const addFilme = new FilmesRecentes({
                     img,
                     titulo,  
                     nota, 
@@ -50,7 +52,7 @@ const get = async (req, res) => {
                 let duracao = el.find('span.time').text()
                 let ano = el.find('span.year').text()
 
-                const addFilme = new collection.FilmesDestaque({
+                const addFilme = new FilmesDestaque({
                     titulo,
                     img,  
                     nota, 
@@ -74,7 +76,7 @@ const get = async (req, res) => {
                 let qualidade = el.find('.Qlty').text()
                 let ano = el.find('.year').text()
 
-                const addSerie = new collection.SeriesRecentes({
+                const addSerie = new SeriesRecentes({
                     titulo,
                     img,  
                     nota, 
@@ -89,9 +91,9 @@ const get = async (req, res) => {
 
             })
 
-            let filmes_recentes = await exibirTudo(collection.FilmesRecentes)
-            let filmes_destaques = await exibirTudo(collection.FilmesDestaque)
-            let series_recentes = await exibirTudo(collection.SeriesRecentes)
+            let filmes_recentes = await exibirTudo(FilmesRecentes)
+            let filmes_destaques = await exibirTudo(FilmesDestaque)
+            let series_recentes = await exibirTudo(SeriesRecentes)
 
             let resultado = {filmes_recentes, filmes_destaques, series_recentes}
     
@@ -99,9 +101,9 @@ const get = async (req, res) => {
 
         }else{
            // console.log('As datas são iguais, não salvar');
-            let filmes_recentes = await exibirTudo(collection.FilmesRecentes)
-            let filmes_destaques = await exibirTudo(collection.FilmesDestaque)
-            let series_recentes = await exibirTudo(collection.SeriesRecentes)
+            let filmes_recentes = await exibirTudo(FilmesRecentes)
+            let filmes_destaques = await exibirTudo(FilmesDestaque)
+            let series_recentes = await exibirTudo(SeriesRecentes)
             
             let resultado = {filmes_recentes, filmes_destaques, series_recentes}
     

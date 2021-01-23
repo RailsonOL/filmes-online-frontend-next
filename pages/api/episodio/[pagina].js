@@ -1,7 +1,7 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
 import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData} from '../../../utils/utils'
-import collection from '../../../models/dados'
+import Epsodios from '../../../models/Epsodios'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
@@ -10,9 +10,9 @@ const get = async (req, res) => {
         await dbConnect()
 
         let pagina = req.query.pagina
-        let episodio = await collection.Epsodios.findOne({ 'pagina': pagina })
+        let episodio = await Epsodios.findOne({ 'pagina': pagina })
 
-        let opt1 = await seExiste(collection.Epsodios, pagina)
+        let opt1 = await seExiste(Epsodios, pagina)
 
         if (opt1 == true) {//Serie ou filme já cadastrado
 
@@ -34,17 +34,17 @@ const get = async (req, res) => {
                     links.push(`${opcao}|${link}`)
                 })
 
-                collection.Epsodios.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
+                Epsodios.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
                     if (err) return res.send(500, { error: err })
                     return console.log('Episodio atualizado.')
                 })
 
-                let exibir = await collection.Epsodios.findOne({ 'pagina': pagina })
+                let exibir = await Epsodios.findOne({ 'pagina': pagina })
 
                 return responseJson(res, exibir)
             }
 
-            let exibir = await collection.Epsodios.findOne({ 'pagina': pagina })
+            let exibir = await Epsodios.findOne({ 'pagina': pagina })
 
             return responseJson(res, exibir)
 
@@ -69,7 +69,7 @@ const get = async (req, res) => {
                 links.push(`${opcao}|${link}`)
             })
 
-            const addEpsodio = new collection.Epsodios({
+            const addEpsodio = new Epsodios({
                 titulo,
                 img,
                 duracao,
@@ -87,7 +87,7 @@ const get = async (req, res) => {
                     console.log(err.code == 11000 ? 'EP duplicado' : err)
                 })
 
-            let exibir = await collection.Epsodios.findOne({ 'pagina': pagina })
+            let exibir = await Epsodios.findOne({ 'pagina': pagina })
 
             return responseJson(res, exibir)
 

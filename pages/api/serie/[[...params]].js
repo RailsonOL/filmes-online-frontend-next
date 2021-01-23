@@ -1,5 +1,5 @@
 import { responseErrorJson, responseJson } from '../../../utils/utils'
-import collection from '../../../models/dados'
+import Serie from '../../../models/Serie'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
@@ -28,11 +28,11 @@ const get = async (req, res) => {
             paginaAtual = paginaAtual - 1
             let totalPaginas
 
-            await collection.Serie.countDocuments({}, function (err, count) {
+            await Serie.countDocuments({}, function (err, count) {
                 totalPaginas = Math.ceil(count / limiteItens)
             })
 
-            await collection.Serie.find({}, 'img titulo qualidade nota pagina ano')
+            await Serie.find({}, 'img titulo qualidade nota pagina ano')
                 .sort({ 'updatedAt': -1 })
                 .limit(limiteItens)
                 .skip(limiteItens * paginaAtual)
@@ -46,11 +46,11 @@ const get = async (req, res) => {
             paginaAtual = paginaAtual - 1
             let totalPaginas
 
-            await collection.Serie.countDocuments({ 'titulo': { $regex: '^' + char, $options: 'i' } }, function (err, count) {
+            await Serie.countDocuments({ 'titulo': { $regex: '^' + char, $options: 'i' } }, function (err, count) {
                 totalPaginas = Math.ceil(count / limiteItens)
             })
 
-            await collection.Serie.find({ 'titulo': { $regex: '^' + char, $options: 'i' } }, 'img titulo qualidade nota pagina ano')
+            await Serie.find({ 'titulo': { $regex: '^' + char, $options: 'i' } }, 'img titulo qualidade nota pagina ano')
                 .sort({ 'updatedAt': -1 })
                 .limit(limiteItens)
                 .skip(limiteItens * paginaAtual)

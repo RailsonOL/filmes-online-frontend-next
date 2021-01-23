@@ -1,18 +1,18 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
 import { responseErrorJson, responseJson, seExiste, validarImg, atualizarPorData, exibirEps } from '../../../utils/utils'
-import collection from '../../../models/dados'
+import Temporada from '../../../models/Temporada'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
         await dbConnect()
         let pagina = req.query.pagina
-        let opt1 = await seExiste(collection.Temporada, pagina)
+        let opt1 = await seExiste(Temporada, pagina)
 
         if (opt1 == true) { //Serie ou filme já cadastrado
 
-            let primeiroDaLista = await collection.Temporada.findOne({ 'pagina': pagina })
+            let primeiroDaLista = await Temporada.findOne({ 'pagina': pagina })
 
             if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
 
@@ -32,17 +32,17 @@ const get = async (req, res) => {
                     episodios.push(`{"img": "${img}", "num_ep": "${num_ep}", "nome_ep": "${nome_ep}", "link": "${link}", "data": "${data}"}`)
                 })
 
-                await collection.Temporada.findOneAndUpdate({ 'pagina': pagina }, { episodios }, { upsert: true }, function (err, doc) {
+                await Temporada.findOneAndUpdate({ 'pagina': pagina }, { episodios }, { upsert: true }, function (err, doc) {
                     if (err) return res.send(500, { error: err })
                     return console.log(`Episodios de ${pagina} atualizado`)
                 })
 
-                let exibir = await collection.Temporada.findOne({ 'pagina': pagina })
+                let exibir = await Temporada.findOne({ 'pagina': pagina })
 
                 return responseJson(res, exibir)
             }
 
-            let exibir = await collection.Temporada.findOne({ 'pagina': pagina })
+            let exibir = await Temporada.findOne({ 'pagina': pagina })
 
             return responseJson(res, exibirEps(exibir))
 
@@ -66,7 +66,7 @@ const get = async (req, res) => {
 
             })
 
-            const addTemporada = new collection.Temporada({
+            const addTemporada = new Temporada({
                 temporada,
                 episodios,
                 pagina
@@ -80,7 +80,7 @@ const get = async (req, res) => {
                     console.log(err.code == 11000 ? 'Temporada duplicado' : err)
                 })
 
-            let exibir = await collection.Temporada.findOne({ 'pagina': pagina })
+            let exibir = await Temporada.findOne({ 'pagina': pagina })
 
             return responseJson(res, exibirEps(exibir))
 
