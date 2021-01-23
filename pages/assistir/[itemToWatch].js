@@ -62,7 +62,7 @@ const Watch = ({ dataWatch }) => {
 export default Watch
 
 Watch.getInitialProps = async ctx => {
-  const res = await fetch(server + ctx.asPath)
+  const res = await fetch(server + '/api' + ctx.asPath)
 
   const json = await res.json()
   return { dataWatch: json }
