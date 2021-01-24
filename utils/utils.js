@@ -76,8 +76,6 @@ const responseErrorJson = (res, methodName, error, statusCode = httpStatus.INTER
 const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
     let dataDB
 
-    console.log(comparador.createdAt);
-
     let dataCriacao = new Date(comparador.createdAt)
     let anoLancamento = comparador.ano 
 

@@ -19,12 +19,14 @@ const get = async (req, res) => {
 
             let primeiroDaLista = await tipo.findOne({ 'pagina': pagina })
 
-            if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+            if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
 
                 const response = await axios.get(`https://www.superflix.net/${pagina}`)
                 let $ = cheerio.load(response.data)
                 let serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
+                let trailer = $('div#mdl-trailer').find('iframe').attr('src')
                 let descricao = $('div.dfxb.alg-cr').find('div.description').text()
+                let nota = $('div.vote-cn').find('span.vote').text()
                 let links = []
 
                 if (serie) { //se for uma serie
@@ -37,7 +39,7 @@ const get = async (req, res) => {
                         temporadas.push(`${temp}|${link}`)
                     })
 
-                    Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas }, { upsert: true }, function (err, doc) {
+                    Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas, 'trailer': trailer, nota }, { upsert: true }, function (err, doc) {
                         if (err) return res.send(500, { error: err })
                         return console.log('Succesfully saved.')
                     })
@@ -58,7 +60,7 @@ const get = async (req, res) => {
                         links.push(`${opcao}|${link}`)
                     })
 
-                    Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
+                    Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links, 'trailer': trailer, nota }, { upsert: true }, function (err, doc) {
                         if (err) return res.send(500, { error: err })
                         return console.log('Filme atualizado.')
                     })
@@ -83,6 +85,7 @@ const get = async (req, res) => {
 
             let img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
             let titulo = $('div.dfxb.alg-cr').find('h1.entry-title').text()
+            let trailer = $('div#mdl-trailer').find('iframe').attr('src')
             let duracao = $('div.dfxb.alg-cr').find('span.duration.fa-clock.far').text()
             let nota = $('div.vote-cn').find('span.vote').text()
             let categorias = []
@@ -110,6 +113,7 @@ const get = async (req, res) => {
                     img,
                     nota,
                     descricao,
+                    trailer,
                     temporadas,
                     duracao,
                     ano,
@@ -147,6 +151,7 @@ const get = async (req, res) => {
                     img,
                     nota,
                     links,
+                    trailer,
                     descricao,
                     duracao,
                     categorias,

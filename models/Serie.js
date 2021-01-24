@@ -7,6 +7,7 @@ const SerieSchema = new Schema({
     img: String,
     nota: String,
     descricao: String,
+    trailer: String,
     qualidade: String,
     duracao: String,
     ano: { type: String, required: true },

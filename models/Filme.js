@@ -7,6 +7,7 @@ const FilmeSchema = new Schema({
     img: String,
     nota: String,
     links: [String],
+    trailer: String,
     descricao: String,
     duracao: String,
     ano: { type: String, required: true },
