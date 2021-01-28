@@ -32,7 +32,7 @@ const get = async (req, res) => {
                 totalPaginas = Math.ceil(count / limiteItens)
             })
 
-            await Serie.find({}, 'img titulo qualidade nota pagina ano')
+            await Serie.find({}, 'img titulo qualidade nota pagina ano trailer')
                 .sort({ 'updatedAt': -1 })
                 .limit(limiteItens)
                 .skip(limiteItens * paginaAtual)
@@ -50,7 +50,7 @@ const get = async (req, res) => {
                 totalPaginas = Math.ceil(count / limiteItens)
             })
 
-            await Serie.find({ 'titulo': { $regex: '^' + char, $options: 'i' } }, 'img titulo qualidade nota pagina ano')
+            await Serie.find({ 'titulo': { $regex: '^' + char, $options: 'i' } }, 'img titulo qualidade nota pagina ano trailer')
                 .sort({ 'updatedAt': -1 })
                 .limit(limiteItens)
                 .skip(limiteItens * paginaAtual)
