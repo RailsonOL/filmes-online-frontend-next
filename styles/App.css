@@ -301,6 +301,26 @@ textarea:focus, input:focus, select:focus {
   font-weight: bold;
 }
 
+.rate-big a {
+  margin-left: auto;
+}
+
+.trailer {
+  font-size: 2em;
+  line-height: 2em;
+  position: relative;
+  padding-right: 15px
+}
+
+.trailer::before {
+  position: absolute;
+  left: -50px;
+  font-size: 45px;
+  top: -13px;
+  color: var(--font-accent-color);
+  content: 'play_arrow';
+  font-family: 'Material Icons'
+}
 /***************************************/
 
 /* WATCH PLAYER */

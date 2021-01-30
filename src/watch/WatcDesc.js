@@ -17,6 +17,14 @@ const Genres = props => {
 const WatchDesc = props => {
   const descData = props.watchDescData
 
+  const trailer = (() => {
+    if(descData.trailer){
+    let ytUrlEmbed = descData.trailer;
+    let ytLink = ytUrlEmbed.substring(30)
+    return `https://youtu.be/${ytLink}`
+    }
+  })()
+
   const rateTmdb = parseFloat(descData.nota.replace('TMDB', '')).toFixed(1)
 
   return (
@@ -60,6 +68,7 @@ const WatchDesc = props => {
         <span className='rate-num'>{rateTmdb || '10.0'}</span>
         <span className='rate-tmdb'>TMBD</span>
         <span className="rate-num">{props.epName}</span>
+        {trailer && <Link href={trailer}><a><span className="trailer">Trailer</span></a></Link>}
       </div>
     </div>
   )
