@@ -75,6 +75,6 @@ Categorys.getInitialProps = async (ctx) => {
   
   const [type, page] = ctx.query.Categorys
   const response = await fetch(`${server}/api/categoria/${type}/${page}`)
-  const data = await response.json() 
+  const data = await response.json()
   return { dataInitial: data }
 }

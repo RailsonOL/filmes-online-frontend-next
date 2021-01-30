@@ -89,7 +89,7 @@ const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
         dataDB = dataDB.getDate() + dataDB.getMonth()
     }
 
-    return dataDB != dataAtual.getDate() + dataAtual.getMonth() && dataCriacao.getMonth() + mesesAdicionado >= dataAtual.getMonth() && anoAtual == anoLancamento
+    return dataDB != dataAtual.getDate() + dataAtual.getMonth() && dataCriacao.getMonth() + mesesAdicionado >= dataAtual.getMonth() && anoLancamento >= anoAtual-1
 }
 
 
