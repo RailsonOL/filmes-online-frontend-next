@@ -9,8 +9,6 @@ const get = async (req, res) => {
     await dbConnect()
 
     let pesquisa = req.query.pesquisa
-    //let pesquisa = req.query.pesquisa.includes(' ') ? req.query.pesquisa.replace(/\s/g,'|') : req.query.pesquisa
-
     let regex = new RegExp(pesquisa, 'i')  // 'i' deixa case sensitive
 
     let resultado = {
@@ -26,11 +24,11 @@ const get = async (req, res) => {
 
     paginaAtual = paginaAtual - 1
 
-    await Filme.count({ titulo: regex }, function (err, count) {
+    await Filme.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }] }, function (err, count) {
       resultado.total_pag += count
     })
 
-    await Filme.find({ titulo: regex }, 'img titulo nota pagina ano')
+    await Filme.find({ $or: [{ titulo: regex }, { pagina: regex }] }, 'img titulo nota pagina ano')
       .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
@@ -39,11 +37,11 @@ const get = async (req, res) => {
         return
       })
 
-    await Serie.count({ titulo: regex }, function (err, count) {
+    await Serie.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }] }, function (err, count) {
       resultado.total_pag = resultado.total_pag > count ? Math.ceil(resultado.total_pag / limiteItens) : Math.ceil(count / limiteItens)
     })
 
-    await Serie.find({ titulo: regex }, 'img titulo nota qualidade pagina ano')
+    await Serie.find({ $or: [{ titulo: regex }, { pagina: regex }] }, 'img titulo nota qualidade pagina ano')
       .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
