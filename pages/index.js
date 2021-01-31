@@ -9,14 +9,10 @@ import Spotlight from '../src/grid/Spotlight'
 import GridItems from '../src/grid/GridItems'
 import { server } from '../config';
 
-const Home = ({ data }) => {
-  let content = loading.recentFeed
+const Home = (props) => {
+  let { data } = props
 
-  //const { data, error } = useFetch('/recentes')
-
-  if (data) {
-    content = data
-  }
+  let content = data ? data : loading.recentFeed
 
   return (
     <div className='home-page'>

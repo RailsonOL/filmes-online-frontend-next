@@ -8,7 +8,6 @@ import dbConnect from '../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
-        let dynamicDate = new Date()
         await dbConnect()
 
         let primeiro = await exibirTudo(FilmesRecentes, 1)
@@ -24,7 +23,7 @@ const get = async (req, res) => {
                 let img = validarImg(el.find('figure > img').attr('src'))
                 let titulo = el.find('h2.entry-title').text()
                 let nota = el.find('span.vote').text()
-                let link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','assistir/')
+                let pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','')
                 let qualidade = el.find('.Qlty').text()
                 let ano = el.find('.year').text()
 
@@ -32,7 +31,7 @@ const get = async (req, res) => {
                     img,
                     titulo,  
                     nota, 
-                    link,
+                    pagina,
                     qualidade,
                     ano
                 })
@@ -49,7 +48,7 @@ const get = async (req, res) => {
                 let img = validarImg(el.find('figure > img').attr('src'))
                 let titulo = el.find('h2.entry-title').text() 
                 let nota = el.find('span.vote').text()
-                let link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','assistir/')
+                let pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','')
                 let duracao = el.find('span.time').text()
                 let ano = el.find('span.year').text()
 
@@ -57,7 +56,7 @@ const get = async (req, res) => {
                     titulo,
                     img,  
                     nota, 
-                    link,
+                    pagina,
                     duracao,
                     ano
                 })
@@ -78,7 +77,7 @@ const get = async (req, res) => {
                 let img = validarImg(el.find('figure > img').attr('src'))
                 let titulo = el.find('h2.entry-title').text()
                 let nota = el.find('span.vote').text()
-                let link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','assistir/')
+                let pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','')
                 let qualidade = el.find('.Qlty').text()
                 let ano = el.find('.year').text()
 
@@ -86,7 +85,7 @@ const get = async (req, res) => {
                     titulo,
                     img,  
                     nota, 
-                    link,
+                    pagina,
                     qualidade,
                     ano
                 })
@@ -110,7 +109,7 @@ const get = async (req, res) => {
             let filmes_recentes = await exibirTudo(FilmesRecentes)
             let filmes_destaques = await exibirTudo(FilmesDestaque)
             let series_recentes = await exibirTudo(SeriesRecentes)
-            let resultado = {data: dynamicDate.toUTCString(), filmes_recentes, filmes_destaques, series_recentes}
+            let resultado = {filmes_recentes, filmes_destaques, series_recentes}
 
             return responseJson(res, resultado)
         }

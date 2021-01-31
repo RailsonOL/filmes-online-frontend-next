@@ -1,21 +1,24 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const Paginator = ({ numberPages }) => {
+export default function Paginator (props){
+  let numberPages = props.numberPages
+  let currentPage  = props.currentPage
+
   const router = useRouter()
   const parent = router.query
-  let params = [];
+  let params = []
   let { Categorys, SeeMore, SearchPage } = parent
 
   if (Categorys != undefined) {
-    params = Categorys
+    params = '/categoria/' + Categorys
   } else if (SeeMore != undefined) {
-    params = SeeMore
+    params ='/vermais/' + SeeMore
   } else if (SearchPage != undefined) {
-    params = SearchPage
+    params = '/pesquisar/' + SearchPage
   }
 
-  const [type, currentPage] = params
+  const type = params
   let renderBtn = currentPage - 3
   let numbers = []
 
@@ -58,7 +61,7 @@ const Paginator = ({ numberPages }) => {
         {currentPage + 3 < numberPages && (
           <span>
             <span className='dots'>...</span>
-            <Link href={`/${type}/${numberPages}`}>
+            <Link href={`${type}/${numberPages}`}>
               <a>
                 <span className='btns'>{numberPages}</span>
               </a>
@@ -79,5 +82,3 @@ const Paginator = ({ numberPages }) => {
     </div>
   )
 }
-
-export default Paginator

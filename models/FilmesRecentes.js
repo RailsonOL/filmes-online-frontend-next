@@ -6,7 +6,7 @@ const FilmesRecentesSchema = new Schema({
     titulo: { type: String, required: true, unique: true },
     img: String,
     nota: String,
-    link: String,
+    pagina: String,
     qualidade: String,
     ano: String,
     createdAt: Number,

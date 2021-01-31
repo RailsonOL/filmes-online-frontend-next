@@ -1,13 +1,28 @@
 import Link from 'next/link'
 
+export default function GridItems (props){
+  let { itemsForGrid, nameForGrid } = props
+
+  return (
+    <div className='grid-items'>
+      <div className='header-grid'>
+        <h2>{nameForGrid}</h2>
+      </div>
+      <hr className='hr-bottom-head-grid' />
+      <div className='list-show-items'>
+        <PostItem itemsForGrid={itemsForGrid} />
+      </div>
+    </div>
+  )
+}
+
 const PostItem = props => {
   const { itemsForGrid } = props
-
   return itemsForGrid.map((item, index) => (
     <div className='post-item-container' key={item._id}>
       <Link
         href={{
-          pathname: item.link
+          pathname: '/assistir/' + item.pagina
         }}
       >
         <a>
@@ -33,21 +48,3 @@ const PostItem = props => {
     </div>
   ))
 }
-
-const GridItems = props => {
-  let { itemsForGrid, nameForGrid } = props
-
-  return (
-    <div className='grid-items'>
-      <div className='header-grid'>
-        <h2>{nameForGrid}</h2>
-      </div>
-      <hr className='hr-bottom-head-grid' />
-      <div className='list-show-items'>
-        <PostItem itemsForGrid={itemsForGrid} />
-      </div>
-    </div>
-  )
-}
-
-export default GridItems
