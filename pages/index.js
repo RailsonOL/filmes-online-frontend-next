@@ -1,7 +1,6 @@
 /* lib */
 import Link from 'next/link'
 import Head from 'next/head'
-import useFetch from '../src/api/useFetch'
 import loading from '../src/api/loading'
 /* compoentes*/
 import SeachBar from '../src/searchbar/SeachBar'
