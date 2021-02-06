@@ -1,22 +1,14 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import loading from '../api/loading'
-import useFetch from '../api/useFetch'
 
-const Spotlight = () => {
+export default function Spotlight ({ dataDestaques }){
   let router = useRouter()
 
-  let content = loading.recentFeed
-  const { data, error } = useFetch('/recentes')
-  if (data) {
-    content = data
-  }
-
-  const listSpotlight = content.filmes_destaques.map((item, index) => {
+  const listSpotlight = dataDestaques.map((item, index) => {
     return (
       <li key={item._id}>
-        <Link href={'/' + item.pagina}>
+        <Link href={'/assistir/' + item.pagina}>
           <a>
             <div className='sl-item'>
               <div className='sl-item-number'>
@@ -164,5 +156,3 @@ const Spotlight = () => {
     </div>
   )
 }
-
-export default Spotlight

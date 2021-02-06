@@ -2,15 +2,11 @@ import GridItems from '../../../src/grid/GridItems'
 import Spotlight from '../../../src/grid/Spotlight'
 import Paginator from '../../../src/grid/Paginator'
 import SeachBar from '../../../src/searchbar/SeachBar'
-import ErrorElem from '../../../src/ErrorElem'
 import { useMemo } from 'react'
-import useFetch from '../../../src/api/useFetch'
-import loading from '../../../src/api/loading'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { server } from '../../../config';
 
-export default function SeeMore ({ data, type, page }){
+export default function SeeMore ({ data, type, page, dataDestaques }){
 
   const gridMemo = useMemo(() => {
     return (
@@ -22,7 +18,7 @@ export default function SeeMore ({ data, type, page }){
   }, [data])
 
   const spotMemo = useMemo(() => {
-    return <Spotlight />
+    return <Spotlight dataDestaques={dataDestaques} />
   }, [])
 
   //if (error) <ErrorElem />
@@ -62,7 +58,7 @@ export async function getServerSideProps (ctx) {
       data,
       type,
       page,
-      dataRecentes
-    },
+      dataDestaques: dataRecentes.filmes_destaques
+    }
   }
 }

@@ -2,15 +2,11 @@ import GridItems from '../../../src/grid/GridItems'
 import Spotlight from '../../../src/grid/Spotlight'
 import Paginator from '../../../src/grid/Paginator'
 import SeachBar from '../../../src/searchbar/SeachBar'
-import ErrorElem from '../../../src/ErrorElem'
 import { useMemo } from 'react'
-import useFetch from '../../../src/api/useFetch'
-import loading from '../../../src/api/loading'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { server } from '../../../config';
 
-export default function SearchPage({ data, type, page }) {
+export default function SearchPage({ data, type, page, dataDestaques }) {
   const gridMemo = useMemo(() => {
     return (
       <GridItems
@@ -21,7 +17,7 @@ export default function SearchPage({ data, type, page }) {
   }, [data])
 
   const spotMemo = useMemo(() => {
-    return <Spotlight />
+    return <Spotlight dataDestaques={dataDestaques}/>
   }, [])
 
  // if (error) <ErrorElem />
@@ -46,18 +42,21 @@ export default function SearchPage({ data, type, page }) {
   )
 }
 
-export async function getServerSideProps(ctx) {
-
+export async function getServerSideProps (ctx) {
   const type = ctx.query.SearchPage
   const page = ctx.query.page
   const response = await fetch(`${server}/api/pesquisar/${type}/${page}`)
   const data = await response.json()
 
+  const res = await fetch(`${server}/api/recentes`)
+  const dataRecentes = await res.json()
+
   return {
     props: {
       data,
       type,
-      page
+      page,
+      dataDestaques: dataRecentes.filmes_destaques 
     },
   }
 }

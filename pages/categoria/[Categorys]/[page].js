@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import Head from 'next/head'
 import { server } from '../../../config';
 
-export default function Categorys ({ data, type, page }){
+export default function Categorys ({ data, type, page, dataDestaques }){
   const gridMemo = useMemo(() => {
     return (
       <GridItems
@@ -17,7 +17,7 @@ export default function Categorys ({ data, type, page }){
   }, [data])
 
   const spotMemo = useMemo(() => {
-    return <Spotlight parent={data}/>
+    return <Spotlight dataDestaques={dataDestaques}/>
   }, [])
 
  // if (error) <ErrorElem />
@@ -56,7 +56,7 @@ export async function getServerSideProps (ctx) {
       data,
       type,
       page,
-      dataRecentes
+      dataDestaques: dataRecentes.filmes_destaques 
     },
   }
 }

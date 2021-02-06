@@ -1,17 +1,13 @@
 /* lib */
 import Link from 'next/link'
 import Head from 'next/head'
-import loading from '../src/api/loading'
-/* compoentes*/
+/* compoents*/
 import SeachBar from '../src/searchbar/SeachBar'
 import Spotlight from '../src/grid/Spotlight'
 import GridItems from '../src/grid/GridItems'
 import { server } from '../config';
 
-const Home = (props) => {
-  let { data } = props
-
-  let content = data ? data : loading.recentFeed
+const Home = ({ data }) => {
 
   return (
     <div className='home-page'>
@@ -31,7 +27,7 @@ const Home = (props) => {
               </Link>
             </span>
             <GridItems
-              itemsForGrid={content.filmes_recentes}
+              itemsForGrid={data.filmes_recentes}
               nameForGrid={'Filmes Recentes'}
             />
           </div>
@@ -40,13 +36,13 @@ const Home = (props) => {
               <Link href='/vermais/serie/1'>Ver mais</Link>
             </span>
             <GridItems
-              itemsForGrid={content.series_recentes}
+              itemsForGrid={data.series_recentes}
               nameForGrid={'Series Recentes'}
             />
           </div>
         </main>
         <aside className='spotlight'>
-          <Spotlight />
+          <Spotlight dataDestaques={data.filmes_destaques}  />
         </aside>
       </div>
     </div>
@@ -59,13 +55,7 @@ export async function getServerSideProps (context) {
   const response = await fetch(server + '/api/recentes')
   const data = await response.json()
 
-  if (!data) {
-    return {
-      notFound: true
-    }
-  }
-
   return {
-    props: { data } // will be passed to the page component as props
+    props: { data }
   }
 }

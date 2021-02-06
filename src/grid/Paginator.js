@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+
 export default function Paginator (props){
   let numberPages = props.numberPages
   let currentPage  = props.currentPage
