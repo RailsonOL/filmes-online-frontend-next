@@ -7,7 +7,7 @@ import Player from '../../src/watch/Player'
 import GridEpisodes from '../../src/watch/GridEpisodes'
 import { server } from '../../config'
 
-export default function Watch ({ data }){
+export default function Watch({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
   let seasonData = data.temporadas
@@ -19,16 +19,15 @@ export default function Watch ({ data }){
 
   }, [contentLinks])
 
-  useEffect(() => {
+  useEffect(async () => {
     if (episode != {}) {
-      console.log(episode)
-
       api('/' + episode.link)
         .then(response => {
           setContentLinks(response.links)
         })
         .catch(err => console.error(err))
     }
+
     return () => {
       seasonData = {}
     }
@@ -57,7 +56,7 @@ export default function Watch ({ data }){
   )
 }
 
-export async function getServerSideProps (ctx) {
+export async function getServerSideProps(ctx) {
   const response = await fetch(`${server}/api/assistir/${ctx.query.itemToWatch}`)
   const data = await response.json()
 
