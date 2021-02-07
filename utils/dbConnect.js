@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-async function dbConnect() {
+export default async function dbConnect() {
   if (mongoose.connection.readyState >= 1) {
     return
   }
@@ -12,5 +12,3 @@ async function dbConnect() {
     useCreateIndex: true,
   })
 }
-
-export default dbConnect

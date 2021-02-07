@@ -1,6 +1,5 @@
 import api from '../../src/api/api'
 import Head from 'next/head'
-//import loading from '../../src/api/loading'
 import { useEffect, useState } from 'react'
 
 import WatchDesc from '../../src/watch/WatcDesc'
@@ -8,30 +7,28 @@ import Player from '../../src/watch/Player'
 import GridEpisodes from '../../src/watch/GridEpisodes'
 import { server } from '../../config'
 
-const Watch = ({ dataWatch }) => {
+export default function Watch({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
-  let seasonData = dataWatch.temporadas
+  let seasonData = data.temporadas
 
   useEffect(() => {
-    if (dataWatch.links) {
-      setContentLinks(dataWatch.links)
+    if (data.links) {
+      setContentLinks(data.links)
     }
 
   }, [contentLinks])
 
-  useEffect(() => {
+  useEffect(async () => {
     if (episode != {}) {
-      console.log(episode)
-
       api('/' + episode.link)
         .then(response => {
           setContentLinks(response.links)
         })
         .catch(err => console.error(err))
     }
+
     return () => {
-      console.log('limpo');
       seasonData = {}
     }
   }, [episode])
@@ -39,10 +36,10 @@ const Watch = ({ dataWatch }) => {
   return (
     <div className='container-watch'>
       <Head>
-        <title>{dataWatch.titulo} - AmazoFlix</title>
+        <title>{data.titulo} - AmazoFlix</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <WatchDesc watchDescData={dataWatch} />
+      <WatchDesc watchDescData={data} />
 
       {contentLinks && (
         <div id='player' name='episodio'>
@@ -50,7 +47,7 @@ const Watch = ({ dataWatch }) => {
         </div>
       )}
 
-      {dataWatch.temporadas && (
+      {data.temporadas && (
         <div id='content-serie'>
           <GridEpisodes setEpisode={setEpisode} seasonData={seasonData} />
         </div>
@@ -59,11 +56,11 @@ const Watch = ({ dataWatch }) => {
   )
 }
 
-export default Watch
+export async function getServerSideProps(ctx) {
+  const response = await fetch(`${server}/api/assistir/${ctx.query.itemToWatch}`)
+  const data = await response.json()
 
-Watch.getInitialProps = async ctx => {
-  const res = await fetch(server + '/api' + ctx.asPath)
-
-  const json = await res.json()
-  return { dataWatch: json }
+  return {
+    props: { data }
+  }
 }
