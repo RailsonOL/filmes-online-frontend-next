@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useMemo } from 'react'
 import Head from 'next/head'
 import { server } from '../../../config';
+import { encodeDecode } from '../../../utils/utils'
 
 export default function Categorys ({ data, type, page, dataDestaques }){
   const gridMemo = useMemo(() => {
@@ -44,7 +45,7 @@ export default function Categorys ({ data, type, page, dataDestaques }){
 }
 
 export async function getServerSideProps (ctx) {
-  const type = ctx.query.Categorys
+  const type = encodeDecode(ctx.query.Categorys, 'encode', 'base64')
   const page = ctx.query.page
   const { data } = await axios.get(`${server}/api/categoria/${type}/${page}`)
   const dataRecentes = await axios.get(`${server}/api/recentes`)
@@ -52,7 +53,7 @@ export async function getServerSideProps (ctx) {
   return {
     props: {
       data,
-      type,
+      type: ctx.query.Categorys,
       page,
       dataDestaques: dataRecentes.data.filmes_destaques 
     },
