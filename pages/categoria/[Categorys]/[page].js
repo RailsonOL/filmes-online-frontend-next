@@ -43,7 +43,7 @@ export default function Categorys ({ data, type, page, dataDestaques }){
 }
 
 export async function getServerSideProps (ctx) {
-  const type = ctx.query.Categorys
+  let type = ctx.query.Categorys
   type = type == 'acao' ? 'Ação' : type
   const page = ctx.query.page
   const response = await fetch(`${server}/api/categoria/${type}/${page}`)
