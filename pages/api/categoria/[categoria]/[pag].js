@@ -27,6 +27,7 @@ const get = async (req, res) => {
     })
 
     await Filme.find({ categorias: categoria }, 'img titulo nota pagina ano')
+      .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {
@@ -39,6 +40,7 @@ const get = async (req, res) => {
     })
 
     await Serie.find({ categorias: categoria }, 'img titulo nota pagina ano')
+      .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {
