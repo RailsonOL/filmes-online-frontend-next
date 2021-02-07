@@ -2,6 +2,7 @@ import GridItems from '../../../src/grid/GridItems'
 import Spotlight from '../../../src/grid/Spotlight'
 import Paginator from '../../../src/grid/Paginator'
 import SeachBar from '../../../src/searchbar/SeachBar'
+import axios from 'axios'
 import { useMemo } from 'react'
 import Head from 'next/head'
 import { server } from '../../../config';
@@ -45,18 +46,15 @@ export default function Categorys ({ data, type, page, dataDestaques }){
 export async function getServerSideProps (ctx) {
   const type = ctx.query.Categorys
   const page = ctx.query.page
-  const response = await fetch(`${server}/api/categoria/${type}/${page}`)
-  const data = await response.json()
-
-  const res = await fetch(`${server}/api/recentes`)
-  const dataRecentes = await res.json()
+  const { data } = await axios.get(`${server}/api/categoria/${type}/${page}`)
+  const dataRecentes = await axios.get(`${server}/api/recentes`)
 
   return {
     props: {
       data,
       type,
       page,
-      dataDestaques: dataRecentes.filmes_destaques 
+      dataDestaques: dataRecentes.data.filmes_destaques 
     },
   }
 }

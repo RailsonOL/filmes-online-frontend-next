@@ -8,7 +8,6 @@ const get = async (req, res) => {
     await dbConnect()
 
     let categoria = req.query.categoria
-    categoria = categoria == 'acao' ? 'Ação' : categoria
 
     let resultado = {
       total_pag: 0,
