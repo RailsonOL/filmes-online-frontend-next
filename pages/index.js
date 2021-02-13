@@ -21,23 +21,17 @@ const Home = ({ data }) => {
       <div className='container-main homepage-container'>
         <main className='grid-main'>
           <div className='container-grid'>
-            <span className='link-see-more'>
-              <Link href='/vermais/filme/1'>
-                <a>Ver mais</a>
-              </Link>
-            </span>
             <GridItems
               itemsForGrid={data.filmes_recentes}
               nameForGrid={'Filmes Recentes'}
+              seeMore={'/vermais/filme/1'}
             />
           </div>
           <div className='container-grid'>
-            <span className='link-see-more'>
-              <Link href='/vermais/serie/1'>Ver mais</Link>
-            </span>
             <GridItems
               itemsForGrid={data.series_recentes}
               nameForGrid={'Series Recentes'}
+              seeMore={'/vermais/serie/1'}
             />
           </div>
         </main>

@@ -1,18 +1,28 @@
 import Link from 'next/link'
 
 export default function GridItems(props) {
-  let { itemsForGrid, nameForGrid } = props
-
+  let { itemsForGrid, nameForGrid, seeMore } = props
   return (
     <div className='widget_list_movies'>
-      <div className='rw alg-cr jst-sb'>
-        <h2>{nameForGrid}</h2>
-      </div>
-      <hr className='hr-bottom-head-grid' />
+      <header className="section-header">
+        <div className="rw alg-cr jst-sb">
+          <h3 className="section-title">{nameForGrid}</h3>
+          <ul className="rw">
+          {
+            seeMore != undefined
+            ? 
+            <li><a href={seeMore}><i className="material-icons" style={{ fontSize: 15 }}>add</i> Ver mais</a></li>
+            :
+            ''
+          }
+          </ul>
+        </div>
+        <ul className="aa-tbs ax-tbs" ></ul>
+      </header>
       <ul className='post-lst rw sm rcl2 rcl3a rcl4b rcl3c rcl4d rcl6e'>
         <PostItem itemsForGrid={itemsForGrid} />
       </ul>
-    </div> 
+    </div>
   )
 }
 
@@ -36,7 +46,7 @@ const PostItem = props => {
           </span>
           <span className="year">{item.ano}</span>
           <span className="play material-icons">play_arrow</span>
-        </div> <a href={'/assistir/' + item.pagina }
+        </div> <a href={'/assistir/' + item.pagina}
           className="lnk-blk"></a>
       </article>
     </li>

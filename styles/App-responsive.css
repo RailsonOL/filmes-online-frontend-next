@@ -35,7 +35,21 @@
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 950px) {
+
+    .post-thumbnail figure img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: .2rem;
+        -o-object-fit: cover;
+        object-fit: cover;
+        -webkit-transition: none; /* remove animacao */
+        transition: none;
+    }
+    
     .homepage-container {
         flex-direction: column;
     }
@@ -81,7 +95,7 @@
 
 /*======= MOBILE =======================*/
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 950px) {
     .item-menu {
         position: relative;
         margin-right: 1em;
