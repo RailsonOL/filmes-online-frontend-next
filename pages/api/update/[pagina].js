@@ -10,6 +10,7 @@ const get = async (req, res) => {
         await dbConnect()
 
         let pagina = req.query.pagina
+        let qualidade = 'HD'
 
         const response = await axios.get(`https://www.superflix.net/${pagina}`)
         let $ = cheerio.load(response.data)
@@ -29,7 +30,7 @@ const get = async (req, res) => {
                 temporadas.push(`${temp}|${link}`)
             })
 
-            Serie.findOneAndUpdate({ 'pagina': pagina }, { descricao, links, trailer, nota }, { upsert: true }, function (err, doc) {
+            Serie.findOneAndUpdate({ 'pagina': pagina }, { descricao, links, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
                 if (err) return res.send(500, { error: err })
                 res.setHeader('Cache-Control', 's-maxage=800, stale-while-revalidate')
                 res.status(200)
@@ -48,7 +49,7 @@ const get = async (req, res) => {
                 links.push(`${opcao}|${link}`)
             })
 
-            Filme.findOneAndUpdate({ 'pagina': pagina }, { descricao, links, trailer, nota }, { upsert: true }, function (err, doc) {
+            Filme.findOneAndUpdate({ 'pagina': pagina }, { descricao, links, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
                 if (err) return res.send(500, { error: err })
                 res.setHeader('Cache-Control', 's-maxage=800, stale-while-revalidate')
                 res.status(200)

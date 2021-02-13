@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const SerieSchema = new Schema({
-    titulo: { type: String, required: true, unique: true },
+    titulo: { type: String, required: true},
     img: String,
     nota: String,
     descricao: String,
@@ -13,7 +13,7 @@ const SerieSchema = new Schema({
     ano: { type: String, required: true },
     temporadas: [String],
     categorias: [String],
-    pagina: String,
+    pagina: {type: String, required: true, unique: true },
     createdAt: Number,
     updatedAt: Number
 }, { timestamps: true })

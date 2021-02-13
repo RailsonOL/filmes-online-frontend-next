@@ -28,7 +28,7 @@ const get = async (req, res) => {
       resultado.total_pag += count
     })
 
-    await Filme.find({ $or: [{ titulo: regex }, { pagina: regex }, {descricao: regex}] }, 'img titulo nota pagina ano')
+    await Filme.find({ $or: [{ titulo: regex }, { pagina: regex }, {descricao: regex}] }, 'img titulo nota qualidade pagina ano')
       .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)

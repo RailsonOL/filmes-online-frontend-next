@@ -11,6 +11,7 @@ const get = async (req, res) => {
 
         let pagina = req.query.pagina
         let episodio = await Epsodios.findOne({ 'pagina': pagina })
+        let qualidade = 'HD'
 
         let opt1 = await seExiste(Epsodios, pagina)
 
@@ -34,7 +35,7 @@ const get = async (req, res) => {
                     links.push(`${opcao}|${link}`)
                 })
 
-                Epsodios.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links }, { upsert: true }, function (err, doc) {
+                Epsodios.findOneAndUpdate({ 'pagina': pagina }, { qualidade, descricao, links }, { upsert: true }, function (err, doc) {
                     if (err) return res.send(500, { error: err })
                     return console.log('Episodio atualizado.')
                 })
@@ -75,6 +76,7 @@ const get = async (req, res) => {
                 duracao,
                 ano,
                 descricao,
+                qualidade,
                 links,
                 pagina
             })

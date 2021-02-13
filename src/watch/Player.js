@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 
 const ButtonSelectAudio = (props) => {
-
+  let { currentLink } = props
   let buttonOptionList = props.handleLinktoIframe.map((option, index) => (
-    <li key={index.toString()}>
-      <button
-        onClick={() => {
-          props.setOptionCurrent(option);
-        }} >
-        {option.optionAudio}
-      </button>
-    </li>
+    <li key={index.toString()}> <a className={currentLink == option.optionLink ? "btn on" : "btn"} onClick={() => { props.setOptionCurrent(option)}}>
+        <span>{option.optionAudio}</span>
+      </a></li>
   ));
 
   return buttonOptionList;
@@ -35,7 +30,6 @@ const Player = (props) => {
   useEffect(() => {
     setOptionCurrent(linksToIframe[0])
   }, [props]);
-
   return (
     <div className="component-player">
       <div className="iframe-player-container">
@@ -43,19 +37,17 @@ const Player = (props) => {
           <iframe allowFullScreen src={optionCurrent.optionLink} id="video-iframe" frameBorder="0" title="main-player"></iframe>
         </div>
       </div>
-      <div className="select-player-option">
-        <div className="header-po">
-          <h3>Opções</h3>
-        </div>
-        <div className="select-po">
-          <ul>
+      
+      <aside class="video-options">
+        <h4>OPÇÕES</h4>
+          <ul className="aa-tbs aa-tbs-video">
             <ButtonSelectAudio
               handleLinktoIframe={linksToIframe}
+              currentLink={optionCurrent.optionLink}
               setOptionCurrent={setOptionCurrent}
             />
           </ul>
-        </div>
-      </div>
+      </aside>
     </div>
   );
 };

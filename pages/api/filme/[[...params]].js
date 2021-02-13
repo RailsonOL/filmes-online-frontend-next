@@ -3,7 +3,6 @@ import Filme from '../../../models/Filme'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
-        
     try {
         await dbConnect()
         let char = ''
@@ -13,7 +12,7 @@ const get = async (req, res) => {
             if (req.query.params.length === 2) {
                 char = req.query.params[0]
                 pag = req.query.params[1]
-            } else if(!parseInt(req.query.params[0])){
+            } else if (!parseInt(req.query.params[0])) {
                 char = req.query.params[0]
             } else {
                 pag = req.query.params[0]
@@ -22,7 +21,7 @@ const get = async (req, res) => {
 
         const limiteItens = 12
 
-        if (char != ''){
+        if (char != '') {
             let paginaAtual = pag >= 1 ? pag : 1
 
             paginaAtual = paginaAtual - 1
@@ -39,7 +38,7 @@ const get = async (req, res) => {
                 .then((resultado) => {
                     return responseJson(res, { 'total_pag': totalPaginas, resultado })
                 })
-        }else{
+        } else {
             let paginaAtual = pag >= 1 ? pag : 1
 
             paginaAtual = paginaAtual - 1

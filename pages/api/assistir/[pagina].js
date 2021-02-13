@@ -10,16 +10,16 @@ const get = async (req, res) => {
         await dbConnect()
         
         let pagina = req.query.pagina
-
+        let qualidade = 'HD'
         let opt1 = await seExiste(Filme, pagina)
         let opt2 = await seExiste(Serie, pagina)
 
         let tipo = opt1 ? Filme : Serie
-        if (opt1 == true || opt2 == true) { //Serie ou filme já cadastrado
+        if (opt1 || opt2) { //Serie ou filme já cadastrado
 
             let primeiroDaLista = await tipo.findOne({ 'pagina': pagina })
 
-            if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
+            if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
 
                 const response = await axios.get(`https://www.superflix.net/${pagina}`)
                 let $ = cheerio.load(response.data)
@@ -39,7 +39,7 @@ const get = async (req, res) => {
                         temporadas.push(`${temp}|${link}`)
                     })
 
-                    Serie.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'temporadas': temporadas, 'trailer': trailer, nota }, { upsert: true }, function (err, doc) {
+                    Serie.findOneAndUpdate({ 'pagina': pagina }, { descricao, temporadas, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
                         if (err) return res.send(500, { error: err })
                         return console.log('Succesfully saved.')
                     })
@@ -60,7 +60,7 @@ const get = async (req, res) => {
                         links.push(`${opcao}|${link}`)
                     })
 
-                    Filme.findOneAndUpdate({ 'pagina': pagina }, { 'descricao': descricao, 'links': links, 'trailer': trailer, nota }, { upsert: true }, function (err, doc) {
+                    Filme.findOneAndUpdate({ 'pagina': pagina }, { descricao, links, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
                         if (err) return res.send(500, { error: err })
                         return console.log('Filme atualizado.')
                     })
@@ -116,6 +116,7 @@ const get = async (req, res) => {
                     trailer,
                     temporadas,
                     duracao,
+                    qualidade,
                     ano,
                     categorias,
                     pagina

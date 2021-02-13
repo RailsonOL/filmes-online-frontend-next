@@ -8,7 +8,7 @@ const get = async (req, res) => {
 
         let char = ''
         let pag = 1
-        
+
         if (Boolean(req.query.params)) {
             if (req.query.params.length === 2) {
                 char = req.query.params[0]

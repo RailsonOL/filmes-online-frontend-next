@@ -10,11 +10,12 @@ const get = async (req, res) => {
         let pagina = req.query.pagina
         let opt1 = await seExiste(Temporada, pagina)
 
-        if (opt1 == true) { //Serie ou filme já cadastrado
+        if (opt1) { //Serie ou filme já cadastrado
 
             let primeiroDaLista = await Temporada.findOne({ 'pagina': pagina })
+            // console.log(primeiroDaLista);
 
-            if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+            if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
 
                 const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
                 const $ = cheerio.load(response.data)
@@ -39,7 +40,7 @@ const get = async (req, res) => {
 
                 let exibir = await Temporada.findOne({ 'pagina': pagina })
 
-                return responseJson(res, exibir)
+                return responseJson(res, exibirEps(exibir))
             }
 
             let exibir = await Temporada.findOne({ 'pagina': pagina })
@@ -88,7 +89,7 @@ const get = async (req, res) => {
 
     } catch (error) {
         //console.log(error)
-        return responseErrorJson(res, 'listepstemporada::get', error)
+        return responseErrorJson(res, 'temporada::get', error)
     }
 }
 

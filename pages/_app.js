@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import '../styles/App.css'
+import '../styles/Movies.css'
 import '../styles/App-responsive.css'
 
 /*pages*/

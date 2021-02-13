@@ -12,7 +12,7 @@ const HeaderBarMobile = () => {
         <button className='btn-menu material-icons' onClick={() => setOpenedMenu(!openedMenu)}>menu</button>
         <div className='logo'>
           <Link href='/'>
-            <img src={'/images/small-logo.png'} alt='' onClick={() => setOpenedMenu(!openedMenu)}/>
+            <img src={'/images/small-logo.svg'} alt='' onClick={() => setOpenedMenu(!openedMenu)}/>
           </Link>
         </div>
       </div>

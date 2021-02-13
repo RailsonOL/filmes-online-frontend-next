@@ -6,7 +6,7 @@ const Genres = props => {
   const newList = genresList.map((item, index) => (
     <Link href={'/categoria/' + item + '/1'} key={index.toString()}>
       <a>
-        <li>{item}</li>
+        <li> {item}, </li>
       </a>
     </Link>
   ))

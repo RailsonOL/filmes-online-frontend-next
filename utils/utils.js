@@ -86,22 +86,22 @@ const responseErrorJson = (res, methodName, error, statusCode = httpStatus.INTER
 const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
     let dataDB
 
-    let dataCriacao = new Date(comparador.createdAt)
-    let anoLancamento = comparador.ano 
+    let dataDeCriacao = new Date(comparador.createdAt)
+    let anoDeLancamento = comparador.ano == undefined ? dataDeCriacao.getFullYear() : comparador.ano 
 
     let dataAtual = new Date()
     let anoAtual = dataAtual.getFullYear()
 
     if (comparador.toString() == '') {
-        dataDB = dataAtual.getDate()-intervalo
+        dataDB = dataAtual.getMonth()-intervalo
     }else{
         dataDB = new Date(comparador.updatedAt)
-        dataDB = dataDB.getDate() + dataDB.getMonth()
+        dataDB = dataDB.getDate()
     }
+    // console.log(`${dataDB+intervalo} <= ${dataAtual.getDate()} && ${anoDeLancamento} >= ${anoAtual-1}`)
 
-    return dataDB != dataAtual.getDate() + dataAtual.getMonth() && dataCriacao.getMonth() + mesesAdicionado >= dataAtual.getMonth() && anoLancamento >= anoAtual-1
+    return dataDB+intervalo <= dataAtual.getDate() && anoDeLancamento >= anoAtual-1
 }
-
 
 const atualizarPorDataSimples = (comparador, intervalo = 1) => {
     let dataDB
