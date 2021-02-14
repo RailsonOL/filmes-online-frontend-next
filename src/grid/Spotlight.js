@@ -2,34 +2,28 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 
-export default function Spotlight ({ dataDestaques }){
+export default function Spotlight({ dataDestaques }) {
   let router = useRouter()
 
   const listSpotlight = dataDestaques.map((item, index) => {
     return (
       <li key={item._id}>
-        <Link href={'/assistir/' + item.pagina}>
-          <a>
-            <div className='sl-item'>
-              <div className='sl-item-number'>
-                <h5>{index + 1}</h5>
-              </div>
-              <div className='sl-thumb'>
-                <figure>
-                  <img src={item.img} alt='thumb movie' />
-                </figure>
-              </div>
-              <div className='text-side'>
-                <p className='sl-title'>{item.titulo}</p>
-                <p className='sl-desc'>
-                  <span className='sl-rate-tmdb'>{item.nota}</span>
-                  <span className='sl-time'>{item.duracao}</span>
-                  <span className='sl-year'>{item.ano}</span>
-                </p>
-              </div>
+        <article class="post dfx alg-cr top">
+          <header class="entry-header fg1">
+            <h2 class="entry-title">{item.titulo}</h2>
+            <div class="entry-meta">
+              <span class="vote" style={{color: 'red'}}>{item.nota}</span>
+              <span class="time">{item.duracao}</span>
+              <span class="year">{item.ano}</span>
             </div>
-          </a>
-        </Link>
+          </header>
+          <div class="post-thumbnail or-1">
+            <figure>
+              <img width="185" height="278" src={item.img} class="attachment-thumbnail size-thumbnail wp-post-image" alt="thumb movie" loading="lazy" />
+            </figure>
+          </div>
+          <a href={'/assistir/' + item.pagina} class="lnk-blk"></a>
+        </article>
       </li>
     )
   })
@@ -39,9 +33,9 @@ export default function Spotlight ({ dataDestaques }){
   }
 
   return (
-    <div className='list-spotlight'>
+    <div class="list-spotlight">
       <div className='spot-hd select-genre'>
-        <h2>Categorias</h2>
+      <h3 className="widget-title">Categorias</h3>
         <select className='custom-select' onChange={redirectToGenre}>
           <option value=''>Selecione uma categoria</option>
           <option value='/categoria/Ação/1'>Ação</option>
@@ -149,10 +143,14 @@ export default function Spotlight ({ dataDestaques }){
           <option value='/categoria/Séries da The CW/1'>Séries da The CW</option>
         </select>
       </div>
-      <div className='div-spotlight'>
-        <h2>Destaques</h2>
-      </div>
-      <ul>{listSpotlight}</ul>
+      <section id="torofilm_wdgt_popular-3" class="wdgt-sidebar widget widget_top">
+        <h3 className="widget-title">Destaques</h3>
+        <div class="aa-cn" id="torofilm_wdgt_popular-3-aa-top">
+          <div id="torofilm_wdgt_popular-3-all" class="aa-tb hdd on">
+            <ul className="post-lst">{listSpotlight}</ul>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

@@ -40,9 +40,13 @@ textarea:focus, input:focus, select:focus {
   outline: 0;
 }
 
+.widget_list_movies{
+  margin: auto 2% auto 2%;
+}
 
 .container-main {
   display: flex;
+  margin: 3%;
 }
 
 .container-main .grid-main {

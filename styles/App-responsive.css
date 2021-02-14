@@ -59,6 +59,15 @@
         filter: blur(1px);
         opacity: .7
     }
+
+    /* searchbar */
+    
+    .search>.btn {
+        position: absolute;
+        right: 7%;
+        top: 10%;
+        padding-right: 1rem
+    }
     
     .homepage-container {
         flex-direction: column;

@@ -31,7 +31,7 @@ const WatchDesc = props => {
         </div>
         <div className='text-desc'>
           <div className='desc-header'>
-            <h2>{descData.titulo}</h2>
+          <h3 class="entry-title">{descData.titulo}</h3>
             <div className='links-categorys'>
               <ul>
                 {descData.categorias && (

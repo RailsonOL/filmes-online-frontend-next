@@ -11,9 +11,9 @@ const HeaderBarMobile = () => {
       <div className='open-menu-header'>
         <button className='btn-menu material-icons' onClick={() => setOpenedMenu(!openedMenu)}>menu</button>
         <div className='logo'>
-          <Link href='/'>
-            <img src={'/images/small-logo.svg'} alt='' onClick={() => setOpenedMenu(!openedMenu)}/>
-          </Link>
+          <a href='/'>
+            <img src={'/images/small-logo.svg'} alt='AmazoFlix' />
+          </a>
         </div>
       </div>
       <div className='mobile-content-header' style={{ left: leftMenu + '%' }}>

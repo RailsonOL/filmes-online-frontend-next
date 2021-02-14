@@ -24,14 +24,15 @@ const SeachBar = ({ fromMobile }) => {
             alt=""
           />
         </div>
-          <form className="search full" onSubmit={submitSearch}>
+          <form id="form-shs" className="search full" onSubmit={submitSearch}>
             <input
               type="text"
+              id="tr_live_search"
               onChange={e => setSearchTerm(e.target.value)}
               className="searchbar-input"
               placeholder="Pesquisar..."
             />
-            <button type="submit" className="btn npd lnk material-icons">search</button>
+            <button type="submit" className="btn npd lnk"><i class="material-icons sm" style={{fontSize: '170%'}}>search</i></button>
           </form>
       </div>
     </div>

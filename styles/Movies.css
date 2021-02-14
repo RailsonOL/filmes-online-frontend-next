@@ -1574,8 +1574,8 @@ body.pfx .hd:before {
 
 .search>.btn {
 	position: absolute;
-	right: 0;
-	top: 0;
+	right: 1%;
+	top: 10%;
 	padding-right: 1rem
 }
 
