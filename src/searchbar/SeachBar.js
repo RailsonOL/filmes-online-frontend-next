@@ -24,7 +24,7 @@ const SeachBar = ({ fromMobile }) => {
             alt=""
           />
         </div>
-          <form id="form-shs" className="search full" onSubmit={submitSearch}>
+          <form className="search full" onSubmit={submitSearch}>
             <input
               type="text"
               onChange={e => setSearchTerm(e.target.value)}
