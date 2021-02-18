@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 export default function GridItems(props) {
   let { itemsForGrid, nameForGrid, seeMore } = props
   return (
@@ -45,7 +43,7 @@ const PostItem = props => {
             <span className="Qlty">{item.qualidade || 'HD'}</span>
           </span>
           <span className="year">{item.ano}</span>
-          <span className="play material-icons">play_arrow</span>
+          <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
         </div> <a href={'/assistir/' + item.pagina}
           className="lnk-blk"></a>
       </article>

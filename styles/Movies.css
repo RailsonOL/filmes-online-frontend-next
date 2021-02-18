@@ -1533,7 +1533,7 @@ body.pfx .hd:before {
 }
 
 .logo img[src*="-ico"] {
-	height: 2rem
+	height: rem
 }
 
 .menu>li>a {
@@ -1575,7 +1575,7 @@ body.pfx .hd:before {
 .search>.btn {
 	position: absolute;
 	right: 1%;
-	top: 10%;
+	top: 9%;
 	padding-right: 1rem
 }
 
@@ -1891,8 +1891,8 @@ body.pfx .hd:before {
 	margin-bottom: calc(2 * var(--size))
 }
 
-.home-search .logo img {
-	height: 4rem
+ .home-search .logo img { /*tamanho logo */
+	height: 5rem
 }
 
 .home-search form>input {
@@ -2127,7 +2127,7 @@ span[class*="type-"] {
 
 .vote {
 	color: var(--light);
-	font-weight: 700
+	font-weight: 800
 }
 
 .vote span {

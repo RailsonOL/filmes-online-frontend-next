@@ -12,7 +12,7 @@ export default function Spotlight({ dataDestaques }) {
           <header class="entry-header fg1">
             <h2 class="entry-title">{item.titulo}</h2>
             <div class="entry-meta">
-              <span class="vote" style={{color: 'red'}}>{item.nota}</span>
+              <span class="vote" style={{ color: 'red', fontWeight: 800 }}>{item.nota}</span>
               <span class="time">{item.duracao}</span>
               <span class="year">{item.ano}</span>
             </div>
@@ -34,8 +34,8 @@ export default function Spotlight({ dataDestaques }) {
 
   return (
     <div class="list-spotlight">
-      <div className='spot-hd select-genre'>
-      <h3 className="widget-title">Categorias</h3>
+      <div className='spot-hd select-genre widget_categories'>
+        <h3 className="widget-title">Categorias</h3>
         <select className='custom-select' onChange={redirectToGenre}>
           <option value=''>Selecione uma categoria</option>
           <option value='/categoria/Ação/1'>Ação</option>

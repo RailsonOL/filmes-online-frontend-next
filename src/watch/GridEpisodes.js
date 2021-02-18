@@ -54,7 +54,7 @@ const GridEpisodes = ({ seasonData, setEpisode }) => {
 
   return (
     <div className='grid-eps'>
-      <div className='header-grid-eps'>
+      <div className='header-grid-eps widget_categories'>
         <SelectSeason
           seasonsHandled={seasonsHandled}
           seasonCurrent={seasonCurrent}
