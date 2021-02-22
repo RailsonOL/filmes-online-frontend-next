@@ -10,7 +10,7 @@ import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
     try {
-        export async function getOptions() {
+        async function getOptions() {
             const isDev = !process.env.AWS_REGION
             let options;
 
