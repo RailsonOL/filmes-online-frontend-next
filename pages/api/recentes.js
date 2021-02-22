@@ -17,7 +17,7 @@ const get = async (req, res) => {
             const response = await axios.get('https://www.superflix.net/')
             let $ = cheerio.load(response.data)
 
-            $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => {
+            $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
 
                 let el = $(elem)
                 let img = validarImg(el.find('figure > img').attr('src'))
@@ -42,7 +42,7 @@ const get = async (req, res) => {
 
             })
 
-            $('div#torofilm_wdgt_popular-3-all').find('ul > li').each(async (i, elem) => {
+            $('div#torofilm_wdgt_popular-3-all').find('ul > li').each(async (i, elem) => { //Filmes em Destaque
 
                 let el = $(elem)
                 let img = validarImg(el.find('figure > img').attr('src'))
@@ -66,7 +66,7 @@ const get = async (req, res) => {
                 }) 
             })
 
-            $('div#widget_list_movies_series-4-aa-movies').find('ul > li').each(async (i, elem) => {
+            $('div#widget_list_movies_series-4-aa-movies').find('ul > li').each(async (i, elem) => { //Series Recentes
 
                 let el = $(elem)
                 

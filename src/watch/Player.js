@@ -38,7 +38,7 @@ const Player = (props) => {
         </div>
       </div>
       
-      <aside class="video-options">
+      <aside className="video-options">
         <h4>OPÇÕES</h4>
           <ul className="aa-tbs aa-tbs-video">
             <ButtonSelectAudio

@@ -53,11 +53,12 @@
     /* blur */
 
     .post:hover .post-thumbnail figure img {
-        -webkit-transform: scale(1.3);
-        transform: scale(1.3);
-        -webkit-filter: blur(1px);
-        filter: blur(1px);
-        opacity: .7
+        -webkit-transform: none;
+        transform: none; /* remove zoom */
+        -webkit-filter: blur(0px);
+        filter: blur(0px);
+        opacity: .7;
+        border: 1px solid var(--accent-color);
     }
 
     /* searchbar */

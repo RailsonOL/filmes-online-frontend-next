@@ -8,21 +8,21 @@ export default function Spotlight({ dataDestaques }) {
   const listSpotlight = dataDestaques.map((item, index) => {
     return (
       <li key={item._id}>
-        <article class="post dfx alg-cr top">
-          <header class="entry-header fg1">
-            <h2 class="entry-title">{item.titulo}</h2>
-            <div class="entry-meta">
-              <span class="vote" style={{ color: 'red', fontWeight: 800 }}>{item.nota}</span>
-              <span class="time">{item.duracao}</span>
-              <span class="year">{item.ano}</span>
+        <article className="post dfx alg-cr top">
+          <header className="entry-header fg1">
+            <h2 className="entry-title">{item.titulo}</h2>
+            <div className="entry-meta">
+              <span className="vote" style={{ color: 'red', fontWeight: 800 }}>{item.nota}</span>
+              <span className="time">{item.duracao}</span>
+              <span className="year">{item.ano}</span>
             </div>
           </header>
-          <div class="post-thumbnail or-1">
+          <div className="post-thumbnail or-1">
             <figure>
-              <img width="185" height="278" src={item.img} class="attachment-thumbnail size-thumbnail wp-post-image" alt="thumb movie" loading="lazy" />
+              <img width="185" height="278" src={item.img} className="attachment-thumbnail size-thumbnail wp-post-image" alt="thumb movie" loading="lazy" />
             </figure>
           </div>
-          <a href={'/assistir/' + item.pagina} class="lnk-blk"></a>
+          <a href={'/assistir/' + item.pagina} className="lnk-blk"></a>
         </article>
       </li>
     )
@@ -33,7 +33,7 @@ export default function Spotlight({ dataDestaques }) {
   }
 
   return (
-    <div class="list-spotlight">
+    <div className="list-spotlight">
       <div className='spot-hd select-genre widget_categories'>
         <h3 className="widget-title">Categorias</h3>
         <select className='custom-select' onChange={redirectToGenre}>
@@ -143,10 +143,10 @@ export default function Spotlight({ dataDestaques }) {
           <option value='/categoria/Séries da The CW/1'>Séries da The CW</option>
         </select>
       </div>
-      <section id="torofilm_wdgt_popular-3" class="wdgt-sidebar widget widget_top">
+      <section id="torofilm_wdgt_popular-3" className="wdgt-sidebar widget widget_top">
         <h3 className="widget-title">Destaques</h3>
-        <div class="aa-cn" id="torofilm_wdgt_popular-3-aa-top">
-          <div id="torofilm_wdgt_popular-3-all" class="aa-tb hdd on">
+        <div className="aa-cn" id="torofilm_wdgt_popular-3-aa-top">
+          <div id="torofilm_wdgt_popular-3-all" className="aa-tb hdd on">
             <ul className="post-lst">{listSpotlight}</ul>
           </div>
         </div>

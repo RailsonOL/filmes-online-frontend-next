@@ -31,7 +31,7 @@ const SeachBar = ({ fromMobile }) => {
               className="searchbar-input"
               placeholder="Pesquisar..."
             />
-            <button type="submit" className="btn npd lnk"><i class="material-icons sm" style={{fontSize: '170%'}}>search</i></button>
+            <button type="submit" className="btn npd lnk"><i className="material-icons sm" style={{fontSize: '170%'}}>search</i></button>
           </form>
       </div>
     </div>

@@ -1,5 +1,4 @@
 /* lib */
-import Link from 'next/link'
 import Head from 'next/head'
 /* compoents*/
 import SeachBar from '../src/searchbar/SeachBar'
@@ -34,6 +33,7 @@ const Home = ({ data }) => {
               seeMore={'/vermais/serie/1'}
             />
           </div>
+          
         </main>
         <aside className='spotlight'>
           <Spotlight dataDestaques={data.filmes_destaques}  />

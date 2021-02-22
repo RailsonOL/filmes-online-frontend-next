@@ -4,7 +4,7 @@ const encodeDecode = (string, type = 'encode', encodeType = 'base64') => {
     if (type == 'encode') {
         const result = new Buffer.from(string).toString(encodeType)
         return result
-    } else if(type == 'decode') {
+    } else if (type == 'decode') {
         const result = new Buffer.from(string, encodeType).toString('utf8')
         return result
     }
@@ -20,9 +20,9 @@ const hex2a = (hex) => {
 }
 
 const validarImg = (img = '') => {
-    if(img.includes('https:') || img.includes('http:')){
+    if (img.includes('https:') || img.includes('http:')) {
         return img
-    }else{
+    } else {
         img = `https:${img}`
         return img
     }
@@ -32,7 +32,15 @@ const exibirEps = (temp) => {
     let episodios = JSON.stringify(temp.episodios).replace('["{', '[{').replace('}"]', '}]').replace(/\\/g, '').replace(/","/g, ',')
     episodios = JSON.parse(episodios)
 
-    let exibir = {episodios, "pagina": temp.pagina}
+    let exibir = {
+        episodios,
+        "titulo": temp.titulo,
+        "ano": temp.ano,
+        "descricao": temp.descricao,
+        "categorias": temp.categorias,
+        "tipo": temp.tipo,
+        "pagina": temp.pagina
+    }
 
     return exibir
 }
@@ -40,13 +48,13 @@ const exibirEps = (temp) => {
 const exibirTudo = async (collec, limite = 12) => {
     let resultado
 
-    await collec.find().sort({'updatedAt': -1}).limit(limite)
-    .then((result) => {
-        resultado = result
-    })
-    .catch((err) => {
-        console.log(`Erro na função "exibirTudo": ${err}`);
-    })
+    await collec.find().sort({ 'updatedAt': -1 }).limit(limite)
+        .then((result) => {
+            resultado = result
+        })
+        .catch((err) => {
+            console.log(`Erro na função "exibirTudo": ${err}`);
+        })
 
     return resultado
 }
@@ -55,22 +63,22 @@ const seExiste = async (collec, pagina) => {
     let resultado
 
     await collec.findOne({ 'pagina': pagina })
-    .then((result) => {
-        if(result == null){
-            resultado = false
-        }else{
-            resultado = true
-        }
-    })
-    .catch((err) => {
-        console.log(`Erro na função "seExiste": ${err}`)
-    })
+        .then((result) => {
+            if (result == null) {
+                resultado = false
+            } else {
+                resultado = true
+            }
+        })
+        .catch((err) => {
+            console.log(`Erro na função "seExiste": ${err}`)
+        })
 
     return resultado
 }
 
 const responseJson = (res, data, statusCode = httpStatus.OK) => {
-    res.setHeader('Cache-Control', 's-maxage=80000, stale-while-revalidate')
+    res.setHeader('Cache-Control', 's-maxage=72000000, stale-while-revalidate')
     res.status(200);
     return res.json(data);
 }
@@ -87,20 +95,20 @@ const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
     let dataDB
 
     let dataDeCriacao = new Date(comparador.createdAt)
-    let anoDeLancamento = comparador.ano == undefined ? dataDeCriacao.getFullYear() : comparador.ano 
+    let anoDeLancamento = comparador.ano == undefined ? dataDeCriacao.getFullYear() : comparador.ano
 
     let dataAtual = new Date()
     let anoAtual = dataAtual.getFullYear()
 
     if (comparador.toString() == '') {
-        dataDB = dataAtual.getMonth()-intervalo
-    }else{
+        dataDB = dataAtual.getMonth() - intervalo
+    } else {
         dataDB = new Date(comparador.updatedAt)
         dataDB = dataDB.getDate()
     }
     // console.log(`${dataDB+intervalo} <= ${dataAtual.getDate()} && ${anoDeLancamento} >= ${anoAtual-1}`)
 
-    return dataDB+intervalo <= dataAtual.getDate() && anoDeLancamento >= anoAtual-1
+    return dataDB + intervalo <= dataAtual.getDate() && anoDeLancamento >= anoAtual - 1
 }
 
 const atualizarPorDataSimples = (comparador, intervalo = 1) => {
@@ -109,8 +117,8 @@ const atualizarPorDataSimples = (comparador, intervalo = 1) => {
     let dataAtual = new Date()
 
     if (comparador.toString() == '') {
-        dataDB = dataAtual.getDate()-intervalo
-    }else{
+        dataDB = dataAtual.getDate() - intervalo
+    } else {
         dataDB = new Date(comparador[0].updatedAt)
         dataDB = dataDB.getDate()
     }
