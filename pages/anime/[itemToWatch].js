@@ -1,0 +1,80 @@
+import api from '../../src/api/api'
+import Head from 'next/head'
+import { useEffect, useState } from 'react'
+
+import WatchDesc from '../../src/watch/WatcDesc'
+import Player from '../../src/watch/Player'
+import GridEpisodes from '../../src/watch/GridEpisodes'
+import { server } from '../../config'
+
+const PostEp = ({ listEps, setEpisode }) => {
+  const renderEps = listEps.map((item, index) => (
+    <a herf='#' onClick={() => setEpisode(item)} key={index.toString()}>
+      <li className='list-ep-container'>
+        <div className='thumb-ep'>
+          <figure>
+            <img src={item.img} alt='' />
+          </figure>
+        </div>
+        <div className='entry-ep'>
+          <h2 className='ep-num'>{item.num_ep}</h2>
+          <h4 className='ep-name'>{item.nome_ep}</h4>
+          <span className='ep-data'>{item.data}</span>
+        </div>
+      </li>
+    </a>
+  ))
+
+  return renderEps
+}
+
+export default function Watch({ data }) {
+  const [contentLinks, setContentLinks] = useState()
+  const [episode, setEpisode] = useState({})
+  useEffect(async () => {
+    if (episode != {}) {
+      api('/' + episode.link)
+        .then(response => {
+          setContentLinks(response.links)
+        })
+        .catch(err => console.error(err))
+    }
+
+    return () => {
+      seasonData = {}
+    }
+  }, [episode])
+
+  return (
+    <div className='container-watch'>
+      <Head>
+        <title>{data.titulo} - AmazoFlix</title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
+      <WatchDesc watchDescData={data} />
+
+      {contentLinks && (
+        <div id='player' name='episodio'>
+          <Player playerOption={contentLinks} />
+        </div>
+      )}
+
+      {data.tipo == "TemporadaAnime" && (
+        <div className='grid-eps'>
+          <ul>
+            <PostEp listEps={data.episodios} setEpisode={setEpisode} />
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export async function getServerSideProps(ctx) {
+  const response = await fetch(`${server}/api/anime/${ctx.query.itemToWatch}`)
+  const data = await response.json()
+
+  return {
+    props: { data }
+  }
+}

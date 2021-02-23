@@ -35,6 +35,7 @@ const exibirEps = (temp) => {
     let exibir = {
         episodios,
         "titulo": temp.titulo,
+        "img": temp.img,
         "ano": temp.ano,
         "descricao": temp.descricao,
         "categorias": temp.categorias,

@@ -19,7 +19,7 @@ const WatchDesc = props => {
 
   const trailer = descData.trailer ? 'https://youtu.be/' + descData.trailer.split('embed/')[1] : false
 
-  const rateTmdb = descData.nota.replace('TMDB', '')
+  const rateTmdb = descData.nota ? descData.nota.replace('TMDB', '') : '--'
 
   return (
     <div>

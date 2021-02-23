@@ -9,7 +9,7 @@
         grid-template-columns: repeat(3, minmax(100px, 33vw));
     }
     .component-player {
-        display: block
+        display: block;
     }
     .component-player .select-player-option {
         max-width: 100%;
@@ -21,16 +21,6 @@
         transform: none
     }
     .post-item-container:hover {
-        border: 1px solid var(--accent-color)
-    }
-}
-
-@media tv and (min-width: 700px) and (orientation: landscape) {
-    .post-item-container:hover img {
-        filter: none;
-        transform: none
-    }
-    .post-item-container:hover img {
         border: 1px solid var(--accent-color)
     }
 }
@@ -89,7 +79,7 @@
         display: none
     }
     .grid-eps ul {
-        grid-template-columns: repeat(3, minmax(auto, auto));
+        grid-template-columns: repeat(4, minmax(auto, auto));
     }
 
     .container-main .spotlight {
@@ -107,7 +97,7 @@
         grid-template-columns: repeat(2, minmax(auto, calc(50vw - 25px)));
     }
     .grid-eps ul {
-        grid-template-columns: repeat(2, minmax(auto, auto));
+        grid-template-columns: repeat(3, minmax(auto, auto));
     }
 }
 
@@ -116,6 +106,7 @@
 /*======= MOBILE =======================*/
 
 @media screen and (max-width: 950px) {
+
     .item-menu {
         position: relative;
         margin-right: 1em;

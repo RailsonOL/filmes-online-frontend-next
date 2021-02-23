@@ -338,8 +338,9 @@ textarea:focus, input:focus, select:focus {
 .iframe-player-container {
   position: relative;
   overflow: hidden;
-  width: 100%;
+  width: 97%;
   padding-top: 56.25%;
+  margin: auto;
   /* margin: 1%; */
 }
 
@@ -463,6 +464,9 @@ textarea:focus, input:focus, select:focus {
 
 .grid-eps .entry-ep {
   padding: 0 10px 10px;
+}
+.grid-eps {
+  margin-top: 3%;
 }
 
 /***********************************/

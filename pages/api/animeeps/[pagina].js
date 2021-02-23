@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, seExiste, validarImg} from '../../../utils/utils'
+import { responseErrorJson, seExiste, validarImg, encodeDecode} from '../../../utils/utils'
 import AnimeEp from '../../../models/AnimesEp'
 import dbConnect from '../../../utils/dbConnect'
 
@@ -31,25 +31,30 @@ const get = async (req, res) => {
             let ano = ""
             let descricao = postTexto.find("p").eq(0).text()
             let link = $('div.pagina-conteudo').find("video#video > source").attr("src")
-            let opcao = ""
+            let opcao = "ASSISTINDO"
+            let qualidade = ""
             let links = []
             let paginaTemporada = $('div.pagina-conteudo').find("a[title='Lista de Episódios']").attr("href")
 
-            postTexto.find("ul.post-infos > li").each((i, e) => { // loop tipo
+            
+            postTexto.find("ul.post-infos > li").each((i, e) => { // loop categorias
+
                 switch ($(e).find("b").text()) {
-                    case "Tipo":
-                        opcao = $(e).find("span").text()
-                        break
+                    case "Episódio":
+                        qualidade = $(e).find("span").text().replace(/\s/g, '')
+                        break;
                 }
+
             })
             
-            links.push(`${opcao}|${link}`)
+            links.push(`${opcao}|/player/index.html?video=https://getrealurlfilm.vercel.app/api/get/${encodeDecode(link, 'encode', 'base64')}`)
 
             const addAnimeEp = new AnimeEp({
                 titulo,
                 img,
                 ano,
                 descricao,
+                qualidade,
                 links,
                 pagina,
                 paginaTemporada

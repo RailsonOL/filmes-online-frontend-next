@@ -78,7 +78,7 @@ const get = async (req, res) => {
                 let img = validarImg($(e).find("img").attr("src"))
                 let num_ep = $(e).find("span").text()
                 let nome_ep = $(e).find("h2").text()
-                let link = $(e).find("a").attr("href").replace("https://www.myanimesonline.biz/animes/", "")
+                let link = $(e).find("a").attr("href").replace("https://www.myanimesonline.biz/animes/episodio/", "animeeps/")
                 let data = "--"
                 episodios.push(`{"img": "${img}", "num_ep": "${num_ep}", "nome_ep": "${nome_ep}", "link": "${link}", "data": "${data}"}`)
 
