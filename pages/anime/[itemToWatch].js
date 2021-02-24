@@ -70,7 +70,17 @@ export default function Watch({ data }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const response = await fetch(`${server}/api/anime/${ctx.query.itemToWatch}`)
+  let pagina = ctx.query.itemToWatch
+
+  if (ctx.query.itemToWatch.includes('-watch-now')) {
+    pagina = ctx.query.itemToWatch.replace('-watch-now', '')
+    let AnimeEp = await fetch(`${server}/api/animeeps/${pagina}`)
+    AnimeEp = await AnimeEp.json()
+
+    pagina = AnimeEp.paginaTemporada
+  }
+
+  const response = await fetch(`${server}/api/anime/${pagina}`)
   const data = await response.json()
 
   return {

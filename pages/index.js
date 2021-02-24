@@ -39,15 +39,15 @@ const Home = ({ data, dataAnimes }) => {
             <GridItems
               itemsForGrid={dataAnimes.animeseps}
               nameForGrid={'Episódios de Animes'}
-              toPage={''}
+              toPage={'anime'}
             />
           </div>
           <div className='container-grid'>
             <GridItems
               itemsForGrid={dataAnimes.animes}
               nameForGrid={'Animes Recentes'}
-              seeMore={'/vermais/allanims/1'}
-              toPage={''}
+              seeMore={'/vermais/allanimes/1'}
+              toPage={'anime'}
             />
           </div>
           

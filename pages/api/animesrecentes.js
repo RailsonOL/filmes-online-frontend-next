@@ -18,7 +18,7 @@ const get = async (req, res) => {
 
             $('div.videos-row').find('ul.videos > li').each(async (i, e) => { // loop episodios recentes
 
-                let pagina = $(e).find('a').attr('href').replace('https://www.myanimesonline.biz/animes/episodio/', '') + '-watch-now'
+                let pagina = $(e).find('a').attr('href').replace('https://www.myanimesonline.biz/animes/episodio/', '').replace('/','') + '-watch-now'
                 let titulo = $(e).find('a').attr('title')
                 let img = validarImg($(e).find('img').attr('src'))
                 let qualidade = $(e).find('span.selo-ep').text()
