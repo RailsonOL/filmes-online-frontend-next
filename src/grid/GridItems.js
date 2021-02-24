@@ -1,5 +1,5 @@
 export default function GridItems(props) {
-  let { itemsForGrid, nameForGrid, seeMore } = props
+  let { itemsForGrid, nameForGrid, seeMore, toPage } = props
   return (
     <div className='widget_list_movies'>
       <header className="section-header">
@@ -18,20 +18,24 @@ export default function GridItems(props) {
         <ul className="aa-tbs ax-tbs" ></ul>
       </header>
       <ul className='post-lst rw sm rcl2 rcl3a rcl4b rcl3c rcl4d rcl6e'>
-        <PostItem itemsForGrid={itemsForGrid} />
+        <PostItem itemsForGrid={itemsForGrid} toPage={toPage} />
       </ul>
     </div>
   )
 }
 
 const PostItem = props => {
-  const { itemsForGrid } = props
+  const { itemsForGrid, toPage } = props
+  const rateTmdb = (nota)=> {
+    return nota ? nota.replace('TMDB', '') : '--'
+  }
+
   return itemsForGrid.map((item, index) => (
     <li className="movies" key={item._id}>
       <article className="post dfx fcl movies">
         <header className="entry-header">
           <h2 className="entry-title">{item.titulo}</h2>
-          <div className="entry-meta"> <span className="vote"><span>TMDB</span> {item.nota.replace('TMDB', '') || '10.0'}</span></div>
+          <div className="entry-meta"> <span className="vote"><span>TMDB</span> {rateTmdb(item.nota)}</span></div>
         </header>
         <div className="post-thumbnail or-1">
           <figure>
@@ -44,7 +48,7 @@ const PostItem = props => {
           </span>
           <span className="year">{item.ano}</span>
           <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
-        </div> <a href={'/assistir/' + item.pagina}
+        </div> <a href={`/${toPage}/${item.pagina}`}
           className="lnk-blk"></a>
       </article>
     </li>

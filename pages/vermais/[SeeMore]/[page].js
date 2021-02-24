@@ -7,12 +7,19 @@ import Head from 'next/head'
 import { server } from '../../../config';
 
 export default function SeeMore ({ data, type, page, dataDestaques }){
+  let to = 'assistir'
+
+  if (type == 'allanimes') {
+    to = 'anime'
+    type = 'Animes'
+  }
 
   const gridMemo = useMemo(() => {
     return (
       <GridItems
         itemsForGrid={data.resultado}
         nameForGrid={`Ver mais ${type}`}
+        toPage={to}
       />
     )
   }, [data])

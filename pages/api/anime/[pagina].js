@@ -9,12 +9,19 @@ const get = async (req, res) => {
         await dbConnect()
 
         let pagina = req.query.pagina
+
+        let forceUpdate = false
+        if (pagina.includes('-update-now')) {
+            forceUpdate = true
+            pagina = pagina.replace('-update-now', '')
+        }
+
         let anime = await Animes.findOne({ 'pagina': pagina })
 
         let opt1 = await seExiste(Animes, pagina)
         if (opt1) { //Anime já cadastrado
 
-            if (atualizarPorData(anime, 7)) { // Atualizar links de eps a cada 7 dias
+            if (atualizarPorData(anime, 7) || forceUpdate) { // Atualizar links de eps a cada 7 dias
 
                 const response = await axios.get(`https://www.myanimesonline.biz/animes/${pagina}`)
                 let $ = cheerio.load(response.data)

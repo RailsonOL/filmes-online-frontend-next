@@ -2,7 +2,9 @@ import cheerio from 'cheerio'
 import axios from 'axios'
 import { responseErrorJson, seExiste, validarImg, encodeDecode} from '../../../utils/utils'
 import AnimeEp from '../../../models/AnimesEp'
+import Animes from '../../../models/Animes'
 import dbConnect from '../../../utils/dbConnect'
+import { server } from '../../../config/index'
 
 const get = async (req, res) => {
 
@@ -12,7 +14,7 @@ const get = async (req, res) => {
         let pagina = req.query.pagina
         let opt1 = await seExiste(AnimeEp, pagina)
 
-        if (opt1 == true) {//Anime já cadastrado
+        if (opt1 == true) {//Anime EP já cadastrado
 
             let exibir = await AnimeEp.findOne({ 'pagina': pagina })
 
@@ -34,7 +36,7 @@ const get = async (req, res) => {
             let opcao = "ASSISTINDO"
             let qualidade = ""
             let links = []
-            let paginaTemporada = $('div.pagina-conteudo').find("a[title='Lista de Episódios']").attr("href")
+            let paginaTemporada = $('div.pagina-conteudo').find("a[title='Lista de Episódios']").attr("href").replace('https://www.myanimesonline.biz/animes/', '').replace('/','')
 
             
             postTexto.find("ul.post-infos > li").each((i, e) => { // loop categorias
@@ -70,9 +72,11 @@ const get = async (req, res) => {
 
             let exibir = await AnimeEp.findOne({ 'pagina': pagina })
 
+            await axios.get(`${server}/api/anime/${paginaTemporada}-update-now`) //force update anime temp
+
             res.setHeader('Cache-Control', 's-maxage=300000, stale-while-revalidate')
-            res.status(200);
-            return res.json(exibir);
+            res.status(200)
+            return res.json(exibir)
 
         }
 

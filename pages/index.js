@@ -6,7 +6,7 @@ import Spotlight from '../src/grid/Spotlight'
 import GridItems from '../src/grid/GridItems'
 import { server } from '../config';
 
-const Home = ({ data }) => {
+const Home = ({ data, dataAnimes }) => {
 
   return (
     <div className='home-page'>
@@ -24,6 +24,7 @@ const Home = ({ data }) => {
               itemsForGrid={data.filmes_recentes}
               nameForGrid={'Filmes Recentes'}
               seeMore={'/vermais/filme/1'}
+              toPage={'assistir'}
             />
           </div>
           <div className='container-grid'>
@@ -31,6 +32,22 @@ const Home = ({ data }) => {
               itemsForGrid={data.series_recentes}
               nameForGrid={'Series Recentes'}
               seeMore={'/vermais/serie/1'}
+              toPage={'assistir'}
+            />
+          </div>
+          <div className='container-grid'>
+            <GridItems
+              itemsForGrid={dataAnimes.animeseps}
+              nameForGrid={'Episódios de Animes'}
+              toPage={'anime'}
+            />
+          </div>
+          <div className='container-grid'>
+            <GridItems
+              itemsForGrid={dataAnimes.animes}
+              nameForGrid={'Animes Recentes'}
+              seeMore={'/vermais/allanimes/1'}
+              toPage={'anime'}
             />
           </div>
           
@@ -49,7 +66,10 @@ export async function getServerSideProps (context) {
   const response = await fetch(server + '/api/recentes')
   const data = await response.json()
 
+  let dataAnimes = await fetch(server + '/api/animesrecentes')
+  dataAnimes = await dataAnimes.json()
+
   return {
-    props: { data }
+    props: { data, dataAnimes }
   }
 }

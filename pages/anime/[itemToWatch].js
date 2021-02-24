@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import WatchDesc from '../../src/watch/WatcDesc'
 import Player from '../../src/watch/Player'
-import GridEpisodes from '../../src/watch/GridEpisodes'
 import { server } from '../../config'
 
 const PostEp = ({ listEps, setEpisode }) => {
