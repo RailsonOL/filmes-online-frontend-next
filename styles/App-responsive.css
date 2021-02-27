@@ -4,6 +4,32 @@
     }
 }
 
+@media tv and (min-width: 1240px) {
+    .post-thumbnail figure img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: .2rem;
+        -o-object-fit: cover;
+        object-fit: cover;
+        -webkit-transition: none; /* remove zoom */
+        transition: none;
+    }
+
+    /* blur */
+
+    .post:hover .post-thumbnail figure img {
+        -webkit-transform: none;
+        transform: none; /* remove zoom */
+        -webkit-filter: blur(0px);
+        filter: blur(0px);
+        opacity: .7;
+        border: 1px solid var(--accent-color);
+    }
+}
+
 @media screen and (max-width: 1000px) {
     .list-show-items {
         grid-template-columns: repeat(3, minmax(100px, 33vw));
