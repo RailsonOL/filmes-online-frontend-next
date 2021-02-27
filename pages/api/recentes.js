@@ -17,6 +17,10 @@ const get = async (req, res) => {
             const response = await axios.get('https://www.superflix.net/')
             let $ = cheerio.load(response.data)
 
+            await FilmesRecentes.deleteMany({})
+            await FilmesDestaque.deleteMany({})
+            await SeriesRecentes.deleteMany({})
+
             $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
 
                 let el = $(elem)

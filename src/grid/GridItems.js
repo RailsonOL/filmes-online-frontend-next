@@ -1,5 +1,6 @@
 export default function GridItems(props) {
   let { itemsForGrid, nameForGrid, seeMore, toPage } = props
+
   return (
     <div className='widget_list_movies'>
       <header className="section-header">
@@ -48,7 +49,7 @@ const PostItem = props => {
           </span>
           <span className="year">{item.ano}</span>
           <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
-        </div> <a href={`/${toPage}/${item.pagina}`}
+        </div> <a href={`/${item.tipo == "TemporadaAnime" ? 'anime' : toPage || 'assistir'}/${item.pagina}`}
           className="lnk-blk"></a>
       </article>
     </li>

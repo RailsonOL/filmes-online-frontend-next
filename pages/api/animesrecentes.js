@@ -59,7 +59,7 @@ const get = async (req, res) => {
 
             let resultado = { animeseps, animes }
 
-            res.setHeader('Cache-Control', 's-maxage=43200000, stale-while-revalidate')
+            res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate')
             res.status(200);
             return res.json(resultado)
 
@@ -70,7 +70,7 @@ const get = async (req, res) => {
 
             let resultado = { animeseps, animes }
 
-            res.setHeader('Cache-Control', 's-maxage=43200000, stale-while-revalidate')
+            res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate')
             res.status(200);
             return res.json(resultado)
         }

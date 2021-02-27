@@ -1,6 +1,7 @@
 import { responseErrorJson, responseJson } from '../../../../utils/utils'
 import Filme from '../../../../models/Filme'
 import Serie from '../../../../models/Serie'
+import Anime from '../../../../models/Animes'
 import dbConnect from '../../../../utils/dbConnect'
 
 const get = async (req, res) => {
@@ -18,17 +19,18 @@ const get = async (req, res) => {
 
     let filme = []
     let serie = []
+    let anime = []
 
     const limiteItens = 12
     let paginaAtual = req.query.pag >= 1 ? req.query.pag : 1
 
     paginaAtual = paginaAtual - 1
 
-    await Filme.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }, {descricao: regex}] }, function (err, count) {
+    await Filme.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }, { descricao: regex }] }, function (err, count) {
       resultado.total_pag += count
     })
 
-    await Filme.find({ $or: [{ titulo: regex }, { pagina: regex }, {descricao: regex}] }, 'img titulo nota qualidade pagina ano')
+    await Filme.find({ $or: [{ titulo: regex }, { pagina: regex }, { descricao: regex }] }, 'img titulo nota qualidade pagina ano')
       .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
@@ -37,11 +39,11 @@ const get = async (req, res) => {
         return
       })
 
-    await Serie.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }, {descricao: regex}] }, function (err, count) {
+    await Serie.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }, { descricao: regex }] }, function (err, count) {
       resultado.total_pag = resultado.total_pag > count ? Math.ceil(resultado.total_pag / limiteItens) : Math.ceil(count / limiteItens)
     })
 
-    await Serie.find({ $or: [{ titulo: regex }, { pagina: regex }, {descricao: regex}] }, 'img titulo nota qualidade pagina ano')
+    await Serie.find({ $or: [{ titulo: regex }, { pagina: regex }, { descricao: regex }] }, 'img titulo nota qualidade pagina ano')
       .sort({ 'updatedAt': -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
@@ -50,7 +52,20 @@ const get = async (req, res) => {
         return
       })
 
-    resultado.resultado = filme.concat(serie)
+    await Anime.countDocuments({ $or: [{ titulo: regex }, { pagina: regex }, { descricao: regex }] }, function (err, count) {
+      resultado.total_pag = resultado.total_pag > count ? Math.ceil(resultado.total_pag / limiteItens) : Math.ceil(count / limiteItens)
+    })
+
+    await Anime.find({ $or: [{ titulo: regex }, { pagina: regex }, { descricao: regex }] }, 'img titulo nota qualidade pagina ano tipo')
+      .sort({ 'updatedAt': -1 })
+      .limit(limiteItens)
+      .skip(limiteItens * paginaAtual)
+      .then((result) => {
+        serie = result
+        return
+      })
+
+    resultado.resultado = filme.concat(serie, anime)
 
     return responseJson(res, resultado)
 
