@@ -4,7 +4,7 @@
     }
 }
 
-@media tv and (min-width: 1240px) {
+@media tv and (min-width: 950px) {
     .post-thumbnail figure img {
         position: absolute;
         left: 0;
