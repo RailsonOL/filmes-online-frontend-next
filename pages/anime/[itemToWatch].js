@@ -7,8 +7,15 @@ import Player from '../../src/watch/Player'
 import { server } from '../../config'
 
 const PostEp = ({ listEps, setEpisode }) => {
+  function scrollTop() {
+    window.scrollTo({
+      top: 500,
+      behavior: "smooth"
+    })
+  }
+
   const renderEps = listEps.map((item, index) => (
-    <a herf='#' onClick={() => setEpisode(item)} key={index.toString()}>
+    <a herf='#' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
       <li className='list-ep-container'>
         <div className='thumb-ep'>
           <figure>
