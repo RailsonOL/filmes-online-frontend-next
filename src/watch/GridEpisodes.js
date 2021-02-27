@@ -7,11 +7,11 @@ import ErrorElem from '../ErrorElem'
 
 const PostEp = ({ listEps, setEpisode }) => {
   function scrollTop() {
-    window.scrollTo({
-      top: 500,
+    document.querySelector('.rate-big').scrollIntoView({
       behavior: "smooth"
     })
   }
+
   const renderEps = listEps.map((item, index) => (
     <a herf='#' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
       <li className='list-ep-container'>

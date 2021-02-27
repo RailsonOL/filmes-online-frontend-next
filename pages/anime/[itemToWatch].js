@@ -8,14 +8,13 @@ import { server } from '../../config'
 
 const PostEp = ({ listEps, setEpisode }) => {
   function scrollTop() {
-    window.scrollTo({
-      top: 500,
+    document.querySelector('.rate-big').scrollIntoView({
       behavior: "smooth"
     })
   }
 
   const renderEps = listEps.map((item, index) => (
-    <a herf='#' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
+    <a herf='#player-on' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
       <li className='list-ep-container'>
         <div className='thumb-ep'>
           <figure>
@@ -38,9 +37,12 @@ export default function Watch({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
   useEffect(async () => {
+    document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
     if (episode != {}) {
-      api('/' + episode.link)
+      let linkActualEp = episode.link ? episode.link.replace('episodio/', 'animeeps/') : episode.link 
+      api('/' + linkActualEp)
         .then(response => {
+          document.querySelector('div.rate-big > span.carregando').remove()
           setContentLinks(response.links)
         })
         .catch(err => console.error(err))

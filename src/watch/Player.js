@@ -31,7 +31,7 @@ const Player = (props) => {
     setOptionCurrent(linksToIframe[0])
   }, [props]);
   return (
-    <div className="component-player" name="component-player">
+    <div className="component-player">
       <div className="iframe-player-container">
         <div className="iframe-responsive">
           <iframe allowFullScreen src={optionCurrent.optionLink} id="video-iframe" frameBorder="0" title="main-player"></iframe>
