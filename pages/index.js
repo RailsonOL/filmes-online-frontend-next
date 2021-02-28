@@ -13,6 +13,7 @@ const Home = ({ data, dataAnimes }) => {
       <Head>
         <title>AmazoFlix - Filmes e Series de Graça</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+        
       </Head>
       <div className='search-bar-home'>
         <SeachBar />

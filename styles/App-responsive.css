@@ -1,8 +1,109 @@
+.carousel .carousel-items::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+.carousel-itemss {
+  color: #FCFFFC;
+  background: #092d43;
+  display: inline-block;
+  white-space: normal;
+  width: 100%;
+  height: 100%;
+  margin: 0 0.2rem;
+  background-size: 100% 100%;
+  background-position: center center;
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: 0.4s;
+}
+.carousel-itemss:hover {
+  background-size: 110% 110%;
+}
+
+.carousel-itemss-text {
+  box-sizing: border-box;
+  background: linear-gradient(to top, #061e2d, rgba(4, 21, 31, 0.1));
+  width: 100%;
+  height: calc(100% + 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.9rem;
+  transition: 0.5s;
+}
+.carousel-itemss-text:hover {
+  height: 100%;
+}
+.carousel-itemss-text b {
+  color: #1098F7;
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.carousel-itemss-text span {
+  font-size: small;
+  display: block;
+  word-wrap: break-word;
+  color: whitesmoke;
+}
+.carousel-itemss-text .season {
+  color: white;
+}
+.carousel-itemss-text .spaced {
+  font-size: small;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.carousel-itemss-text .spaced span {
+  color: #FFD700;
+}
+
+@media (min-width: 1150px) {
+    .carousel-itemss {
+        margin: 0 24rem;
+      }
+}
+
+@media (max-width: 500px) {
+
+    .carousel .carousel-item {
+        width: 35%;
+        height: 60%;
+    }
+
+    .carousel-itemss {
+        width: 100%;
+        height: 120%;
+        margin: 0 0.2rem;
+        background-size: 100% 100%;
+        background-position: center center;
+      }
+      .carousel-itemss-text:hover {
+        height: calc(100% + 3rem);
+      }
+
+      .carousel-itemss-text {
+        height: calc(100% + 3rem);
+        transition: none;
+      }
+      
+    .component-desc-watch {
+        flex-direction: column;
+    }
+    .list-show-items {
+        grid-template-columns: repeat(2, minmax(auto, calc(50vw - 25px)));
+    }
+    .grid-eps ul {
+        grid-template-columns: repeat(3, minmax(auto, auto));
+    }
+}
+
 @media (max-width: 1400px) {
     .list-show-items {
         grid-template-columns: repeat(4, minmax(150px, 25vw));
     }
-
     .post-thumbnail figure img {
         position: absolute;
         left: 0;
@@ -86,18 +187,6 @@
         width: 100%;
         height: 1000px;
         padding: 20px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .component-desc-watch {
-        flex-direction: column;
-    }
-    .list-show-items {
-        grid-template-columns: repeat(2, minmax(auto, calc(50vw - 25px)));
-    }
-    .grid-eps ul {
-        grid-template-columns: repeat(3, minmax(auto, auto));
     }
 }
 
