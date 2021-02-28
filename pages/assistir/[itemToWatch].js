@@ -6,6 +6,7 @@ import WatchDesc from '../../src/watch/WatcDesc'
 import Player from '../../src/watch/Player'
 import GridEpisodes from '../../src/watch/GridEpisodes'
 import { server } from '../../config'
+import { encodeDecode } from '../../utils/utils'
 
 export default function Watch({ data }) {
   const [contentLinks, setContentLinks] = useState()
@@ -59,7 +60,8 @@ export default function Watch({ data }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const response = await fetch(`${server}/api/assistir/${ctx.query.itemToWatch}`)
+  const itemToWatch = encodeDecode(ctx.query.itemToWatch, 'encode', 'base64')
+  const response = await fetch(`${server}/api/assistir/${itemToWatch}`)
   const data = await response.json()
 
   return {

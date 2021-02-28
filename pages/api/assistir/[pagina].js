@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData } from '../../../utils/utils'
+import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils/utils'
 import Filme from '../../../models/Filme'
 import Serie from '../../../models/Serie'
 import dbConnect from '../../../utils/dbConnect'
@@ -9,7 +9,7 @@ const get = async (req, res) => {
     try {
         await dbConnect()
         
-        let pagina = req.query.pagina
+        let pagina = encodeDecode(req.query.pagina, 'decode', 'base64')
         let qualidade = 'HD'
         let opt1 = await seExiste(Filme, pagina)
         let opt2 = await seExiste(Serie, pagina)
