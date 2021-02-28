@@ -23,7 +23,7 @@
         transform: none; /* remove zoom */
         -webkit-filter: blur(0px);
         filter: blur(0px);
-        opacity: .7;
+        opacity: none;
         border: 1px solid var(--accent-color);
     }
 }

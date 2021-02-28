@@ -68,7 +68,7 @@ const get = async (req, res) => {
 
         } else {
             // console.log('As datas são iguais, não salvar');
-            let animeseps = await exibirTudo(AnimesEpRecentes)
+            let animeseps = await exibirTudo(AnimesEpRecentes, 20)
             let animes = await exibirTudo(AnimesRecentes)
 
             let resultado = { animeseps, animes }
