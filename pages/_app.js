@@ -1,3 +1,4 @@
+import '../styles/materialize.min.css'
 import '../styles/globals.css'
 import '../styles/App.css'
 import '../styles/Movies.css'

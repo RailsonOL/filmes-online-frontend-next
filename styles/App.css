@@ -499,6 +499,55 @@ textarea:focus, input:focus, select:focus {
   }
 }
 
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.middle-indicator{
+   position: absolute;
+   top: 40%;
+   }
+    
+  .middle-indicator-text{
+   font-size: 3.0rem;
+  }
+
+  .rightA{
+    right: 1%;
+  }
+  
+  .leftA{
+    left: 1%;
+  }
+  a.middle-indicator-text{
+    color: white;
+    /* mix-blend-mode: difference; */
+    border-radius: 50%;
+    background: rgba(17, 9, 32, 0.5);
+  }
+
+.content-indicator{
+    width: 100%;
+    height: 100%;
+    background: none;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%; 
+  }
+
+
 .carregando{
   content: url('https://api.iconify.design/ant-design:loading-3-quarters-outlined.svg?color=%23FF0000&height=25');
   vertical-align: -0.125em;
@@ -518,6 +567,7 @@ textarea:focus, input:focus, select:focus {
 
 .container-grid {
   position: relative;
+  margin-bottom: 2%;
 }
 
 .grid-items {
