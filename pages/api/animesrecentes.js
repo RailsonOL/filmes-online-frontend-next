@@ -16,12 +16,16 @@ const get = async (req, res) => {
             const { data } = await axios.get('https://www.myanimesonline.biz/')
             let $ = cheerio.load(data)
 
-            await AnimesEpRecentes.deleteMany({})
-            await AnimesRecentes.deleteMany({})
+            await AnimesEpRecentes.countDocuments({}, function (err, count) {
+                if (count > 24) {
+                    await AnimesEpRecentes.deleteMany({})
+                    await AnimesRecentes.deleteMany({})
+                }
+            })
 
             $('div.videos-row').find('ul.videos > li').each(async (i, e) => { // loop episodios recentes
 
-                let pagina = $(e).find('a').attr('href').replace('https://www.myanimesonline.biz/animes/episodio/', '').replace('/','') + '-watch-now'
+                let pagina = $(e).find('a').attr('href').replace('https://www.myanimesonline.biz/animes/episodio/', '').replace('/', '') + '-watch-now'
                 let titulo = $(e).find('a').attr('title')
                 let img = validarImg($(e).find('img').attr('src'))
                 let qualidade = $(e).find('span.selo-ep').text()
@@ -68,7 +72,7 @@ const get = async (req, res) => {
 
         } else {
             // console.log('As datas são iguais, não salvar');
-            let animeseps = await exibirTudo(AnimesEpRecentes)
+            let animeseps = await exibirTudo(AnimesEpRecentes, 20)
             let animes = await exibirTudo(AnimesRecentes)
 
             let resultado = { animeseps, animes }
