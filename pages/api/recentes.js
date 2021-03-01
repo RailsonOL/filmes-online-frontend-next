@@ -17,7 +17,7 @@ const get = async (req, res) => {
             const response = await axios.get('https://www.superflix.net/')
             let $ = cheerio.load(response.data)
 
-            await FilmesRecentes.countDocuments({}, function (err, count) {
+            await FilmesRecentes.countDocuments({}, async function (err, count) {
                 if (count > 24) {
                     await FilmesRecentes.deleteMany({})
                     await FilmesDestaque.deleteMany({})
