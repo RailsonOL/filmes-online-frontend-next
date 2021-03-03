@@ -19,9 +19,9 @@ class Carousel extends Component {
             fullWidth: true,
             numVisible: 5,
             indicators: false,
-            // padding: 2,
+            padding: 3,
             // dist: 0
-        };
+        }
 
         // move next carousel
         $('.moveNextCarousel').on("click", function (e) {
@@ -77,31 +77,25 @@ class Carousel extends Component {
 
 const PostItem = props => {
     const { itemsForGrid, toPage } = props
-    const rateTmdb = (nota) => {
-        return nota ? nota.replace('TMDB', '') : '--'
-    }
+    // const rateTmdb = (nota) => {
+    //     return nota ? nota.replace('TMDB', '') : '--'
+    // }
 
     return itemsForGrid.map((item, index) => (
-        <li className="carousel-item" key={item._id}>
-            <article className="post dfx fcl movies">
-                <header className="entry-header">
-                    <h2 className="entry-title">{item.titulo}</h2>
-                    <div className="entry-meta"> <span className="vote"><span>TMDB</span> {rateTmdb(item.nota)}</span></div>
-                </header>
-                <div className="post-thumbnail or-1">
-                    <figure>
-                        <img loading="lazy"
-                            src={item.img}
-                            alt={item.titulo} />
-                    </figure>
-                    <span className="post-ql">
-                        <span className="Qlty">{item.qualidade || 'HD'}</span>
-                    </span>
-                    <span className="year">{item.ano}</span>
-                    <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
-                </div> <a href={`/${item.tipo == "TemporadaAnime" ? 'anime' : toPage || 'assistir'}/${item.pagina}`}
-                    className="lnk-blk"></a>
-            </article>
+        <li className="carousel-item" key={item._id}>  
+            <div className="carousel-itemss" style={{backgroundImage: `url(${item.img})`}}>
+                <a href={`/${item.tipo == "TemporadaAnime" ? 'anime' : toPage || 'assistir'}/${item.pagina}`}>
+                    <div className="carousel-itemss-text">
+                        <b></b>
+                        <span className="season">{item.titulo}</span>
+                        <span></span>
+                        <small className="spaced">
+                            <span>{item.ano}</span>
+                            <span>{item.qualidade || 'HD'}</span>
+                        </small>
+                    </div>
+                </a>
+            </div>
         </li>
     ))
 }
