@@ -717,8 +717,8 @@
 
 .carousel .carousel-item {
 	visibility: hidden;
-	width: 190px;
-	height: 280px;
+	width: 250px;
+	height: 250px;
 	position: absolute;
 	top: 0;
 	left: 0;

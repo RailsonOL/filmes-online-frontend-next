@@ -33,7 +33,7 @@ body {
 
 .container-main {
   margin: auto;
-  padding: 0;
+  padding: 0.6%;
 }
 
 textarea:focus, input:focus, select:focus {
@@ -46,7 +46,7 @@ textarea:focus, input:focus, select:focus {
 
 .container-main {
   display: flex;
-  margin: 2%;
+  margin: 3%;
 }
 
 .container-main .grid-main {

@@ -18,8 +18,8 @@ class Carousel extends Component {
         const options = {
             fullWidth: true,
             numVisible: 5,
-            // indicators: true,
-            padding: 30,
+            indicators: true,
+            // padding: 2,
             // dist: 0
         };
 
@@ -66,7 +66,7 @@ class Carousel extends Component {
                     <div className="middle-indicator rightA">
                         <a href="#" id={this.props.idForCarousel} className="moveNextCarousel middle-indicator-text waves-effect waves-light content-indicator"><i className="material-icons right middle-indicator-text">chevron_right</i></a>
                     </div>
-                    <ul className='post-lst'>
+                    <ul className='post-lst rw sm rcl2 rcl3a rcl4b rcl3c rcl4d rcl6e'>
                         <PostItem itemsForGrid={this.props.itemsForGrid} toPage={this.props.toPage} />
                     </ul>
                 </div>
@@ -82,20 +82,26 @@ const PostItem = props => {
     }
 
     return itemsForGrid.map((item, index) => (
-        <li className="carousel-item" key={item._id}>  
-            <div className="carousel-itemss" style={{backgroundImage: `url(${item.img})`}}>
-                <a href={`/${item.tipo == "TemporadaAnime" ? 'anime' : toPage || 'assistir'}/${item.pagina}`}>
-                    <div className="carousel-itemss-text">
-                        <b></b>
-                        <span className="season">{item.titulo}</span>
-                        <span></span>
-                        <small className="spaced">
-                            <span>{item.ano}</span>
-                            <span>{item.qualidade || 'HD'}</span>
-                        </small>
-                    </div>
-                </a>
-            </div>
+        <li className="carousel-item" key={item._id}>
+            <article className="post dfx fcl movies">
+                <header className="entry-header">
+                    <h2 className="entry-title">{item.titulo}</h2>
+                    <div className="entry-meta"> <span className="vote"><span>TMDB</span> {rateTmdb(item.nota)}</span></div>
+                </header>
+                <div className="post-thumbnail or-1">
+                    <figure>
+                        <img loading="lazy"
+                            src={item.img}
+                            alt={item.titulo} />
+                    </figure>
+                    <span className="post-ql">
+                        <span className="Qlty">{item.qualidade || 'HD'}</span>
+                    </span>
+                    <span className="year">{item.ano}</span>
+                    <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
+                </div> <a href={`/${item.tipo == "TemporadaAnime" ? 'anime' : toPage || 'assistir'}/${item.pagina}`}
+                    className="lnk-blk"></a>
+            </article>
         </li>
     ))
 }
