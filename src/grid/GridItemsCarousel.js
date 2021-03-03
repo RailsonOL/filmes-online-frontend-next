@@ -18,7 +18,7 @@ class Carousel extends Component {
         const options = {
             fullWidth: true,
             numVisible: 5,
-            indicators: true,
+            indicators: false,
             // padding: 2,
             // dist: 0
         };
