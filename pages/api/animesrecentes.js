@@ -16,12 +16,12 @@ const get = async (req, res) => {
             const { data } = await axios.get('https://www.myanimesonline.biz/')
             let $ = cheerio.load(data)
 
-            await AnimesEpRecentes.countDocuments({}, async function (err, count) {
-                if (count > 24) {
-                    await AnimesEpRecentes.deleteMany({})
-                    await AnimesRecentes.deleteMany({})
-                }
-            })
+            // await AnimesEpRecentes.countDocuments({}, async function (err, count) {
+            //     if (count > 24) {
+            //         await AnimesEpRecentes.deleteMany({})
+            //         await AnimesRecentes.deleteMany({})
+            //     }
+            // })
 
             $('div.videos-row').find('ul.videos > li').each(async (i, e) => { // loop episodios recentes
 
