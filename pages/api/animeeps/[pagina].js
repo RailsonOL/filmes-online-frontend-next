@@ -19,7 +19,7 @@ const get = async (req, res) => {
       res.status(200)
       return res.json(exibir)
     } else { // Não encontrado, então capturar e cadastrar
-      const response = await axios.get(`https://www.myanimesonline.biz/animes/episodio/${pagina}/`)
+      const response = await axios.get(`https://www.myanimesonline.biz/animes/episodio/${encodeURIComponent(pagina)}/`)
       const $ = cheerio.load(response.data)
 
       const postTexto = $('div.pagina-conteudo').find('div.post-texto')
@@ -64,7 +64,7 @@ const get = async (req, res) => {
 
       const exibir = await AnimeEp.findOne({ pagina: pagina })
 
-      await axios.get(`${server}/api/anime/${paginaTemporada}-update-now`) // force update anime temp
+      await axios.get(`${server}/api/anime/${encodeURIComponent(paginaTemporada)}-update-now`) // force update anime temp
 
       res.setHeader('Cache-Control', 's-maxage=300000, stale-while-revalidate')
       res.status(200)

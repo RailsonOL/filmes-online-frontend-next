@@ -21,7 +21,7 @@ const get = async (req, res) => {
     const opt1 = await seExiste(Animes, pagina)
     if (opt1) { // Anime já cadastrado
       if (atualizarPorData(anime, 7) || forceUpdate) { // Atualizar links de eps a cada 7 dias
-        const response = await axios.get(`https://www.myanimesonline.biz/animes/${pagina}`)
+        const response = await axios.get(`https://www.myanimesonline.biz/animes/${encodeURIComponent(pagina)}`)
         const $ = cheerio.load(response.data)
 
         const episodios = []
@@ -49,7 +49,7 @@ const get = async (req, res) => {
 
       return responseJson(res, exibirEps(exibir))
     } else { // Não encontrado, então capturar e cadastrar
-      const response = await axios.get(`https://www.myanimesonline.biz/animes/${pagina}/`)
+      const response = await axios.get(`https://www.myanimesonline.biz/animes/${encodeURIComponent(pagina)}/`)
       const $ = cheerio.load(response.data)
 
       const postTexto = $('div.pagina-conteudo').find('div.post-texto')

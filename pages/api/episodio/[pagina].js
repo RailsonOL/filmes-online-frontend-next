@@ -16,7 +16,7 @@ const get = async (req, res) => {
 
     if (opt1 === true) { // Serie ou filme já cadastrado
       if (atualizarPorData(episodio, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
-        const response = await axios.get(`https://www.superflix.net/episodio/${pagina}`)
+        const response = await axios.get(`https://www.superflix.net/episodio/${encodeURIComponent(pagina)}`)
         const $ = cheerio.load(response.data)
 
         const descricao = $('div.dfxb.alg-cr').find('div.description').text()
@@ -47,7 +47,7 @@ const get = async (req, res) => {
       return responseJson(res, exibir)
     } else { // Não encontrado, então capturar e cadastrar
       const pagina = req.query.pagina
-      const response = await axios.get(`https://www.superflix.net/episodio/${pagina}`)
+      const response = await axios.get(`https://www.superflix.net/episodio/${encodeURIComponent(pagina)}`)
       const $ = cheerio.load(response.data)
 
       const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
