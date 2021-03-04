@@ -19,7 +19,7 @@ const get = async (req, res) => {
       const primeiroDaLista = await tipo.findOne({ pagina: pagina })
 
       if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
-        const response = await axios.get(`https://www.superflix.net/${encodeURIComponent(pagina)}`)
+        const response = await axios.get(`https://www.superflix.net/${pagina}`)
         const $ = cheerio.load(response.data)
         const serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
         const trailer = $('div#mdl-trailer').find('iframe').attr('src')
@@ -70,7 +70,7 @@ const get = async (req, res) => {
 
       return responseJson(res, exibir)
     } else { // Não encontrado, então capturar e cadastrar
-      const response = await axios.get(`https://www.superflix.net/${encodeURIComponent(pagina)}`)
+      const response = await axios.get(`https://www.superflix.net/${pagina}`)
       const $ = cheerio.load(response.data)
 
       const serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')

@@ -15,7 +15,7 @@ const get = async (req, res) => {
       // console.log(primeiroDaLista)
 
       if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
-        const response = await axios.get(`https://www.superflix.net/temporada/${encodeURIComponent(pagina)}`)
+        const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
         const $ = cheerio.load(response.data)
 
         const episodios = []
@@ -45,7 +45,7 @@ const get = async (req, res) => {
 
       return responseJson(res, exibirEps(exibir))
     } else { // Não encontrado, então capturar e cadastrar
-      const response = await axios.get(`https://www.superflix.net/temporada/${encodeURIComponent(pagina)}`)
+      const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
       const $ = cheerio.load(response.data)
 
       const episodios = []
