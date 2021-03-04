@@ -47,7 +47,7 @@ export default function Categorys ({ data, type, page, dataDestaques }) {
 export async function getServerSideProps (ctx) {
   const type = encodeDecode(ctx.query.Categorys, 'encode', 'base64')
   const page = ctx.query.page
-  const { data } = await axios.get(`${server}/api/categoria/${type}/${page}`)
+  const { data } = await axios.get(`${server}/api/categoria/${encodeURIComponent(type)}/${page}`)
   const dataRecentes = await axios.get(`${server}/api/recentes`)
 
   return {
