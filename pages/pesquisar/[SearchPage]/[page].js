@@ -4,9 +4,9 @@ import Paginator from '../../../src/grid/Paginator'
 import SeachBar from '../../../src/searchbar/SeachBar'
 import { useMemo } from 'react'
 import Head from 'next/head'
-import { server } from '../../../config';
+import { server } from '../../../config'
 
-export default function SearchPage({ data, type, page, dataDestaques }) {
+export default function SearchPage ({ data, type, page, dataDestaques }) {
   const gridMemo = useMemo(() => {
     return (
       <GridItems
@@ -20,7 +20,7 @@ export default function SearchPage({ data, type, page, dataDestaques }) {
     return <Spotlight dataDestaques={dataDestaques}/>
   }, [])
 
- // if (error) <ErrorElem />
+  // if (error) <ErrorElem />
 
   return (
     <div className='see-more-container'>
@@ -45,7 +45,7 @@ export default function SearchPage({ data, type, page, dataDestaques }) {
 export async function getServerSideProps (ctx) {
   const type = ctx.query.SearchPage
   const page = ctx.query.page
-  const response = await fetch(`${server}/api/pesquisar/${type}/${page}`)
+  const response = await fetch(`${server}/api/pesquisar/${encodeURIComponent(type)}/${page}`)
   const data = await response.json()
 
   const res = await fetch(`${server}/api/recentes`)
@@ -56,7 +56,7 @@ export async function getServerSideProps (ctx) {
       data,
       type,
       page,
-      dataDestaques: dataRecentes.filmes_destaques 
-    },
+      dataDestaques: dataRecentes.filmes_destaques
+    }
   }
 }

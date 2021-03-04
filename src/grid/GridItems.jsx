@@ -1,5 +1,5 @@
-export default function GridItems(props) {
-  let { itemsForGrid, nameForGrid, seeMore, toPage } = props
+export default function GridItems (props) {
+  const { itemsForGrid, nameForGrid, seeMore, toPage } = props
 
   return (
     <div className='widget_list_movies'>
@@ -8,11 +8,9 @@ export default function GridItems(props) {
           <h3 className="section-title">{nameForGrid}</h3>
           <ul className="rw">
           {
-            seeMore != undefined
-            ? 
-            <li><a href={seeMore}><i className="material-icons" style={{ fontSize: 15 }}>add</i> Ver mais</a></li>
-            :
-            ''
+            seeMore !== undefined
+              ? <li><a href={seeMore}><i className="material-icons" style={{ fontSize: 15 }}>add</i> Ver mais</a></li>
+              : ''
           }
           </ul>
         </div>
@@ -27,7 +25,7 @@ export default function GridItems(props) {
 
 const PostItem = props => {
   const { itemsForGrid, toPage } = props
-  const rateTmdb = (nota)=> {
+  const rateTmdb = (nota) => {
     return nota ? nota.replace('TMDB', '') : '--'
   }
 
@@ -49,7 +47,7 @@ const PostItem = props => {
           </span>
           <span className="year">{item.ano}</span>
           <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
-        </div> <a href={`/${item.tipo == "TemporadaAnime" ? 'anime' : toPage || 'assistir'}/${item.pagina}`}
+        </div> <a href={`/${item.tipo === 'TemporadaAnime' ? 'anime' : toPage || 'assistir'}/${item.pagina}`}
           className="lnk-blk"></a>
       </article>
     </li>

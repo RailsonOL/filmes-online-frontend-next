@@ -1,14 +1,14 @@
-const SelectSeason = ( props ) => {
+const SelectSeason = (props) => {
   const { seasonCurrent, seasonsHandled, setSeasonCurrent } = props
 
   const handleChangeSeason = event => {
-    let seasonSelected = seasonsHandled.find(obj => {
+    const seasonSelected = seasonsHandled.find(obj => {
       return obj.season === event.target.value
     })
     setSeasonCurrent(seasonSelected)
   }
 
-  let selectElement = seasonsHandled.map((item, index) => (
+  const selectElement = seasonsHandled.map((item, index) => (
     <option value={item.season} key={index.toString()}>
       {item.season}
     </option>
@@ -25,4 +25,4 @@ const SelectSeason = ( props ) => {
   )
 }
 
-export default SelectSeason;
+export default SelectSeason

@@ -6,14 +6,14 @@ import SelectSeason from './SelectSeason'
 import ErrorElem from '../ErrorElem'
 
 const PostEp = ({ listEps, setEpisode }) => {
-  function scrollTop() {
+  function scrollTop () {
     document.querySelector('.rate-big').scrollIntoView({
-      behavior: "smooth"
+      behavior: 'smooth'
     })
   }
 
   const renderEps = listEps.map((item, index) => (
-    <a herf='#' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
+    <a herf='#' onClick={function () { setEpisode(item); scrollTop() }} key={index.toString()}>
       <li className='list-ep-container'>
         <div className='thumb-ep'>
           <figure>

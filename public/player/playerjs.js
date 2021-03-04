@@ -1,3 +1,4 @@
+/* eslint-disable */
 //	Playerjs.com 13.14.4
 //	14.02.2021 16:28:21
 //	API - https://playerjs.com/docs/q=api

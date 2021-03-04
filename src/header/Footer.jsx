@@ -1,11 +1,14 @@
-import Link from 'next/link';
+/* eslint-disable no-tabs */
+import Link from 'next/link'
 
 const Footer = () => {
-	return(
+  return (
 		<footer className="container-footer">
 			<nav className='footer-normal-links'>
 				<ul>
-					<li><Link href={'/direitos'}>Aviso Legal / Copyright</Link></li>
+					<li>
+						<Link href={'/direitos'}>Aviso Legal / Copyright</Link>
+					</li>
 				</ul>
 			</nav>
 			<p className='footer-phrase'>AmazoFlix - Seus Filmes e Séries Online em um só lugar. © Copyright 2021</p>
@@ -23,7 +26,7 @@ const Footer = () => {
 				</ul>
 			</nav>
 		</footer>
-	)
+  )
 }
 
-export default Footer;
+export default Footer

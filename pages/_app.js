@@ -4,7 +4,7 @@ import '../styles/App.css'
 import '../styles/Movies.css'
 import '../styles/App-responsive.css'
 
-/*pages*/
+/* pages */
 
 import HeaderMain from '../src/header/HeaderMain'
 import Footer from '../src/header/Footer'

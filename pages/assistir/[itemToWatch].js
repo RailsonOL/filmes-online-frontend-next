@@ -8,7 +8,7 @@ import GridEpisodes from '../../src/watch/GridEpisodes'
 import { server } from '../../config'
 import { encodeDecode } from '../../utils/utils'
 
-export default function Watch({ data }) {
+export default function Watch ({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
   let seasonData = data.temporadas
@@ -17,12 +17,11 @@ export default function Watch({ data }) {
     if (data.links) {
       setContentLinks(data.links)
     }
-
   }, [contentLinks])
 
   useEffect(async () => {
     document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
-    if (episode != {}) {
+    if (episode !== {}) {
       api('/' + episode.link)
         .then(response => {
           document.querySelector('div.rate-big > span.carregando').remove()
@@ -59,7 +58,7 @@ export default function Watch({ data }) {
   )
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps (ctx) {
   const itemToWatch = encodeDecode(ctx.query.itemToWatch, 'encode', 'base64')
   const response = await fetch(`${server}/api/assistir/${itemToWatch}`)
   const data = await response.json()

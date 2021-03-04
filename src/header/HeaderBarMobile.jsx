@@ -4,7 +4,7 @@ import SearchBar from '../searchbar/SeachBar'
 
 const HeaderBarMobile = () => {
   const [openedMenu, setOpenedMenu] = useState(false)
-  let leftMenu = openedMenu ? 0 : -100
+  const leftMenu = openedMenu ? 0 : -100
 
   return (
     <div className='menu-head-mobile'>
@@ -17,7 +17,7 @@ const HeaderBarMobile = () => {
         </div>
       </div>
       <div className='mobile-content-header' style={{ left: leftMenu + '%' }}>
-        <SearchBar fromMobile={{setOpenedMenu, openedMenu}} />
+        <SearchBar fromMobile={{ setOpenedMenu, openedMenu }} />
         <div>
           <ul>
             <li className='item-menu home-icon icons' onClick={() => setOpenedMenu(!openedMenu)}>

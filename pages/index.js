@@ -1,13 +1,12 @@
 /* lib */
 import Head from 'next/head'
-/* compoents*/
+/* compoents */
 import SeachBar from '../src/searchbar/SeachBar'
 import Spotlight from '../src/grid/Spotlight'
 import GridItemsCarousel from '../src/grid/GridItemsCarousel'
-import { server } from '../config';
+import { server } from '../config'
 
 const Home = ({ data, dataAnimes }) => {
-
   return (
     <div className='home-page'>
       <Head>
@@ -54,10 +53,10 @@ const Home = ({ data, dataAnimes }) => {
               idForCarousel={'animes'}
             />
           </div>
-          
+
         </main>
         <aside className='spotlight'>
-          <Spotlight dataDestaques={data.filmes_destaques}  />
+          <Spotlight dataDestaques={data.filmes_destaques} />
         </aside>
       </div>
     </div>

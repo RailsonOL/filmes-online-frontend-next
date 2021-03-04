@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
+export default function Spotlight ({ dataDestaques }) {
+  const router = useRouter()
 
-export default function Spotlight({ dataDestaques }) {
-  let router = useRouter()
-
-  const listSpotlight = dataDestaques.map((item, index) => {
+  const listSpotlight = dataDestaques.map((item) => {
     return (
       <li key={item._id}>
         <article className="post dfx alg-cr top">

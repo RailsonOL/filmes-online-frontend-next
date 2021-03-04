@@ -7,124 +7,118 @@ import SeriesRecentes from '../../models/SeriesRecentes'
 import dbConnect from '../../utils/dbConnect'
 
 const get = async (req, res) => {
-    try {
-        await dbConnect()
+  try {
+    await dbConnect()
 
-        let primeiro = await exibirTudo(FilmesRecentes, 1)
+    const primeiro = await exibirTudo(FilmesRecentes, 1)
 
-        if(atualizarPorDataSimples(primeiro)){
-            //console.log('As datas são diferentes, salvar')
-            const response = await axios.get('https://www.superflix.net/')
-            let $ = cheerio.load(response.data)
+    if (atualizarPorDataSimples(primeiro)) {
+      // console.log('As datas são diferentes, salvar')
+      const response = await axios.get('https://www.superflix.net/')
+      const $ = cheerio.load(response.data)
 
-            // await FilmesRecentes.countDocuments({}, async function (err, count) {
-            //     if (count > 24) {
-            //         await FilmesRecentes.deleteMany({})
-            //         await FilmesDestaque.deleteMany({})
-            //         await SeriesRecentes.deleteMany({})
-            //     }
-            // })
+      // await FilmesRecentes.countDocuments({}, async function (err, count) {
+      //     if (count > 24) {
+      //         await FilmesRecentes.deleteMany({})
+      //         await FilmesDestaque.deleteMany({})
+      //         await SeriesRecentes.deleteMany({})
+      //     }
+      // })
 
-            $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
+      $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
+        const el = $(elem)
+        const img = validarImg(el.find('figure > img').attr('src'))
+        const titulo = el.find('h2.entry-title').text()
+        const nota = el.find('span.vote').text()
+        const pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const qualidade = el.find('.Qlty').text()
+        const ano = el.find('.year').text()
 
-                let el = $(elem)
-                let img = validarImg(el.find('figure > img').attr('src'))
-                let titulo = el.find('h2.entry-title').text()
-                let nota = el.find('span.vote').text()
-                let pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','')
-                let qualidade = el.find('.Qlty').text()
-                let ano = el.find('.year').text()
+        const addFilme = new FilmesRecentes({
+          img,
+          titulo,
+          nota,
+          pagina,
+          qualidade,
+          ano
+        })
 
-                const addFilme = new FilmesRecentes({
-                    img,
-                    titulo,  
-                    nota, 
-                    pagina,
-                    qualidade,
-                    ano
-                })
+        await addFilme.save().catch((err) => {
+          console.log(err.code === 11000 ? 'Filme duplicado' : err)
+        })
+      })
 
-                await addFilme.save().catch((err) => {
-                    console.log(err.code == 11000 ? 'Filme duplicado' : err)
-                }) 
+      $('div#torofilm_wdgt_popular-3-all').find('ul > li').each(async (i, elem) => { // Filmes em Destaque
+        const el = $(elem)
+        const img = validarImg(el.find('figure > img').attr('src'))
+        const titulo = el.find('h2.entry-title').text()
+        const nota = el.find('span.vote').text()
+        const pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const duracao = el.find('span.time').text()
+        const ano = el.find('span.year').text()
 
-            })
+        const addFilme = new FilmesDestaque({
+          titulo,
+          img,
+          nota,
+          pagina,
+          duracao,
+          ano
+        })
 
-            $('div#torofilm_wdgt_popular-3-all').find('ul > li').each(async (i, elem) => { //Filmes em Destaque
+        await addFilme.save().catch((err) => {
+          console.log(err.code === 11000 ? 'Destaque duplicado' : err)
+        })
+      })
 
-                let el = $(elem)
-                let img = validarImg(el.find('figure > img').attr('src'))
-                let titulo = el.find('h2.entry-title').text() 
-                let nota = el.find('span.vote').text()
-                let pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','')
-                let duracao = el.find('span.time').text()
-                let ano = el.find('span.year').text()
+      $('div#widget_list_movies_series-4-aa-movies').find('ul > li').each(async (i, elem) => { // Series Recentes
+        const el = $(elem)
 
-                const addFilme = new FilmesDestaque({
-                    titulo,
-                    img,  
-                    nota, 
-                    pagina,
-                    duracao,
-                    ano
-                })
-
-                await addFilme.save().catch((err) => {
-                    console.log(err.code == 11000 ? 'Destaque duplicado' : err)
-                }) 
-            })
-
-            $('div#widget_list_movies_series-4-aa-movies').find('ul > li').each(async (i, elem) => { //Series Recentes
-
-                let el = $(elem)
-                
-                if(el.find('a.lnk-blk').attr('href') == undefined){
-                    console.log(el.text());
-                }
-
-                let img = validarImg(el.find('figure > img').attr('src'))
-                let titulo = el.find('h2.entry-title').text()
-                let nota = el.find('span.vote').text()
-                let pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/','')
-                let qualidade = el.find('.Qlty').text()
-                let ano = el.find('.year').text()
-
-                const addSerie = new SeriesRecentes({
-                    titulo,
-                    img,  
-                    nota, 
-                    pagina,
-                    qualidade,
-                    ano
-                })
-
-                await addSerie.save().catch((err) => {
-                    console.log(err.code == 11000 ? 'Serie duplicada' : err)
-                }) 
-
-            })
-
-            let filmes_recentes = await exibirTudo(FilmesRecentes)
-            let filmes_destaques = await exibirTudo(FilmesDestaque)
-            let series_recentes = await exibirTudo(SeriesRecentes)
-
-            let resultado = {filmes_recentes, filmes_destaques, series_recentes}
-    
-            return responseJson(res, resultado)
-
-        }else{
-           // console.log('As datas são iguais, não salvar');
-            let filmes_recentes = await exibirTudo(FilmesRecentes)
-            let filmes_destaques = await exibirTudo(FilmesDestaque)
-            let series_recentes = await exibirTudo(SeriesRecentes)
-            let resultado = {filmes_recentes, filmes_destaques, series_recentes}
-
-            return responseJson(res, resultado)
+        if (el.find('a.lnk-blk').attr('href') === undefined) {
+          console.log(el.text())
         }
-        
-    } catch (error) {
-        return responseErrorJson(res, 'recentes::get', error);
+
+        const img = validarImg(el.find('figure > img').attr('src'))
+        const titulo = el.find('h2.entry-title').text()
+        const nota = el.find('span.vote').text()
+        const pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const qualidade = el.find('.Qlty').text()
+        const ano = el.find('.year').text()
+
+        const addSerie = new SeriesRecentes({
+          titulo,
+          img,
+          nota,
+          pagina,
+          qualidade,
+          ano
+        })
+
+        await addSerie.save().catch((err) => {
+          console.log(err.code === 11000 ? 'Serie duplicada' : err)
+        })
+      })
+
+      const filmesRecentes = await exibirTudo(FilmesRecentes)
+      const filmesDestaques = await exibirTudo(FilmesDestaque)
+      const seriesRecentes = await exibirTudo(SeriesRecentes)
+
+      const resultado = { filmes_recentes: filmesRecentes, filmes_destaques: filmesDestaques, series_recentes: seriesRecentes }
+
+      return responseJson(res, resultado)
+    } else {
+      // console.log('As datas são iguais, não salvar');
+      const filmesRecentes = await exibirTudo(FilmesRecentes)
+      const filmesDestaques = await exibirTudo(FilmesDestaque)
+      const seriesRecentes = await exibirTudo(SeriesRecentes)
+
+      const resultado = { filmes_recentes: filmesRecentes, filmes_destaques: filmesDestaques, series_recentes: seriesRecentes }
+
+      return responseJson(res, resultado)
     }
+  } catch (error) {
+    return responseErrorJson(res, 'recentes::get', error)
+  }
 }
 
 export default get

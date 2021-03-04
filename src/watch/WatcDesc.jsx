@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 const Genres = props => {
-  let { genresList } = props
+  const { genresList } = props
 
   const newList = genresList.map((item, index) => (
     <Link href={'/categoria/' + item + '/1'} key={index.toString()}>

@@ -1,6 +1,5 @@
-import HeaderBar from "./HeaderBar";
+import HeaderBar from './HeaderBar'
 import HeaderBarMobile from './HeaderBarMobile'
-
 
 const HeaderMain = () => {
   return (
@@ -9,12 +8,12 @@ const HeaderMain = () => {
         <img src={'/images/header-bg.jpg'} alt="" />
       </div>
       <div className="content-header">
-        
+
       <HeaderBarMobile />
       <HeaderBar />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderMain;
+export default HeaderMain

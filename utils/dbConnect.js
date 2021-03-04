@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export default async function dbConnect() {
+export default async function dbConnect () {
   if (mongoose.connection.readyState >= 1) {
     return
   }
@@ -9,6 +9,6 @@ export default async function dbConnect() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    useCreateIndex: true,
+    useCreateIndex: true
   })
 }

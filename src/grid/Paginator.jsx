@@ -1,27 +1,26 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-
-export default function Paginator (props){
-  let numberPages = props.numberPages
-  let currentPage  = props.currentPage
+export default function Paginator (props) {
+  const numberPages = props.numberPages
+  const currentPage = props.currentPage
 
   const router = useRouter()
   const parent = router.query
   let params = []
-  let { Categorys, SeeMore, SearchPage } = parent
+  const { Categorys, SeeMore, SearchPage } = parent
 
-  if (Categorys != undefined) {
+  if (Categorys !== undefined) {
     params = '/categoria/' + Categorys
-  } else if (SeeMore != undefined) {
-    params ='/vermais/' + SeeMore
-  } else if (SearchPage != undefined) {
+  } else if (SeeMore !== undefined) {
+    params = '/vermais/' + SeeMore
+  } else if (SearchPage !== undefined) {
     params = '/pesquisar/' + SearchPage
   }
 
   const type = params
   let renderBtn = currentPage - 3
-  let numbers = []
+  const numbers = []
 
   for (let i = 0; i < 5; i++) {
     renderBtn++
@@ -31,7 +30,7 @@ export default function Paginator (props){
         <Link key={i.toString()} href={`${type}/${renderBtn}`}>
           <a>
             <span
-              className={currentPage == renderBtn ? 'current btns' : 'btns'}
+              className={currentPage === renderBtn ? 'current btns' : 'btns'}
             >
               {renderBtn}
             </span>
@@ -43,8 +42,8 @@ export default function Paginator (props){
 
   return (
     <div className='container-paginator'>
-      <span style={{ pointerEvents: currentPage == 1 ? 'none' : 'auto' }}>
-        <Link href={`${type}/${currentPage == 1 ? 1 : currentPage - 1}`} className='btn-paginator'>
+      <span style={{ pointerEvents: currentPage === 1 ? 'none' : 'auto' }}>
+        <Link href={`${type}/${currentPage === 1 ? 1 : currentPage - 1}`} className='btn-paginator'>
           ANTERIOR
         </Link>
       </span>
@@ -71,7 +70,7 @@ export default function Paginator (props){
         )}
       </div>
       <span
-        style={{ pointerEvents: currentPage == numberPages ? 'none' : 'auto' }}
+        style={{ pointerEvents: currentPage === numberPages ? 'none' : 'auto' }}
       >
         <Link
           href={`${type}/${parseInt(currentPage) + 1}`}

@@ -7,14 +7,14 @@ import Player from '../../src/watch/Player'
 import { server } from '../../config'
 
 const PostEp = ({ listEps, setEpisode }) => {
-  function scrollTop() {
+  function scrollTop () {
     document.querySelector('.rate-big').scrollIntoView({
-      behavior: "smooth"
+      behavior: 'smooth'
     })
   }
 
   const renderEps = listEps.map((item, index) => (
-    <a herf='#player-on' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
+    <a herf='#player-on' onClick={function () { setEpisode(item); scrollTop() }} key={index.toString()}>
       <li className='list-ep-container'>
         <div className='thumb-ep'>
           <figure>
@@ -33,23 +33,19 @@ const PostEp = ({ listEps, setEpisode }) => {
   return renderEps
 }
 
-export default function Watch({ data }) {
+export default function Watch ({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
   useEffect(async () => {
     document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
-    if (episode != {}) {
-      let linkActualEp = episode.link ? episode.link.replace('episodio/', 'animeeps/') : episode.link 
+    if (episode !== {}) {
+      const linkActualEp = episode.link ? episode.link.replace('episodio/', 'animeeps/') : episode.link
       api('/' + linkActualEp)
         .then(response => {
           document.querySelector('div.rate-big > span.carregando').remove()
           setContentLinks(response.links)
         })
         .catch(err => console.error(err))
-    }
-
-    return () => {
-      seasonData = {}
     }
   }, [episode])
 
@@ -67,7 +63,7 @@ export default function Watch({ data }) {
         </div>
       )}
 
-      {data.tipo == "TemporadaAnime" && (
+      {data.tipo === 'TemporadaAnime' && (
         <div className='grid-eps'>
           <ul>
             <PostEp listEps={data.episodios} setEpisode={setEpisode} />
@@ -78,7 +74,7 @@ export default function Watch({ data }) {
   )
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps (ctx) {
   let pagina = ctx.query.itemToWatch
 
   if (ctx.query.itemToWatch.includes('-watch-now')) {

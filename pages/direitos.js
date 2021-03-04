@@ -1,6 +1,5 @@
 import Head from 'next/head'
 const Copyright = () => {
-
   return (
     <div className='page-right'>
       <Head>

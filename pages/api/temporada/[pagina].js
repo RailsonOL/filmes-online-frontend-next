@@ -5,92 +5,85 @@ import Temporada from '../../../models/Temporada'
 import dbConnect from '../../../utils/dbConnect'
 
 const get = async (req, res) => {
-    try {
-        await dbConnect()
-        let pagina = req.query.pagina
-        let opt1 = await seExiste(Temporada, pagina)
+  try {
+    await dbConnect()
+    const pagina = req.query.pagina
+    const opt1 = await seExiste(Temporada, pagina)
 
-        if (opt1) { //Serie ou filme já cadastrado
+    if (opt1) { // Serie ou filme já cadastrado
+      const primeiroDaLista = await Temporada.findOne({ pagina: pagina })
+      // console.log(primeiroDaLista)
 
-            let primeiroDaLista = await Temporada.findOne({ 'pagina': pagina })
-            // console.log(primeiroDaLista);
+      if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+        const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
+        const $ = cheerio.load(response.data)
 
-            if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+        const episodios = []
 
-                const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
-                const $ = cheerio.load(response.data)
+        $('ul#episode_by_temp').find('li').each(function (index, elem) {
+          const el = $(elem)
+          const img = validarImg(el.find('figure > img').attr('src'))
+          const numEp = el.find('span.num-epi').text()
+          const nomeEp = el.find('h2.entry-title').text()
+          const link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+          const data = el.find('span.time').text()
 
-                let episodios = []
+          episodios.push(`{"img": "${img}", "num_ep": "${numEp}", "nome_ep": "${nomeEp}", "link": "${link}", "data": "${data}"}`)
+        })
 
-                $('ul#episode_by_temp').find('li').each(function (index, elem) {
-                    let el = $(elem)
-                    let img = validarImg(el.find('figure > img').attr('src'))
-                    let num_ep = el.find('span.num-epi').text()
-                    let nome_ep = el.find('h2.entry-title').text()
-                    let link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
-                    let data = el.find('span.time').text()
+        await Temporada.findOneAndUpdate({ pagina: pagina }, { episodios }, { upsert: true }, function (err, doc) {
+          if (err) return res.send(500, { error: err })
+          return console.log(`Episodios de ${pagina} atualizado`)
+        })
 
-                    episodios.push(`{"img": "${img}", "num_ep": "${num_ep}", "nome_ep": "${nome_ep}", "link": "${link}", "data": "${data}"}`)
-                })
+        const exibir = await Temporada.findOne({ pagina: pagina })
 
-                await Temporada.findOneAndUpdate({ 'pagina': pagina }, { episodios }, { upsert: true }, function (err, doc) {
-                    if (err) return res.send(500, { error: err })
-                    return console.log(`Episodios de ${pagina} atualizado`)
-                })
+        return responseJson(res, exibirEps(exibir))
+      }
 
-                let exibir = await Temporada.findOne({ 'pagina': pagina })
+      const exibir = await Temporada.findOne({ pagina: pagina })
 
-                return responseJson(res, exibirEps(exibir))
-            }
+      return responseJson(res, exibirEps(exibir))
+    } else { // Não encontrado, então capturar e cadastrar
+      const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
+      const $ = cheerio.load(response.data)
 
-            let exibir = await Temporada.findOne({ 'pagina': pagina })
+      const episodios = []
+      const temporada = $('button.btn.lnk.npd.aa-arrow-right').text()
 
-            return responseJson(res, exibirEps(exibir))
+      $('ul#episode_by_temp').find('li').each(function (index, elem) {
+        const el = $(elem)
+        const img = validarImg(el.find('figure > img').attr('src'))
+        const numEp = el.find('span.num-epi').text()
+        const nomeEp = el.find('h2.entry-title').text()
+        const link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const data = el.find('span.time').text()
 
-        } else { //Não encontrado, então capturar e cadastrar
+        episodios.push(`{"img": "${img}", "num_ep": "${numEp}", "nome_ep": "${nomeEp}", "link": "${link}", "data": "${data}"}`)
+      })
 
-            const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
-            let $ = cheerio.load(response.data)
+      const addTemporada = new Temporada({
+        temporada,
+        episodios,
+        pagina
+      })
 
-            let episodios = []
-            let temporada = $('button.btn.lnk.npd.aa-arrow-right').text()
+      await addTemporada.save()
+        .then(() => {
+          console.log('Nova temporada adicionado a DB')
+        })
+        .catch((err) => {
+          console.log(err.code === 11000 ? 'Temporada duplicado' : err)
+        })
 
-            $('ul#episode_by_temp').find('li').each(function (index, elem) {
-                let el = $(elem)
-                let img = validarImg(el.find('figure > img').attr('src'))
-                let num_ep = el.find('span.num-epi').text()
-                let nome_ep = el.find('h2.entry-title').text()
-                let link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
-                let data = el.find('span.time').text()
+      const exibir = await Temporada.findOne({ pagina: pagina })
 
-                episodios.push(`{"img": "${img}", "num_ep": "${num_ep}", "nome_ep": "${nome_ep}", "link": "${link}", "data": "${data}"}`)
-
-            })
-
-            const addTemporada = new Temporada({
-                temporada,
-                episodios,
-                pagina
-            })
-
-            await addTemporada.save()
-                .then(() => {
-                    console.log('Nova temporada adicionado a DB')
-                })
-                .catch((err) => {
-                    console.log(err.code == 11000 ? 'Temporada duplicado' : err)
-                })
-
-            let exibir = await Temporada.findOne({ 'pagina': pagina })
-
-            return responseJson(res, exibirEps(exibir))
-
-        }
-
-    } catch (error) {
-        //console.log(error)
-        return responseErrorJson(res, 'temporada::get', error)
+      return responseJson(res, exibirEps(exibir))
     }
+  } catch (error) {
+    // console.log(error)
+    return responseErrorJson(res, 'temporada::get', error)
+  }
 }
 
 export default get
