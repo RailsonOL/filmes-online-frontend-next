@@ -1,106 +1,96 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData} from '../../../utils/utils'
-import Epsodios from '../../../models/Epsodios'
-import dbConnect from '../../../utils/dbConnect'
+import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData } from '../../../utils'
+import Epsodios from '../../../database/models/Epsodios'
+import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
+  try {
+    await dbConnect()
 
-    try {
-        await dbConnect()
+    const pagina = req.query.pagina
+    const episodio = await Epsodios.findOne({ pagina: pagina })
+    const qualidade = 'HD'
 
-        let pagina = req.query.pagina
-        let episodio = await Epsodios.findOne({ 'pagina': pagina })
-        let qualidade = 'HD'
+    const opt1 = await seExiste(Epsodios, pagina)
 
-        let opt1 = await seExiste(Epsodios, pagina)
+    if (opt1 === true) { // Serie ou filme já cadastrado
+      if (atualizarPorData(episodio, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+        const response = await axios.get(`https://www.superflix.net/episodio/${pagina}`)
+        const $ = cheerio.load(response.data)
 
-        if (opt1 == true) {//Serie ou filme já cadastrado
+        const descricao = $('div.dfxb.alg-cr').find('div.description').text()
+        const links = []
 
-            if (atualizarPorData(episodio, 5)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+        $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
+          const el = $(e)
+          let opcao = el.attr('id')
+          const link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
 
-                const response = await axios.get(`https://www.superflix.net/episodio/${pagina}`)
-                let $ = cheerio.load(response.data)
+          opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
 
-                let descricao = $('div.dfxb.alg-cr').find('div.description').text()
-                let links = []
+          links.push(`${opcao}|${link}`)
+        })
 
-                $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
-                    let el = $(e)
-                    let opcao = el.attr('id')
-                    let link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
+        Epsodios.findOneAndUpdate({ pagina: pagina }, { qualidade, descricao, links }, { upsert: true }, function (err, doc) {
+          if (err) return res.send(500, { error: err })
+          return console.log('Episodio atualizado.')
+        })
 
-                    opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
+        const exibir = await Epsodios.findOne({ pagina: pagina })
 
-                    links.push(`${opcao}|${link}`)
-                })
+        return responseJson(res, exibir)
+      }
 
-                Epsodios.findOneAndUpdate({ 'pagina': pagina }, { qualidade, descricao, links }, { upsert: true }, function (err, doc) {
-                    if (err) return res.send(500, { error: err })
-                    return console.log('Episodio atualizado.')
-                })
+      const exibir = await Epsodios.findOne({ pagina: pagina })
 
-                let exibir = await Epsodios.findOne({ 'pagina': pagina })
+      return responseJson(res, exibir)
+    } else { // Não encontrado, então capturar e cadastrar
+      const pagina = req.query.pagina
+      const response = await axios.get(`https://www.superflix.net/episodio/${pagina}`)
+      const $ = cheerio.load(response.data)
 
-                return responseJson(res, exibir)
-            }
+      const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
+      const titulo = $('div.dfxb.alg-cr').find('h1.entry-title').text()
+      const duracao = $('div.dfxb.alg-cr').find('span.duration.fa-clock.far').text()
+      const ano = $('div.dfxb.alg-cr').find('span.year.fa-calendar.far').text()
+      const descricao = $('div.dfxb.alg-cr').find('div.description').text()
+      const links = []
 
-            let exibir = await Epsodios.findOne({ 'pagina': pagina })
+      $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each(function (index, elem) {
+        const el = $(elem)
+        let opcao = el.attr('id')
+        const link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
+        opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
+        links.push(`${opcao}|${link}`)
+      })
 
-            return responseJson(res, exibir)
+      const addEpsodio = new Epsodios({
+        titulo,
+        img,
+        duracao,
+        ano,
+        descricao,
+        qualidade,
+        links,
+        pagina
+      })
 
-        } else {//Não encontrado, então capturar e cadastrar
+      await addEpsodio.save()
+        .then(() => {
+          console.log('Novo EP de serie adicionado a DB')
+        })
+        .catch((err) => {
+          console.log(err.code === 11000 ? 'EP duplicado' : err)
+        })
 
-            let pagina = req.query.pagina
-            const response = await axios.get(`https://www.superflix.net/episodio/${pagina}`)
-            let $ = cheerio.load(response.data)
+      const exibir = await Epsodios.findOne({ pagina: pagina })
 
-            let img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
-            let titulo = $('div.dfxb.alg-cr').find('h1.entry-title').text()
-            let duracao = $('div.dfxb.alg-cr').find('span.duration.fa-clock.far').text()
-            let ano = $('div.dfxb.alg-cr').find('span.year.fa-calendar.far').text()
-            let descricao = $('div.dfxb.alg-cr').find('div.description').text()
-            let links = []
-
-            $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each(function (index, elem) {
-                let el = $(elem)
-                let opcao = el.attr('id')
-                let link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
-                opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
-                links.push(`${opcao}|${link}`)
-            })
-
-            const addEpsodio = new Epsodios({
-                titulo,
-                img,
-                duracao,
-                ano,
-                descricao,
-                qualidade,
-                links,
-                pagina
-            })
-
-            await addEpsodio.save()
-                .then(() => {
-                    console.log('Novo EP de serie adicionado a DB')
-                })
-                .catch((err) => {
-                    console.log(err.code == 11000 ? 'EP duplicado' : err)
-                })
-
-            let exibir = await Epsodios.findOne({ 'pagina': pagina })
-
-            return responseJson(res, exibir)
-
-        }
-
-    } catch (error) {
-
-        return responseErrorJson(res, 'assistirep::get', error)
-
+      return responseJson(res, exibir)
     }
-
+  } catch (error) {
+    return responseErrorJson(res, 'assistirep::get', error)
+  }
 }
 
 export default get

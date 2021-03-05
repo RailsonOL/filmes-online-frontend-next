@@ -1,12 +1,13 @@
+import '../styles/materialize.min.css'
 import '../styles/globals.css'
 import '../styles/App.css'
 import '../styles/Movies.css'
 import '../styles/App-responsive.css'
 
-/*pages*/
+/* pages */
 
-import HeaderMain from '../src/header/HeaderMain'
-import Footer from '../src/header/Footer'
+import HeaderMain from '../src/components/header/HeaderMain'
+import Footer from '../src/components/header/Footer'
 
 function MyApp ({ Component, pageProps }) {
   return (

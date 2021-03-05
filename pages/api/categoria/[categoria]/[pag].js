@@ -1,15 +1,15 @@
-import { responseErrorJson, responseJson, encodeDecode } from '../../../../utils/utils'
-import Filme from '../../../../models/Filme'
-import Serie from '../../../../models/Serie'
-import dbConnect from '../../../../utils/dbConnect'
+import { responseErrorJson, responseJson, encodeDecode } from '../../../../utils'
+import Filme from '../../../../database/models/Filme'
+import Serie from '../../../../database/models/Serie'
+import dbConnect from '../../../../database/dbConnect'
 
 const get = async (req, res) => {
   try {
     await dbConnect()
 
-    let categoria = encodeDecode(req.query.categoria, 'decode', 'base64')
+    const categoria = encodeDecode(req.query.categoria, 'decode', 'base64')
 
-    let resultado = {
+    const resultado = {
       total_pag: 0,
       resultado: []
     }
@@ -23,35 +23,36 @@ const get = async (req, res) => {
     paginaAtual = paginaAtual - 1
 
     await Filme.countDocuments({ categorias: categoria }, function (err, count) {
+      if (err) throw err
+
       resultado.total_pag += count
     })
 
     await Filme.find({ categorias: categoria }, 'img titulo nota pagina ano')
-      .sort({ 'updatedAt': -1 })
+      .sort({ updatedAt: -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {
         filme = result
-        return
       })
 
     await Serie.countDocuments({ categorias: categoria }, function (err, count) {
+      if (err) throw err
+
       resultado.total_pag = resultado.total_pag > count ? Math.ceil(resultado.total_pag / limiteItens) : Math.ceil(count / limiteItens)
     })
 
     await Serie.find({ categorias: categoria }, 'img titulo nota pagina ano')
-      .sort({ 'updatedAt': -1 })
+      .sort({ updatedAt: -1 })
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {
         serie = result
-        return
       })
 
     resultado.resultado = filme.concat(serie)
 
     return responseJson(res, resultado)
-
   } catch (error) {
     return responseErrorJson(res, 'pesquisar::get', error)
   }

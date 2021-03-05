@@ -1,15 +1,15 @@
-import GridItems from '../../../src/grid/GridItems'
-import Spotlight from '../../../src/grid/Spotlight'
-import Paginator from '../../../src/grid/Paginator'
-import SeachBar from '../../../src/searchbar/SeachBar'
+import GridItems from '../../../src/components/grid/GridItems'
+import Spotlight from '../../../src/components/grid/Spotlight'
+import Paginator from '../../../src/components/grid/Paginator'
+import SeachBar from '../../../src/components/searchbar/SeachBar'
 import { useMemo } from 'react'
 import Head from 'next/head'
-import { server } from '../../../config';
+import { server } from '../../../config'
 
-export default function SeeMore ({ data, type, page, dataDestaques }){
+export default function SeeMore ({ data, type, page, dataDestaques }) {
   let to = 'assistir'
 
-  if (type == 'allanimes') {
+  if (type === 'allanimes') {
     to = 'anime'
     type = 'Animes'
   }
@@ -28,7 +28,7 @@ export default function SeeMore ({ data, type, page, dataDestaques }){
     return <Spotlight dataDestaques={dataDestaques} />
   }, [])
 
-  //if (error) <ErrorElem />
+  // if (error) <ErrorElem />
 
   return (
     <div className='see-more-container'>
@@ -51,11 +51,10 @@ export default function SeeMore ({ data, type, page, dataDestaques }){
 }
 
 export async function getServerSideProps (ctx) {
-
   const type = ctx.query.SeeMore
   const page = ctx.query.page
   const response = await fetch(`${server}/api/${type}/${page}`)
-  const data = await response.json() 
+  const data = await response.json()
 
   const res = await fetch(`${server}/api/recentes`)
   const dataRecentes = await res.json()

@@ -1,14 +1,14 @@
-import GridItems from '../../../src/grid/GridItems'
-import Spotlight from '../../../src/grid/Spotlight'
-import Paginator from '../../../src/grid/Paginator'
-import SeachBar from '../../../src/searchbar/SeachBar'
+import GridItems from '../../../src/components/grid/GridItems'
+import Spotlight from '../../../src/components/grid/Spotlight'
+import Paginator from '../../../src/components/grid/Paginator'
+import SeachBar from '../../../src/components/searchbar/SeachBar'
 import axios from 'axios'
 import { useMemo } from 'react'
 import Head from 'next/head'
-import { server } from '../../../config';
-import { encodeDecode } from '../../../utils/utils'
+import { server } from '../../../config'
+import { encodeDecode } from '../../../utils'
 
-export default function Categorys ({ data, type, page, dataDestaques }){
+export default function Categorys ({ data, type, page, dataDestaques }) {
   const gridMemo = useMemo(() => {
     return (
       <GridItems
@@ -22,7 +22,7 @@ export default function Categorys ({ data, type, page, dataDestaques }){
     return <Spotlight dataDestaques={dataDestaques}/>
   }, [])
 
- // if (error) <ErrorElem />
+  // if (error) <ErrorElem />
 
   return (
     <div className='see-more-container'>
@@ -47,7 +47,7 @@ export default function Categorys ({ data, type, page, dataDestaques }){
 export async function getServerSideProps (ctx) {
   const type = encodeDecode(ctx.query.Categorys, 'encode', 'base64')
   const page = ctx.query.page
-  const { data } = await axios.get(`${server}/api/categoria/${type}/${page}`)
+  const { data } = await axios.get(`${server}/api/categoria/${encodeURIComponent(type)}/${page}`)
   const dataRecentes = await axios.get(`${server}/api/recentes`)
 
   return {
@@ -55,7 +55,7 @@ export async function getServerSideProps (ctx) {
       data,
       type: ctx.query.Categorys,
       page,
-      dataDestaques: dataRecentes.data.filmes_destaques 
-    },
+      dataDestaques: dataRecentes.data.filmes_destaques
+    }
   }
 }

@@ -1,10 +1,10 @@
 import useSWR from 'swr'
-import { server } from '../../config';
+import { server } from '../../config'
 
 const useFetch = route => {
   const baseUrl = server + '/api'
 
-  let url = baseUrl + route
+  const url = baseUrl + route
 
   const { data, error } = useSWR(
     url,

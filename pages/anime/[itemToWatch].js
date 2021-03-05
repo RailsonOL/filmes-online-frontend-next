@@ -2,19 +2,19 @@ import api from '../../src/api/api'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
-import WatchDesc from '../../src/watch/WatcDesc'
-import Player from '../../src/watch/Player'
+import WatchDesc from '../../src/components/watch/WatcDesc'
+import Player from '../../src/components/watch/Player'
 import { server } from '../../config'
 
 const PostEp = ({ listEps, setEpisode }) => {
-  function scrollTop() {
+  function scrollTop () {
     document.querySelector('.rate-big').scrollIntoView({
-      behavior: "smooth"
+      behavior: 'smooth'
     })
   }
 
   const renderEps = listEps.map((item, index) => (
-    <a herf='#player-on' onClick={function(){ setEpisode(item); scrollTop()}} key={index.toString()}>
+    <a herf='#player-on' onClick={function () { setEpisode(item); scrollTop() }} key={index.toString()}>
       <li className='list-ep-container'>
         <div className='thumb-ep'>
           <figure>
@@ -33,23 +33,19 @@ const PostEp = ({ listEps, setEpisode }) => {
   return renderEps
 }
 
-export default function Watch({ data }) {
+export default function Watch ({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
   useEffect(async () => {
     document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
-    if (episode != {}) {
-      let linkActualEp = episode.link ? episode.link.replace('episodio/', 'animeeps/') : episode.link 
+    if (episode !== {}) {
+      const linkActualEp = episode.link ? episode.link.replace('episodio/', 'animeeps/') : episode.link
       api('/' + linkActualEp)
         .then(response => {
           document.querySelector('div.rate-big > span.carregando').remove()
           setContentLinks(response.links)
         })
         .catch(err => console.error(err))
-    }
-
-    return () => {
-      seasonData = {}
     }
   }, [episode])
 
@@ -67,7 +63,7 @@ export default function Watch({ data }) {
         </div>
       )}
 
-      {data.tipo == "TemporadaAnime" && (
+      {data.tipo === 'TemporadaAnime' && (
         <div className='grid-eps'>
           <ul>
             <PostEp listEps={data.episodios} setEpisode={setEpisode} />
@@ -78,18 +74,18 @@ export default function Watch({ data }) {
   )
 }
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps (ctx) {
   let pagina = ctx.query.itemToWatch
 
   if (ctx.query.itemToWatch.includes('-watch-now')) {
     pagina = ctx.query.itemToWatch.replace('-watch-now', '')
-    let AnimeEp = await fetch(`${server}/api/animeeps/${pagina}`)
+    let AnimeEp = await fetch(`${server}/api/animeeps/${encodeURIComponent(pagina)}`)
     AnimeEp = await AnimeEp.json()
 
     pagina = AnimeEp.paginaTemporada
   }
 
-  const response = await fetch(`${server}/api/anime/${pagina}`)
+  const response = await fetch(`${server}/api/anime/${encodeURIComponent(pagina)}`)
   const data = await response.json()
 
   return {
