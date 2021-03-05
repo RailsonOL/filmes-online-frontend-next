@@ -9,7 +9,7 @@ const get = async (req, res) => {
   try {
     await dbConnect()
 
-    const pagina = encodeDecode(req.query.pagina, 'decode', 'base64')
+    let pagina = encodeDecode(req.query.pagina, 'decode', 'base64')
     const qualidade = 'HD'
     const opt1 = await seExiste(Filme, pagina)
     const opt2 = await seExiste(Serie, pagina)
@@ -18,7 +18,13 @@ const get = async (req, res) => {
     if (opt1 || opt2) { // Serie ou filme já cadastrado
       const primeiroDaLista = await tipo.findOne({ pagina: pagina })
 
-      if (atualizarPorData(primeiroDaLista, 5)) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
+      let forceUpdate = false
+      if (pagina.includes('-update-now')) {
+        forceUpdate = true
+        pagina = pagina.replace('-update-now', '')
+      }
+
+      if (atualizarPorData(primeiroDaLista, 5) || forceUpdate) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
         const response = await axios.get(`https://www.superflix.net/${pagina}`)
         const $ = cheerio.load(response.data)
         const serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
