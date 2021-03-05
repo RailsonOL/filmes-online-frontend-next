@@ -1,6 +1,6 @@
 import { responseErrorJson, responseJson, encodeDecode } from '../../../../utils'
-import Filme from '../../../../models/Filme'
-import Serie from '../../../../models/Serie'
+import Filme from '../../../../database/models/Filme'
+import Serie from '../../../../database/models/Serie'
 import dbConnect from '../../../../database/dbConnect'
 
 const get = async (req, res) => {

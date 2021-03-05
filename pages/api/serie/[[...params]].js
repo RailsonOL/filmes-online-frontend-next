@@ -1,5 +1,5 @@
 import { responseErrorJson, responseJson } from '../../../utils'
-import Serie from '../../../models/Serie'
+import Serie from '../../../database/models/Serie'
 import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {

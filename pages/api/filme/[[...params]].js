@@ -1,5 +1,5 @@
 import { responseErrorJson, responseJson } from '../../../utils'
-import Filme from '../../../models/Filme'
+import Filme from '../../../database/models/Filme'
 import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
