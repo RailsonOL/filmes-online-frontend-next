@@ -1,8 +1,8 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, seExiste, validarImg, atualizarPorData, exibirEps } from '../../../utils/utils'
-import Temporada from '../../../models/Temporada'
-import dbConnect from '../../../utils/dbConnect'
+import { responseErrorJson, responseJson, seExiste, validarImg, atualizarPorData, exibirEps } from '../../../utils'
+import Temporada from '../../../database/models/Temporada'
+import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
   try {

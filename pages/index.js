@@ -1,9 +1,9 @@
 /* lib */
 import Head from 'next/head'
 /* compoents */
-import SeachBar from '../src/searchbar/SeachBar'
-import Spotlight from '../src/grid/Spotlight'
-import GridItemsCarousel from '../src/grid/GridItemsCarousel'
+import SeachBar from '../src/components/searchbar/SeachBar'
+import Spotlight from '../src/components/grid/Spotlight'
+import GridItemsCarousel from '../src/components/grid/GridItemsCarousel'
 import { server } from '../config'
 
 const Home = ({ data, dataAnimes }) => {

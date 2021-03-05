@@ -1,4 +1,18 @@
 /* eslint-disable new-cap */
+
+const deleteAllAfter = async (collec, skip = 12) => {
+  const newArr = []
+  await collec.find().sort({ updatedAt: -1 }).skip(skip)
+    .then((result) => {
+      result.map(a => newArr.push(a._id))
+    })
+    .catch((err) => {
+      throw err
+    })
+
+  await collec.deleteMany({ _id: { $in: newArr } })
+}
+
 const encodeDecode = (string, type = 'encode', encodeType = 'base64') => {
   if (type === 'encode') {
     const result = new Buffer.from(string).toString(encodeType)
@@ -78,7 +92,7 @@ const seExiste = async (collec, pagina) => {
 }
 
 const responseJson = (res, data, statusCode = 200) => {
-  res.setHeader('Cache-Control', 's-maxage=72000000, stale-while-revalidate')
+  res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate')
   res.status(200)
   return res.json(data)
 }
@@ -106,7 +120,6 @@ const atualizarPorData = (comparador, intervalo = 1, mesesAdicionado = 3) => {
     dataDB = new Date(comparador.updatedAt)
     dataDB = dataDB.getDate()
   }
-  // console.log(`${dataDB+intervalo} <= ${dataAtual.getDate()} && ${anoDeLancamento} >= ${anoAtual-1}`)
 
   return dataDB + intervalo <= dataAtual.getDate() && anoDeLancamento >= anoAtual - 1
 }
@@ -136,5 +149,6 @@ export {
   exibirEps,
   atualizarPorData,
   atualizarPorDataSimples,
-  encodeDecode
+  encodeDecode,
+  deleteAllAfter
 }

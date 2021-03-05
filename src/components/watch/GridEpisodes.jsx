@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import loading from '../api/loading'
-import useFetch from '../api/useFetch'
+import loading from '../../api/loading'
+import useFetch from '../../api/useFetch'
 
 import SelectSeason from './SelectSeason'
 import ErrorElem from '../ErrorElem'

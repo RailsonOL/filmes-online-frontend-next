@@ -1,15 +1,14 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, seExiste, exibirEps, validarImg, atualizarPorData } from '../../../utils/utils'
-import Animes from '../../../models/Animes'
-import dbConnect from '../../../utils/dbConnect'
+import { responseErrorJson, responseJson, seExiste, exibirEps, validarImg, atualizarPorData } from '../../../utils'
+import Animes from '../../../database/models/Animes'
+import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
   try {
     await dbConnect()
 
     let pagina = req.query.pagina
-    // console.log(pagina)
 
     let forceUpdate = false
     if (pagina.includes('-update-now')) {
@@ -18,8 +17,8 @@ const get = async (req, res) => {
     }
 
     const anime = await Animes.findOne({ pagina: pagina })
-
     const opt1 = await seExiste(Animes, pagina)
+
     if (opt1) { // Anime já cadastrado
       if (atualizarPorData(anime, 7) || forceUpdate) { // Atualizar links de eps a cada 7 dias
         const response = await axios.get(`https://www.myanimesonline.biz/animes/${pagina}`)

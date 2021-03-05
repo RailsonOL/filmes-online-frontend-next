@@ -1,8 +1,8 @@
-import { responseErrorJson, responseJson } from '../../../../utils/utils'
-import Filme from '../../../../models/Filme'
-import Serie from '../../../../models/Serie'
-import Anime from '../../../../models/Animes'
-import dbConnect from '../../../../utils/dbConnect'
+import { responseErrorJson, responseJson } from '../../../../utils'
+import Filme from '../../../../database/models/Filme'
+import Serie from '../../../../database/models/Serie'
+import Anime from '../../../../database/models/Animes'
+import dbConnect from '../../../../database/dbConnect'
 
 const get = async (req, res) => {
   try {

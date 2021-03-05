@@ -1,6 +1,6 @@
-import { responseErrorJson, responseJson } from '../../../utils/utils'
+import { responseErrorJson, responseJson } from '../../../utils'
 import Serie from '../../../models/Serie'
-import dbConnect from '../../../utils/dbConnect'
+import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
   try {

@@ -1,10 +1,10 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, validarImg, exibirTudo, atualizarPorDataSimples } from '../../utils/utils'
-import FilmesRecentes from '../../models/FilmesRecentes'
-import FilmesDestaque from '../../models/FilmesDestaque'
-import SeriesRecentes from '../../models/SeriesRecentes'
-import dbConnect from '../../utils/dbConnect'
+import { responseErrorJson, responseJson, validarImg, exibirTudo, atualizarPorDataSimples, deleteAllAfter } from '../../utils'
+import FilmesRecentes from '../../database/models/FilmesRecentes'
+import FilmesDestaque from '../../database/models/FilmesDestaque'
+import SeriesRecentes from '../../database/models/SeriesRecentes'
+import dbConnect from '../../database/dbConnect'
 
 const get = async (req, res) => {
   try {
@@ -17,13 +17,9 @@ const get = async (req, res) => {
       const response = await axios.get('https://www.superflix.net/')
       const $ = cheerio.load(response.data)
 
-      // await FilmesRecentes.countDocuments({}, async function (err, count) {
-      //     if (count > 24) {
-      //         await FilmesRecentes.deleteMany({})
-      //         await FilmesDestaque.deleteMany({})
-      //         await SeriesRecentes.deleteMany({})
-      //     }
-      // })
+      await deleteAllAfter(FilmesRecentes, 13)
+      await deleteAllAfter(FilmesDestaque, 13)
+      await deleteAllAfter(SeriesRecentes, 13)
 
       $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
         const el = $(elem)

@@ -1,8 +1,8 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, seExiste, validarImg, encodeDecode } from '../../../utils/utils'
-import AnimeEp from '../../../models/AnimesEp'
-import dbConnect from '../../../utils/dbConnect'
+import { responseErrorJson, seExiste, validarImg, encodeDecode } from '../../../utils'
+import AnimeEp from '../../../database/models/AnimesEp'
+import dbConnect from '../../../database/dbConnect'
 import { server } from '../../../config/index'
 
 const get = async (req, res) => {

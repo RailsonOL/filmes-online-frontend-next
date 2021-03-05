@@ -1,9 +1,9 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils/utils'
-import Filme from '../../../models/Filme'
-import Serie from '../../../models/Serie'
-import dbConnect from '../../../utils/dbConnect'
+import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils'
+import Filme from '../../../database/models/Filme'
+import Serie from '../../../database/models/Serie'
+import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
   try {

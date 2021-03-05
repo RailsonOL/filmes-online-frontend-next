@@ -2,8 +2,8 @@ import api from '../../src/api/api'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
-import WatchDesc from '../../src/watch/WatcDesc'
-import Player from '../../src/watch/Player'
+import WatchDesc from '../../src/components/watch/WatcDesc'
+import Player from '../../src/components/watch/Player'
 import { server } from '../../config'
 
 const PostEp = ({ listEps, setEpisode }) => {

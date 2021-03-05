@@ -1,12 +1,12 @@
-import GridItems from '../../../src/grid/GridItems'
-import Spotlight from '../../../src/grid/Spotlight'
-import Paginator from '../../../src/grid/Paginator'
-import SeachBar from '../../../src/searchbar/SeachBar'
+import GridItems from '../../../src/components/grid/GridItems'
+import Spotlight from '../../../src/components/grid/Spotlight'
+import Paginator from '../../../src/components/grid/Paginator'
+import SeachBar from '../../../src/components/searchbar/SeachBar'
 import axios from 'axios'
 import { useMemo } from 'react'
 import Head from 'next/head'
 import { server } from '../../../config'
-import { encodeDecode } from '../../../utils/utils'
+import { encodeDecode } from '../../../utils'
 
 export default function Categorys ({ data, type, page, dataDestaques }) {
   const gridMemo = useMemo(() => {
