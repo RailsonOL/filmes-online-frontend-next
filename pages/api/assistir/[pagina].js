@@ -16,13 +16,13 @@ const get = async (req, res) => {
 
     const tipo = opt1 ? Filme : Serie
     if (opt1 || opt2) { // Serie ou filme já cadastrado
-      const primeiroDaLista = await tipo.findOne({ pagina: pagina })
-
       let forceUpdate = false
       if (pagina.includes('-update-now')) {
         forceUpdate = true
         pagina = pagina.replace('-update-now', '')
       }
+
+      const primeiroDaLista = await tipo.findOne({ pagina: pagina })
 
       if (atualizarPorData(primeiroDaLista, 5) || forceUpdate) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
         const response = await axios.get(`https://www.superflix.net/${pagina}`)
@@ -165,7 +165,9 @@ const get = async (req, res) => {
 
         const exibir = await Filme.findOne({ pagina: pagina })
 
-        return responseJson(res, exibir)
+        res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate')
+        res.status(200)
+        return res.json(exibir)
       }
     }
   } catch (error) {
