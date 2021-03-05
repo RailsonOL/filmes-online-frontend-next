@@ -11,17 +11,16 @@ const get = async (req, res) => {
 
     let pagina = encodeDecode(req.query.pagina, 'decode', 'base64')
     const qualidade = 'HD'
+    let forceUpdate = false
+    if (pagina.includes('-update-now')) {
+      forceUpdate = true
+      pagina = pagina.replace('-update-now', '')
+    }
     const opt1 = await seExiste(Filme, pagina)
     const opt2 = await seExiste(Serie, pagina)
 
     const tipo = opt1 ? Filme : Serie
     if (opt1 || opt2) { // Serie ou filme já cadastrado
-      let forceUpdate = false
-      if (pagina.includes('-update-now')) {
-        forceUpdate = true
-        pagina = pagina.replace('-update-now', '')
-      }
-
       const primeiroDaLista = await tipo.findOne({ pagina: pagina })
 
       if (atualizarPorData(primeiroDaLista, 5) || forceUpdate) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
