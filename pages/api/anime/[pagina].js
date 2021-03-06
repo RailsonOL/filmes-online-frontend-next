@@ -100,8 +100,9 @@ const get = async (req, res) => {
         })
 
       const exibir = await Animes.findOne({ pagina: pagina })
-
-      return responseJson(res, exibirEps(exibir))
+      res.setHeader('Cache-Control', 's-maxage=84600, stale-while-revalidate')
+      res.status(200)
+      return res.json(exibirEps(exibir))
     }
   } catch (error) {
     return responseErrorJson(res, 'anime::get', error)
