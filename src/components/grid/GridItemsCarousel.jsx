@@ -28,14 +28,14 @@ class Carousel extends Component {
     $('.moveNextCarousel').on('click', function (e) {
       e.preventDefault()
       e.stopPropagation()
-      $('.carousel#' + this.id).carousel('next')
+      $('.carousel#' + this.id).carousel('next', 3)
     })
 
     // move prev carousel
     $('.movePrevCarousel').on('click', function (e) {
       e.preventDefault()
       e.stopPropagation()
-      $('.carousel#' + this.id).carousel('prev')
+      $('.carousel#' + this.id).carousel('prev', 3)
     })
     // eslint-disable-next-line no-undef
     M.Carousel.init(this.Carousel, options)
