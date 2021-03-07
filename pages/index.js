@@ -12,6 +12,14 @@ const Home = ({ data, dataAnimes }) => {
       <Head>
         <title>AmazoFlix - Filmes e Series de Graça</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+        <meta charset="UTF-8" />
+        <meta name="title" content="AmazoFlix - Filmes e Series de Graça" />
+        <meta name="description" content="AmazoFlix - Filmes e Series de Graça" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://amazoflix.vercel.app/" />
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="Filmes e Series de Graça" />
+        <meta property="og:image" content="" />
       </Head>
       <div className='search-bar-home'>
         <SeachBar />
