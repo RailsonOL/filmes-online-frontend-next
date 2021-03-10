@@ -11,11 +11,13 @@ const get = async (req, res) => {
 
     let pagina = encodeDecode(req.query.pagina, 'decode', 'base64')
     const qualidade = 'HD'
+
     let forceUpdate = false
     if (pagina.includes('-update-now')) {
       forceUpdate = true
       pagina = pagina.replace('-update-now', '')
     }
+
     const opt1 = await seExiste(Filme, pagina)
     const opt2 = await seExiste(Serie, pagina)
 

@@ -7,14 +7,21 @@ import dbConnect from '../../../database/dbConnect'
 const get = async (req, res) => {
   try {
     await dbConnect()
-    const pagina = req.query.pagina
+    let pagina = req.query.pagina
+
+    let forceUpdate = false
+    if (pagina.includes('-update-now')) {
+      forceUpdate = true
+      pagina = pagina.replace('-update-now', '')
+    }
+
     const opt1 = await seExiste(Temporada, pagina)
 
     if (opt1) { // Serie ou filme já cadastrado
       const primeiroDaLista = await Temporada.findOne({ pagina: pagina })
       // console.log(primeiroDaLista)
 
-      if (atualizarPorData(primeiroDaLista, 3)) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
+      if (atualizarPorData(primeiroDaLista, 3) || forceUpdate) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
         const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
         const $ = cheerio.load(response.data)
 
