@@ -18,7 +18,7 @@ const get = async (req, res) => {
 
     let filme = []
     let serie = []
-    const anime = []
+    let anime = []
 
     const limiteItens = 12
     let paginaAtual = req.query.pag >= 1 ? req.query.pag : 1
@@ -64,7 +64,7 @@ const get = async (req, res) => {
       .limit(limiteItens)
       .skip(limiteItens * paginaAtual)
       .then((result) => {
-        serie = result
+        anime = result
       })
 
     resultado.resultado = filme.concat(serie, anime)

@@ -38,7 +38,9 @@ const get = async (req, res) => {
 
         const exibir = await Temporada.findOne({ pagina: pagina })
 
-        return responseJson(res, exibirEps(exibir))
+        res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate')
+        res.status(200)
+        return res.json(exibirEps(exibir))
       }
 
       const exibir = await Temporada.findOne({ pagina: pagina })
