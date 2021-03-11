@@ -37,13 +37,14 @@ export default function Watch ({ data }) {
   const [contentLinks, setContentLinks] = useState()
   const [episode, setEpisode] = useState({})
   useEffect(async () => {
-    document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
-    if (episode !== {}) {
+    if (episode.data) {
+      document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
       const linkActualEp = episode.link ? episode.link.replace('episodio/', 'animeeps/') : episode.link
       api('/' + linkActualEp)
         .then(response => {
           document.querySelector('div.rate-big > span.carregando').remove()
           setContentLinks(response.links)
+          document.querySelector('aside.video-options > h4').innerHTML = response.titulo
         })
         .catch(err => console.error(err))
     }

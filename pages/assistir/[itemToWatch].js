@@ -20,12 +20,13 @@ export default function Watch ({ data }) {
   }, [contentLinks])
 
   useEffect(async () => {
-    document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
-    if (episode !== {}) {
+    if (episode.data) {
+      document.querySelector('div.rate-big').innerHTML += '<span class="carregando"></span>'
       api('/' + episode.link)
         .then(response => {
           document.querySelector('div.rate-big > span.carregando').remove()
           setContentLinks(response.links)
+          document.querySelector('aside.video-options > h4').innerHTML = response.titulo
         })
         .catch(err => console.error(err))
     }
