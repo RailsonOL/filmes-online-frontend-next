@@ -4,7 +4,7 @@ import { responseJson } from '../../utils'
 const get = async (req, res) => {
   const { data } = await axios.get('https://api.animesgratisbr.com/video/16788')
 
-  return responseJson(res, { data })
+  return responseJson(res, data)
 }
 
 export default get
