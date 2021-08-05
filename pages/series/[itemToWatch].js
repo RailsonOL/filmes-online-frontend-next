@@ -61,7 +61,7 @@ export default function Watch ({ data }) {
 
 export async function getServerSideProps (ctx) {
   const itemToWatch = encodeDecode(ctx.query.itemToWatch, 'encode', 'base64')
-  const response = await fetch(`${server}/api/assistir/${encodeURIComponent(itemToWatch)}`)
+  const response = await fetch(`${server}/api/assistir-serie/${encodeURIComponent(itemToWatch)}`)
   const data = await response.json()
 
   return {

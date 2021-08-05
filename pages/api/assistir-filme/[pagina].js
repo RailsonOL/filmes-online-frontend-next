@@ -1,8 +1,7 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils'
+import { responseErrorJson, responseJson, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils'
 import Filme from '../../../database/models/Filme'
-import Serie from '../../../database/models/Serie'
 import dbConnect from '../../../database/dbConnect'
 
 const get = async (req, res) => {
@@ -19,14 +18,11 @@ const get = async (req, res) => {
     }
 
     const opt1 = await seExiste(Filme, pagina)
-    const opt2 = await seExiste(Serie, pagina)
-
-    const tipo = opt1 ? Filme : Serie
-    if (opt1 || opt2) { // Serie ou filme já cadastrado
-      const primeiroDaLista = await tipo.findOne({ pagina: pagina })
-
+    
+    if (opt1) { // Serie ou filme já cadastrado
+      const primeiroDaLista = await Filme.findOne({ pagina: pagina })
       if (atualizarPorData(primeiroDaLista, 5) || forceUpdate) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
-        const response = await axios.get(`https://www.superflix.net/${pagina}`)
+        const response = await axios.get(`https://superflix.vip/movies/${pagina}`)
         const $ = cheerio.load(response.data)
         const serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
         const trailer = $('div#mdl-trailer').find('iframe').attr('src')
@@ -34,28 +30,10 @@ const get = async (req, res) => {
         const nota = $('div.vote-cn').find('span.vote').text()
         const links = []
 
-        if (serie) { // se for uma serie
-          const temporadas = []
-          $('div.aa-drp.choose-season').each((i, e) => {
-            const el = $(e)
-            const temp = el.text()
-            const link = el.find('a').attr('href').replace('https://www.superflix.net/', '')
-            temporadas.push(`${temp}|${link}`)
-          })
-
-          Serie.findOneAndUpdate({ pagina: pagina }, { descricao, temporadas, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
-            if (err) return res.send(500, { error: err })
-            return console.log('Succesfully saved.')
-          })
-
-          const exibir = await Serie.findOne({ pagina: pagina })
-
-          return responseJson(res, exibir)
-        } else { // se for filme
           $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
             const el = $(e)
             let opcao = el.attr('id')
-            const link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
+            const link = el.find('iframe').attr('data-lazy-src')
 
             opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
 
@@ -70,17 +48,14 @@ const get = async (req, res) => {
           const exibir = await Filme.findOne({ pagina: pagina })
 
           return responseJson(res, exibir)
-        }
       }
 
-      const exibir = await tipo.findOne({ pagina: pagina })
+      const exibir = await Filme.findOne({ pagina: pagina })
 
       return responseJson(res, exibir)
     } else { // Não encontrado, então capturar e cadastrar
-      const response = await axios.get(`https://www.superflix.net/${pagina}`)
+      const response = await axios.get(`https://superflix.vip/movies/${pagina}`)
       const $ = cheerio.load(response.data)
-
-      const serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
 
       const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
       const titulo = $('div.dfxb.alg-cr').find('h1.entry-title').text()
@@ -97,46 +72,10 @@ const get = async (req, res) => {
       const descricao = $('div.dfxb.alg-cr').find('div.description').text()
       const links = []
 
-      if (serie) { // se for uma serie
-        const temporadas = []
-        $('div.aa-drp.choose-season').each(async (i, e) => {
-          const el = $(e)
-          const temp = el.text()
-          const link = el.find('a').attr('href').replace('https://www.superflix.net/', '')
-          temporadas.push(`${temp}|${link}`)
-        })
-
-        const addSerie = new Serie({
-          titulo,
-          img,
-          nota,
-          descricao,
-          trailer,
-          temporadas,
-          duracao,
-          qualidade,
-          ano,
-          categorias,
-          pagina
-        })
-
-        await addSerie.save()
-          .then(() => {
-            console.log('Nova serie adicionada a DB')
-          })
-          .catch((err) => {
-            console.log(err)
-            console.log(err.code === 11000 ? 'Serie duplicada' : err)
-          })
-
-        const exibir = await Serie.findOne({ pagina: pagina })
-
-        return responseJson(res, exibir)
-      } else { // se for filme
         $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
           const el = $(e)
           let opcao = el.attr('id')
-          const link = hex2a(el.find('a').attr('href').split('auth=')[1]).replace(/&#038;/g, '&')
+          const link = el.find('iframe').attr('data-lazy-src')
 
           opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
 
@@ -169,7 +108,6 @@ const get = async (req, res) => {
         res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate')
         res.status(200)
         return res.json(exibir)
-      }
     }
   } catch (error) {
     return responseErrorJson(res, 'assistir::get', error)

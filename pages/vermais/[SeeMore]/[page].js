@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { server } from '../../../config'
 
 export default function SeeMore ({ data, type, page, dataDestaques }) {
-  let to = 'assistir'
+  let to = ''
 
   if (type === 'allanimes') {
     to = 'anime'

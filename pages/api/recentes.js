@@ -14,19 +14,19 @@ const get = async (req, res) => {
 
     if (atualizarPorDataSimples(primeiro)) {
       // console.log('As datas são diferentes, salvar')
-      const response = await axios.get('https://www.superflix.net/')
+      const response = await axios.get('https://superflix.vip/')
       const $ = cheerio.load(response.data)
 
       await deleteAllAfter(FilmesRecentes, 13)
       await deleteAllAfter(FilmesDestaque, 13)
       await deleteAllAfter(SeriesRecentes, 13)
 
-      $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
+      $('div#widget_list_movies_series-2-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
         const el = $(elem)
         const img = validarImg(el.find('figure > img').attr('src'))
         const titulo = el.find('h2.entry-title').text()
         const nota = el.find('span.vote').text()
-        const pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const pagina = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
         const qualidade = el.find('.Qlty').text()
         const ano = el.find('.year').text()
 
@@ -44,12 +44,12 @@ const get = async (req, res) => {
         })
       })
 
-      $('div#torofilm_wdgt_popular-3-all').find('ul > li').each(async (i, elem) => { // Filmes em Destaque
+      $('div#widget_list_movies_series-2-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes em Destaque
         const el = $(elem)
         const img = validarImg(el.find('figure > img').attr('src'))
         const titulo = el.find('h2.entry-title').text()
         const nota = el.find('span.vote').text()
-        const pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const pagina = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
         const duracao = el.find('span.time').text()
         const ano = el.find('span.year').text()
 
@@ -67,7 +67,7 @@ const get = async (req, res) => {
         })
       })
 
-      $('div#widget_list_movies_series-4-aa-movies').find('ul > li').each(async (i, elem) => { // Series Recentes
+      $('div#widget_list_movies_series-3-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Series Recentes
         const el = $(elem)
 
         if (el.find('a.lnk-blk').attr('href') === undefined) {
@@ -77,7 +77,7 @@ const get = async (req, res) => {
         const img = validarImg(el.find('figure > img').attr('src'))
         const titulo = el.find('h2.entry-title').text()
         const nota = el.find('span.vote').text()
-        const pagina = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const pagina = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
         const qualidade = el.find('.Qlty').text()
         const ano = el.find('.year').text()
 

@@ -22,7 +22,7 @@ const get = async (req, res) => {
       // console.log(primeiroDaLista)
 
       if (atualizarPorData(primeiroDaLista, 3) || forceUpdate) { // Atualizar links e descrção a cada 5 dias se foi criado a menos de 3 meses e se for desse ano
-        const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
+        const response = await axios.get(`https://superflix.vip/temporada/${pagina}`)
         const $ = cheerio.load(response.data)
 
         const episodios = []
@@ -32,7 +32,7 @@ const get = async (req, res) => {
           const img = validarImg(el.find('figure > img').attr('src'))
           const numEp = el.find('span.num-epi').text()
           const nomeEp = el.find('h2.entry-title').text()
-          const link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+          const link = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
           const data = el.find('span.time').text()
 
           episodios.push(`{"img": "${img}", "num_ep": "${numEp}", "nome_ep": "${nomeEp}", "link": "${link}", "data": "${data}"}`)
@@ -54,7 +54,7 @@ const get = async (req, res) => {
 
       return responseJson(res, exibirEps(exibir))
     } else { // Não encontrado, então capturar e cadastrar
-      const response = await axios.get(`https://www.superflix.net/temporada/${pagina}`)
+      const response = await axios.get(`https://superflix.vip/temporada/${pagina}`)
       const $ = cheerio.load(response.data)
 
       const episodios = []
@@ -65,7 +65,7 @@ const get = async (req, res) => {
         const img = validarImg(el.find('figure > img').attr('src'))
         const numEp = el.find('span.num-epi').text()
         const nomeEp = el.find('h2.entry-title').text()
-        const link = el.find('a.lnk-blk').attr('href').replace('https://www.superflix.net/', '')
+        const link = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
         const data = el.find('span.time').text()
 
         episodios.push(`{"img": "${img}", "num_ep": "${numEp}", "nome_ep": "${nomeEp}", "link": "${link}", "data": "${data}"}`)

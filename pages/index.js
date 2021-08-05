@@ -31,7 +31,7 @@ const Home = ({ data, dataAnimes }) => {
               itemsForGrid={data.filmes_recentes}
               nameForGrid={'Filmes Recentes'}
               seeMore={'/vermais/filme/1'}
-              toPage={'assistir'}
+              toPage={''}
               idForCarousel={'filmes_recentes'}
             />
           </div>
@@ -40,7 +40,7 @@ const Home = ({ data, dataAnimes }) => {
               itemsForGrid={data.series_recentes}
               nameForGrid={'Series Recentes'}
               seeMore={'/vermais/serie/1'}
-              toPage={'assistir'}
+              toPage={''}
               idForCarousel={'series_recentes'}
             />
           </div>

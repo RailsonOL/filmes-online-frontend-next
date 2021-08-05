@@ -20,7 +20,7 @@ export default function Spotlight ({ dataDestaques }) {
               <img width="185" height="278" src={item.img} className="attachment-thumbnail size-thumbnail wp-post-image" alt="thumb movie" loading="lazy" />
             </figure>
           </div>
-          <a href={'/assistir/' + item.pagina} className="lnk-blk"></a>
+          <a href={'/' + item.pagina} className="lnk-blk"></a>
         </article>
       </li>
     )

@@ -84,7 +84,7 @@ const PostItem = props => {
   return itemsForGrid.map((item, index) => (
         <li className="carousel-item" key={item._id}>
             <div className="carousel-itemss" style={{ backgroundImage: `url(${item.img})` }}>
-                <a href={`/${item.tipo === 'TemporadaAnime' ? 'anime' : toPage || 'assistir'}/${item.pagina}`}>
+                <a href={`${item.tipo === 'TemporadaAnime' ? '/anime' : toPage || ''}/${item.pagina}`}>
                     <div className="carousel-itemss-text">
                         <b></b>
                         <span className="season">{item.titulo}</span>
