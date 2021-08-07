@@ -23,7 +23,7 @@ const get = async (req, res) => {
 
       $('div#widget_list_movies_series-2-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes Recentes
         const el = $(elem)
-        const img = validarImg(el.find('figure > img').attr('src'))
+        const img = validarImg(el.find('figure > img').attr('data-lazy-src'))
         const titulo = el.find('h2.entry-title').text()
         const nota = el.find('span.vote').text()
         const pagina = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
@@ -46,7 +46,7 @@ const get = async (req, res) => {
 
       $('div#widget_list_movies_series-2-all.aa-tb.hdd.on').find('ul > li').each(async (i, elem) => { // Filmes em Destaque
         const el = $(elem)
-        const img = validarImg(el.find('figure > img').attr('src'))
+        const img = validarImg(el.find('figure > img').attr('data-lazy-src'))
         const titulo = el.find('h2.entry-title').text()
         const nota = el.find('span.vote').text()
         const pagina = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
@@ -74,7 +74,7 @@ const get = async (req, res) => {
           console.log(el.text())
         }
 
-        const img = validarImg(el.find('figure > img').attr('src'))
+        const img = validarImg(el.find('figure > img').attr('data-lazy-src'))
         const titulo = el.find('h2.entry-title').text()
         const nota = el.find('span.vote').text()
         const pagina = el.find('a.lnk-blk').attr('href').replace('https://superflix.vip/', '')
