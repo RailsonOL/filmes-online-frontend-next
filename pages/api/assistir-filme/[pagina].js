@@ -18,36 +18,35 @@ const get = async (req, res) => {
     }
 
     const opt1 = await seExiste(Filme, pagina)
-    
+
     if (opt1) { // Serie ou filme já cadastrado
       const primeiroDaLista = await Filme.findOne({ pagina: pagina })
       if (atualizarPorData(primeiroDaLista, 5) || forceUpdate) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
         const response = await axios.get(`https://superflix.vip/movies/${pagina}`)
         const $ = cheerio.load(response.data)
-        const serie = $('section.section.episodes').find('ul#episode_by_temp').is('#episode_by_temp')
         const trailer = $('div#mdl-trailer').find('iframe').attr('src')
         const descricao = $('div.dfxb.alg-cr').find('div.description').text()
         const nota = $('div.vote-cn').find('span.vote').text()
         const links = []
 
-          $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
-            const el = $(e)
-            let opcao = el.attr('id')
-            const link = el.find('iframe').attr('data-lazy-src')
+        $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
+          const el = $(e)
+          let opcao = el.attr('id')
+          const link = el.find('iframe').attr('data-lazy-src')
 
-            opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
+          opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
 
-            links.push(`${opcao}|${link}`)
-          })
+          links.push(`${opcao}|${link}`)
+        })
 
-          Filme.findOneAndUpdate({ pagina: pagina }, { descricao, links, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
-            if (err) return res.send(500, { error: err })
-            return console.log('Filme atualizado.')
-          })
+        Filme.findOneAndUpdate({ pagina: pagina }, { descricao, links, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
+          if (err) return res.send(500, { error: err })
+          return console.log('Filme atualizado.')
+        })
 
-          const exibir = await Filme.findOne({ pagina: pagina })
+        const exibir = await Filme.findOne({ pagina: pagina })
 
-          return responseJson(res, exibir)
+        return responseJson(res, exibir)
       }
 
       const exibir = await Filme.findOne({ pagina: pagina })
@@ -57,7 +56,7 @@ const get = async (req, res) => {
       const response = await axios.get(`https://superflix.vip/movies/${pagina}`)
       const $ = cheerio.load(response.data)
 
-      const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
+      const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('data-lazy-src'))
       const titulo = $('div.dfxb.alg-cr').find('h1.entry-title').text()
       const trailer = $('div#mdl-trailer').find('iframe').attr('src')
       const duracao = $('div.dfxb.alg-cr').find('span.duration.fa-clock.far').text()
@@ -72,42 +71,42 @@ const get = async (req, res) => {
       const descricao = $('div.dfxb.alg-cr').find('div.description').text()
       const links = []
 
-        $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
-          const el = $(e)
-          let opcao = el.attr('id')
-          const link = el.find('iframe').attr('data-lazy-src')
+      $('aside#aa-options.video-player.aa-cn').find('div.video.aa-tb').each((i, e) => {
+        const el = $(e)
+        let opcao = el.attr('id')
+        const link = el.find('iframe').attr('data-lazy-src')
 
-          opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
+        opcao = $(`a[href="#${opcao}"]`).find('span.server').text().split('-')[1]
 
-          links.push(`${opcao}|${link}`)
+        links.push(`${opcao}|${link}`)
+      })
+
+      const addFilme = new Filme({
+        titulo,
+        img,
+        nota,
+        links,
+        trailer,
+        descricao,
+        duracao,
+        categorias,
+        ano,
+        pagina
+      })
+
+      await addFilme.save()
+        .then(() => {
+          console.log('Novo filme adicionado a DB')
+        })
+        .catch((err) => {
+          console.log(err.code === 11000 ? 'Filme duplicado' : err)
         })
 
-        const addFilme = new Filme({
-          titulo,
-          img,
-          nota,
-          links,
-          trailer,
-          descricao,
-          duracao,
-          categorias,
-          ano,
-          pagina
-        })
+      const exibir = await Filme.findOne({ pagina: pagina })
 
-        await addFilme.save()
-          .then(() => {
-            console.log('Novo filme adicionado a DB')
-          })
-          .catch((err) => {
-            console.log(err.code === 11000 ? 'Filme duplicado' : err)
-          })
-
-        const exibir = await Filme.findOne({ pagina: pagina })
-
-        res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate')
-        res.status(200)
-        return res.json(exibir)
+      res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate')
+      res.status(200)
+      return res.json(exibir)
     }
   } catch (error) {
     return responseErrorJson(res, 'assistir::get', error)

@@ -47,7 +47,7 @@ const PostItem = props => {
           </span>
           <span className="year">{item.ano}</span>
           <span className="play material-icons" style={{ fontSize: 40 }}>play_arrow</span>
-        </div> <a href={`/${item.tipo === 'TemporadaAnime' ? 'anime' : toPage || ''}${item.pagina}`}
+        </div> <a href={`${item.tipo === 'TemporadaAnime' ? '/anime' : toPage || '/movies/'}${item.pagina}`}
           className="lnk-blk"></a>
       </article>
     </li>

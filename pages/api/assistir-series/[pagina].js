@@ -1,7 +1,6 @@
 import cheerio from 'cheerio'
 import axios from 'axios'
-import { responseErrorJson, responseJson, hex2a, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils'
-import Filme from '../../../database/models/Filme'
+import { responseErrorJson, responseJson, seExiste, validarImg, atualizarPorData, encodeDecode } from '../../../utils'
 import Serie from '../../../database/models/Serie'
 import dbConnect from '../../../database/dbConnect'
 
@@ -19,34 +18,33 @@ const get = async (req, res) => {
     }
 
     const opt2 = await seExiste(Serie, pagina)
-    
-    if (opt1) { // Serie ou filme já cadastrado
+
+    if (opt2) { // Serie ou filme já cadastrado
       const primeiroDaLista = await Serie.findOne({ pagina: pagina })
       if (atualizarPorData(primeiroDaLista, 5) || forceUpdate) { // Atualizar links e descrção a cada 3 dias se foi criado a menos de 3 meses e se for desse ano
         const response = await axios.get(`https://superflix.vip/series/${pagina}`)
         const $ = cheerio.load(response.data)
 
-        const trailer = $('div#mdl-trailer').find('iframe').attr('src')
+        const trailer = $('div#mdl-trailer').find('iframe').attr('data-lazy-src')
         const descricao = $('div.dfxb.alg-cr').find('div.description').text()
         const nota = $('div.vote-cn').find('span.vote').text()
-        const links = []
 
-          const temporadas = []
-          $('div.aa-drp.choose-season').each((i, e) => {
-            const el = $(e)
-            const temp = el.text()
-            const link = el.find('a').attr('href').replace('https://superflix.vip/', '')
-            temporadas.push(`${temp}|${link}`)
-          })
+        const temporadas = []
+        $('div.aa-drp.choose-season').each((i, e) => {
+          const el = $(e)
+          const temp = el.text()
+          const link = el.find('a').attr('href').replace('https://superflix.vip/', '')
+          temporadas.push(`${temp}|${link}`)
+        })
 
-          Serie.findOneAndUpdate({ pagina: pagina }, { descricao, temporadas, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
-            if (err) return res.send(500, { error: err })
-            return console.log('Succesfully saved.')
-          })
+        Serie.findOneAndUpdate({ pagina: pagina }, { descricao, temporadas, qualidade, trailer, nota }, { upsert: true }, function (err, doc) {
+          if (err) return res.send(500, { error: err })
+          return console.log('Succesfully saved.')
+        })
 
-          const exibir = await Serie.findOne({ pagina: pagina })
+        const exibir = await Serie.findOne({ pagina: pagina })
 
-          return responseJson(res, exibir)
+        return responseJson(res, exibir)
       }
 
       const exibir = await Serie.findOne({ pagina: pagina })
@@ -56,7 +54,7 @@ const get = async (req, res) => {
       const response = await axios.get(`https://superflix.vip/series/${pagina}`)
       const $ = cheerio.load(response.data)
 
-      const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('src'))
+      const img = validarImg($('div.dfxb.alg-cr').find('figure > img').attr('data-lazy-src'))
       const titulo = $('div.dfxb.alg-cr').find('h1.entry-title').text()
       const trailer = $('div#mdl-trailer').find('iframe').attr('src')
       const duracao = $('div.dfxb.alg-cr').find('span.duration.fa-clock.far').text()
@@ -69,42 +67,41 @@ const get = async (req, res) => {
 
       const ano = $('div.dfxb.alg-cr').find('span.year.fa-calendar.far').text()
       const descricao = $('div.dfxb.alg-cr').find('div.description').text()
-      const links = []
 
-        const temporadas = []
-        $('div.aa-drp.choose-season').each(async (i, e) => {
-          const el = $(e)
-          const temp = el.text()
-          const link = el.find('a').attr('href').replace('https://superflix.vip/', '')
-          temporadas.push(`${temp}|${link}`)
+      const temporadas = []
+      $('div.aa-drp.choose-season').each(async (i, e) => {
+        const el = $(e)
+        const temp = el.text()
+        const link = el.find('a').attr('href').replace('https://superflix.vip/', '')
+        temporadas.push(`${temp}|${link}`)
+      })
+
+      const addSerie = new Serie({
+        titulo,
+        img,
+        nota,
+        descricao,
+        trailer,
+        temporadas,
+        duracao,
+        qualidade,
+        ano,
+        categorias,
+        pagina
+      })
+
+      await addSerie.save()
+        .then(() => {
+          console.log('Nova serie adicionada a DB')
+        })
+        .catch((err) => {
+          console.log(err)
+          console.log(err.code === 11000 ? 'Serie duplicada' : err)
         })
 
-        const addSerie = new Serie({
-          titulo,
-          img,
-          nota,
-          descricao,
-          trailer,
-          temporadas,
-          duracao,
-          qualidade,
-          ano,
-          categorias,
-          pagina
-        })
+      const exibir = await Serie.findOne({ pagina: pagina })
 
-        await addSerie.save()
-          .then(() => {
-            console.log('Nova serie adicionada a DB')
-          })
-          .catch((err) => {
-            console.log(err)
-            console.log(err.code === 11000 ? 'Serie duplicada' : err)
-          })
-
-        const exibir = await Serie.findOne({ pagina: pagina })
-
-        return responseJson(res, exibir)
+      return responseJson(res, exibir)
     }
   } catch (error) {
     return responseErrorJson(res, 'assistir::get', error)
