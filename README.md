@@ -8,7 +8,8 @@ Rode um:
 yarn install
 # para iniciar:
 yarn dev
-criar um .env com a variavel: MONGO_URL = mongodb+srv://<username>:<password>@<url>.mongodb.net/<database>?retryWrites=true&w=majority
+
+Criar um .env com a variavel: MONGO_URL = mongodb+srv://<username>:<password>@<url>.mongodb.net/<database>?retryWrites=true&w=majority
 essa url você consegue no MongoDB
 ```
 
